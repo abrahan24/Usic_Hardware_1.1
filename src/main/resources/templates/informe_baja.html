@@ -146,17 +146,13 @@
         function buscar_Activos() {
             // Obtener los valores seleccionados
             var selectedValues = $('#selectEvents').val();
-    
-            // Crear una URL con los valores seleccionados
-            var url = "../../../../hardware-servicio/activos/";
-    
-            if (selectedValues != null && selectedValues.length > 0) {
-                url += selectedValues.join(',');
-            }
-    
+
+            // Crear una URL con los valores seleccionados como parámetros de consulta
+            var url = "../../../../hardware-servicio/activos?selectedValues=" + selectedValues.join(',');
+
             // Llamar a la función getContent con la URL construida
             getContent(url);
-    
+
             function getContent(url) {
                 // Cargar el fragmento y reemplazar el contenido
                 $('#replace_div').load(url);
