@@ -103,9 +103,10 @@ public class servicioController {
                 model.addAttribute("validado", validado);
             }
         
-            for (Previo previo : usuario.getPrevios()) {
-                model.addAttribute("servicios" + previo.getId_previo() , servicioService.getAllServicioUsuario(previo.getId_previo()));
-            }
+            // for (Previo previo : usuario.getPrevios()) {
+            //     model.addAttribute("servicios" + previo.getId_previo() , servicioService.getAllServicioUsuario(previo.getId_previo()));
+            //     System.out.println(servicioService.getAllServicioUsuario(previo.getId_previo()));
+            // }
             model.addAttribute("previos", usuario.getPrevios());
             model.addAttribute("usuarios", usuarioService.findAll());
             model.addAttribute("tipoServicios", tipoServicioService.findAll());

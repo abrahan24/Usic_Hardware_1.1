@@ -68,13 +68,7 @@
                                                 <option selected disable hidden ></option>
                                                 <th:block th:each="p : ${personas}" th:if="${p.estado != 'X'}">
                                                     <option  th:value="${p.id_persona}" th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}"></option>
-                                                    <!-- <th:block th:if="${solucionEquipo.tipoEquipo != null}">
-                                                    <option th:if="${solucionEquipo.tipoEquipo.id_tipoequipo != te.id_tipoequipo}" th:value="${te.id_tipoequipo}" th:text="${te.equipo}"></option>
-                                                    <option th:if="${solucionEquipo.tipoEquipo.id_tipoequipo == te.id_tipoequipo}" th:value="${te.id_tipoequipo}" th:text="${te.equipo}" selected></option>
-                                                    </th:block>
-                                                    <th:block th:if="${solucionEquipo.tipoEquipo == null}">
-                                                        <option th:value="${te.id_tipoequipo}" th:text="${te.equipo}"></option>
-                                                    </th:block> -->
+                                                    
                                                 </th:block>
                                             </select>
                                         </div>
@@ -84,6 +78,16 @@
                                                 <div class="form-group">
                                                     <div class="form-line">
                                                         <textarea type="text" rows="2"  th:field="${baja.cite}" class="form-control no-resize" placeholder="Descripcion..."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h2 class="card-inside-title">REF. : </h2>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <textarea type="text" rows="2"  th:field="${baja.ref_baja}" class="form-control no-resize" placeholder="Descripcion..."></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,13 +114,30 @@
                                                 </th:block>
                                             </select> -->
                                             
-                                            <select multiple name="event_type[]" class="form-control" id="selectEvents">
+                                            <select  class="js-states form-control" id="selectEvents">
                                                 <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
                                                     <optgroup th:label="${a.tipoEquipo.equipo}">
                                                         <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
                                                     </optgroup>
                                                 </th:block>
                                             </select>
+                                            <button class="btn btn-danger m-t-15 waves-effect" onclick="agregarActivo()">Agregar</button>
+                                            <br>
+                                            <h2>Tabla de Activos Seleccionados</h2>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Activo</th>
+                                                        <th>Atributo 1</th>
+                                                        <th>Atributo 2</th>
+                                                        <!-- Agrega más columnas para otros atributos aquí -->
+                                                        <th>Acción</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tablaActivos">
+                                                    <!-- Aquí se agregarán los activos seleccionados -->
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div> 
@@ -134,6 +155,37 @@
         </div>
     </section>
     
+    <script>
+        function agregarActivo() {
+            var select = document.getElementById('selectEvents');
+            var tabla = document.getElementById('tablaActivos');
+    
+            // Obtén la opción seleccionada
+            var selectedOption = select.options[select.selectedIndex];
+    
+            // Crea una nueva fila para la tabla
+            var fila = tabla.insertRow();
+            var celdaActivo = fila.insertCell(0);
+            var celdaAtributo1 = fila.insertCell(1);
+            var celdaAtributo2 = fila.insertCell(2);
+            // Agrega más celdas para otros atributos aquí
+    
+            // Configura el contenido de las celdas con los valores de la opción seleccionada
+            celdaActivo.innerHTML = selectedOption.text;
+            celdaAtributo1.innerHTML = selectedOption.getAttribute('atributo1'); // Reemplaza 'atributo1' con el nombre real del atributo
+            celdaAtributo2.innerHTML = selectedOption.getAttribute('atributo2'); // Reemplaza 'atributo2' con el nombre real del atributo
+            // Configura el contenido de otras celdas para otros atributos aquí
+    
+            // Agrega un botón de eliminar en la última columna
+            var celdaAccion = fila.insertCell(3);
+            var botonEliminar = document.createElement('button');
+            botonEliminar.innerText = 'Eliminar';
+            botonEliminar.onclick = function() {
+                tabla.deleteRow(fila.rowIndex);
+            };
+            celdaAccion.appendChild(botonEliminar);
+        }
+    </script>
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 
