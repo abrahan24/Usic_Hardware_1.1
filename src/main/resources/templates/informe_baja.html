@@ -114,30 +114,17 @@
                                                 </th:block>
                                             </select> -->
                                             
-                                            <select  class="js-states form-control" id="selectEvents">
+                                            <select multiple name="event_type[]" class="form-control" id="selectEvents" onchange="buscar_Activos()">
                                                 <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
                                                     <optgroup th:label="${a.tipoEquipo.equipo}">
                                                         <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
                                                     </optgroup>
                                                 </th:block>
                                             </select>
-                                            <button class="btn btn-danger m-t-15 waves-effect" onclick="agregarActivo()">Agregar</button>
                                             <br>
-                                            <h2>Tabla de Activos Seleccionados</h2>
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Activo</th>
-                                                        <th>Atributo 1</th>
-                                                        <th>Atributo 2</th>
-                                                        <!-- Agrega más columnas para otros atributos aquí -->
-                                                        <th>Acción</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tablaActivos">
-                                                    <!-- Aquí se agregarán los activos seleccionados -->
-                                                </tbody>
-                                            </table>
+                                            <div id="replace_div">
+                                    
+                                            </div>
                                         </div>
                                     </div>
                                 </div> 
@@ -156,36 +143,27 @@
     </section>
     
     <script>
-        function agregarActivo() {
-            var select = document.getElementById('selectEvents');
-            var tabla = document.getElementById('tablaActivos');
+        function buscar_Activos() {
+            // Obtener los valores seleccionados
+            var selectedValues = $('#selectEvents').val();
     
-            // Obtén la opción seleccionada
-            var selectedOption = select.options[select.selectedIndex];
+            // Crear una URL con los valores seleccionados
+            var url = "../../../../hardware-servicio/activos/";
     
-            // Crea una nueva fila para la tabla
-            var fila = tabla.insertRow();
-            var celdaActivo = fila.insertCell(0);
-            var celdaAtributo1 = fila.insertCell(1);
-            var celdaAtributo2 = fila.insertCell(2);
-            // Agrega más celdas para otros atributos aquí
+            if (selectedValues != null && selectedValues.length > 0) {
+                url += selectedValues.join(',');
+            }
     
-            // Configura el contenido de las celdas con los valores de la opción seleccionada
-            celdaActivo.innerHTML = selectedOption.text;
-            celdaAtributo1.innerHTML = selectedOption.getAttribute('atributo1'); // Reemplaza 'atributo1' con el nombre real del atributo
-            celdaAtributo2.innerHTML = selectedOption.getAttribute('atributo2'); // Reemplaza 'atributo2' con el nombre real del atributo
-            // Configura el contenido de otras celdas para otros atributos aquí
+            // Llamar a la función getContent con la URL construida
+            getContent(url);
     
-            // Agrega un botón de eliminar en la última columna
-            var celdaAccion = fila.insertCell(3);
-            var botonEliminar = document.createElement('button');
-            botonEliminar.innerText = 'Eliminar';
-            botonEliminar.onclick = function() {
-                tabla.deleteRow(fila.rowIndex);
-            };
-            celdaAccion.appendChild(botonEliminar);
+            function getContent(url) {
+                // Cargar el fragmento y reemplazar el contenido
+                $('#replace_div').load(url);
+            }
         }
     </script>
+    
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 

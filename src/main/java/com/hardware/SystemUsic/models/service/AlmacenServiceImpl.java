@@ -45,5 +45,13 @@ public class AlmacenServiceImpl implements IAlmacenService{
         return almacenDao.getAllAlmacenTipoEquipo(id_tipoEquipo);
     }
 
+    @Override
+    public List<Almacen> Lista_Activos_Por_Id(List<Long> id_almacenes) {
+        // TODO Auto-generated method stub
+        return almacenDao.Lista_Activos_Por_Id(id_almacenes);
+    }
+
+    
+
     
 }

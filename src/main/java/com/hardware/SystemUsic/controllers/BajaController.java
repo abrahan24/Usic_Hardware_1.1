@@ -2,6 +2,9 @@ package com.hardware.SystemUsic.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,4 +51,20 @@ public class BajaController {
 		}
     }
     
+    @RequestMapping(value = "/activos/{id_almacen}")
+	public String getContent1(@PathVariable(value = "id_almacen")Long [] id_almacen, Model model, HttpServletRequest request){
+	
+        System.out.println(id_almacen);
+        List<Long> idsSeleccionados; 
+
+        for (int i = 0; i < id_almacen.length; i++) {
+            idsSeleccionados = Arrays.asList(id_almacen[i]);
+            model.addAttribute("activos", almacenService.Lista_Activos_Por_Id(idsSeleccionados));
+            System.out.println(almacenService.Lista_Activos_Por_Id(idsSeleccionados));
+
+        }
+       
+		return "content :: content2";
+
+	}
 }

@@ -14,4 +14,7 @@ public interface IAlmacenService {
 	public void delete(Long id);
 
 	public List<Almacen>getAllAlmacenTipoEquipo(Long id_tipoEquipo);
+
+	public List<Almacen>Lista_Activos_Por_Id(List<Long> id_almacenes);
+
 }

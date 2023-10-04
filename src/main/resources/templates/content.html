@@ -28,5 +28,27 @@
         </div>
       </div>
     </div>
+
+    <div th:fragment="content2">
+      <h2>Tabla de Activos Seleccionados</h2>
+      <div class="body table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>COD ACTIVO</th>
+                    <th>DESCRIPCION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="a : ${activos}" th:if="${a.estado != 'X'}">
+
+                    <td th:text="${a.cod_equipo}">Mark</td>
+                    <td th:text="${a.descripcion}">Otto</td>
+                </tr>
+              
+            </tbody>
+        </table>
+    </div>
+    </div>
   </body>
 </html>
