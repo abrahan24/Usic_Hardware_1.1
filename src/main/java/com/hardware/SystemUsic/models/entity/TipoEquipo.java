@@ -12,8 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "tipoequipo")
+@Setter
+@Getter
 public class TipoEquipo implements Serializable{
     private static final long serialVersionUID = 2629195288020321924L;
     @Id

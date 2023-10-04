@@ -32,11 +32,12 @@
     <div th:fragment="content2">
       <h2>Tabla de Activos Seleccionados</h2>
       <div class="body table-responsive">
-        <table class="table table-hover">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>COD ACTIVO</th>
                     <th>DESCRIPCION</th>
+                    <th>SELECCIONE FALLAS</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,14 @@
 
                     <td th:text="${a.cod_equipo}">Mark</td>
                     <td th:text="${a.descripcion}">Otto</td>
+                    <td >
+                      <div class="demo-checkbox">
+                        <th:block th:each="fe : ${a.tipoEquipo.fallaEquipoBajas}" th:if="${fe.estado_fallaEquipoBaja != 'X'}">
+                            <input name="id_fallaBaja" th:value="${fe.fallaBaja.id_fallaBaja}" type="checkbox" th:id="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}" class="filled-in chk-col-red"  />
+                            <label th:text="${fe.fallaBaja.nom_fallaBaja}" th:for="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}">RED</label>
+                        </th:block>
+                    </div>
+                    </td>
                 </tr>
               
             </tbody>
