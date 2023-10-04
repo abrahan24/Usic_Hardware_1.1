@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layaut/layaut :: head">
+
+    
+</head>
+
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Por Favor Espera...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input type="text" placeholder="START TYPING...">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav th:replace="layaut/layaut :: nav">  </nav>
+    <!-- #Top Bar -->
+    <section th:replace="layaut/layaut :: menu"></section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>
+                    INFORME TÉCNICO DE BAJA
+                </h2>
+            </div>
+            <!-- #END# Basic Examples -->
+            <!-- Exportable Table -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <form action="../../../../hardware-servicio/add_informe_baja" method="POST">
+                                
+                                <div class="body">
+                                    <div class="form-group demo-tagsinput-area">
+                                        <div class="alert alert-danger text-center">
+                                            <strong>DIRIGIDO A: </strong>
+                                        </div>
+                                        <div>
+                                            <select name="id_persona" style="width: 100%" id="s2" class="js-states form-control" required>
+                                                <option selected disable hidden ></option>
+                                                <th:block th:each="p : ${personas}" th:if="${p.estado != 'X'}">
+                                                    <option  th:value="${p.id_persona}" th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}"></option>
+                                                    <!-- <th:block th:if="${solucionEquipo.tipoEquipo != null}">
+                                                    <option th:if="${solucionEquipo.tipoEquipo.id_tipoequipo != te.id_tipoequipo}" th:value="${te.id_tipoequipo}" th:text="${te.equipo}"></option>
+                                                    <option th:if="${solucionEquipo.tipoEquipo.id_tipoequipo == te.id_tipoequipo}" th:value="${te.id_tipoequipo}" th:text="${te.equipo}" selected></option>
+                                                    </th:block>
+                                                    <th:block th:if="${solucionEquipo.tipoEquipo == null}">
+                                                        <option th:value="${te.id_tipoequipo}" th:text="${te.equipo}"></option>
+                                                    </th:block> -->
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                        <h2 class="card-inside-title">CITE : </h2>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <textarea type="text" rows="2"  th:field="${baja.cite}" class="form-control no-resize" placeholder="Descripcion..."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h2 class="card-inside-title">RECOMENDACIÓN : </h2>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <textarea type="text" rows="2"  th:field="${baja.recomendacion_baja}" class="form-control no-resize" placeholder="Descripcion..."></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="alert alert-danger text-center">
+                                            <strong>SELECCIONE ACTIVOS: </strong>
+                                        </div>
+                                        <div>
+                                            <!-- <select id="optgroup" class="ms" multiple="multiple">
+                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
+                                                    <optgroup th:label="${a.tipoEquipo.equipo}">
+                                                        <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
+                                                    </optgroup>
+                                                </th:block>
+                                            </select> -->
+                                            
+                                            <select multiple name="event_type[]" class="form-control" id="selectEvents">
+                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
+                                                    <optgroup th:label="${a.tipoEquipo.equipo}">
+                                                        <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
+                                                    </optgroup>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div> 
+                                
+                                
+       
+                                <br><button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
+                                    
+                            </form>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </section>
+    
+    <!-- Jquery Core Js -->
+    <script src="../../../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../../../../plugins/bootstrap/js/bootstrap.js"></script>
+        
+    <!-- Select Plugin Js -->
+    <script src="../../../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Bootstrap Colorpicker Js -->
+    <script src="../../../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+    <!-- Dropzone Plugin Js -->
+    <script src="../../../../plugins/dropzone/dropzone.js"></script>
+
+    <!-- Input Mask Plugin Js -->
+    <script src="../../../../plugins/jquery-inputmask/jquery.inputmask.bundle.js"></script>
+
+    <!-- Multi Select Plugin Js -->
+    <script src="../../../../plugins/multi-select/js/jquery.multi-select.js"></script>
+
+    <!-- Jquery Spinner Plugin Js -->
+    <script src="../../../../plugins/jquery-spinner/js/jquery.spinner.js"></script>
+
+    <!-- Bootstrap Tags Input Plugin Js -->
+    <script src="../../../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+    <!-- noUISlider Plugin Js -->
+    <script src="../../../../plugins/nouislider/nouislider.js"></script>
+
+    <!-- Bootstrap Notify Plugin Js -->
+    <script src="../../../../plugins/bootstrap-notify/bootstrap-notify.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../../../plugins/node-waves/waves.js"></script>
+
+    <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="../../../../plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+
+    <!-- Bootstrap Datepicker Plugin Js -->
+    <script src="../../../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+     <!-- Autosize Plugin Js -->
+     <script src="../../../../plugins/autosize/autosize.js"></script>
+
+     <!-- Moment Plugin Js -->
+     <script src="../../../../plugins/momentjs/moment.js"></script>
+
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="../../../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="../../../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../../../js/admin.js"></script>
+    <script src="../../../../js/pages/tables/jquery-datatable.js"></script>
+    <script src="../../../../js/pages/ui/modals.js"></script>
+    <script src="../../../../js/pages/forms/advanced-form-elements.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../../../../js/demo.js"></script>
+
+    <!-- Multi Select Plugin Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script>
+        $("#s2").select2({
+         placeholder: "Seleccione Persona...",
+         allowClear: true
+     });
+    $("#selectEvents").select2({
+    placeholder: "Seleccione los Activos",
+    tags: true
+    });
+
+     </script>
+ 
+</body>
+
+</html>
