@@ -72,10 +72,10 @@
                                                 <td th:if="${fe.tipoEquipo != null}" th:text="${fe.tipoEquipo.equipo}"></td>
                                                 <td th:if="${fe.tipoEquipo == null}"></td>
                                                 <td >
-                                                    <a th:href="${'../../../../hardware-servicio/eliminar-falla/'+ fe.id_fallaEquipoBaja}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                                    <a th:href="${'../../../../hardware-servicio/eliminar-falla-baja/'+ fe.id_fallaEquipoBaja}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Eliminar">
                                                         <i class="material-icons">delete</i>
                                                     </a>
-                                                    <a th:href="${'../../../../hardware-servicio/editar-falla/'+ fe.id_fallaEquipoBaja}"  type="button" class="btn bg-light-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Editar">
+                                                    <a th:href="${'../../../../hardware-servicio/editar-falla-baja/'+ fe.id_fallaEquipoBaja}"  type="button" class="btn bg-light-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Editar">
                                                         <i class="material-icons">create</i>
                                                     </a>
                                                 </td>

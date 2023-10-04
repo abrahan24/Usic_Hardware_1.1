@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.hardware.SystemUsic.models.entity.Baja;
 import com.hardware.SystemUsic.models.entity.FallaEquipoBaja;
 import com.hardware.SystemUsic.models.entity.FallasBaja;
 import com.hardware.SystemUsic.models.service.IFallaBajaService;
@@ -64,8 +64,13 @@ public class FallaBajaController {
             fallaEquipoBaja.setTipoEquipo(tipoEquipoService.findOne(id_tipoequipo));
             fallaEquipoBajaService.save(fallaEquipoBaja);
             
-            flash.addAttribute("validado", "Se ah Agregado Una Nueva Falla Para Baja Con Exito!");
-            return "redirect:/hardware-servicio/add_fallas_baja";
+            if (fallasBaja.getId_fallaBaja() == null && fallaEquipoBaja.getId_fallaEquipoBaja() == null) {
+                flash.addAttribute("validado", "Se ah Agregado Una Nueva Falla Para Baja Con Exito!");
+            }else{
+                flash.addAttribute("validado", "Se ah Editado la Falla Para Baja Con Exito!");
+            }
+            
+            return "redirect:/hardware-servicio/lista-fallas-bajas";
 		} else {
 			return "redirect:/hardware/login";
 		}
@@ -82,6 +87,41 @@ public class FallaBajaController {
             
             model.addAttribute("fallaEquipoBajas", fallaEquipoBajaService.findAll());
             return "lista_Fallas_Bajas";
+		} else {
+			return "redirect:/hardware/login";
+		}
+    }
+
+    @RequestMapping("/editar-falla-baja/{id_fallaEquipoBaja}")
+    public String editar_Fallas_Baja(Model model,@PathVariable("id_fallaEquipoBaja")Long id_fallaEquipoBaja,RedirectAttributes flash, HttpServletRequest request){
+
+        if (request.getSession().getAttribute("persona") != null) {
+            
+            FallaEquipoBaja fallaEquipoBaja = fallaEquipoBajaService.findOne(id_fallaEquipoBaja);
+          
+            model.addAttribute("falla_baja", fallaEquipoBaja.getFallaBaja());
+            model.addAttribute("tipoequipos", tipoEquipoService.findAll());
+            model.addAttribute("falla_equipo_baja", fallaEquipoBaja);
+
+            return "add_Fallas_Bajas";
+		} else {
+			return "redirect:/hardware/login";
+		}
+    }
+
+    @RequestMapping("/eliminar-falla-baja/{id_fallaEquipoBaja}")
+    public String eliminar_Fallas_Bajas(Model model,@PathVariable("id_fallaEquipoBaja")Long id_fallaEquipoBaja,RedirectAttributes flash, HttpServletRequest request){
+
+        if (request.getSession().getAttribute("persona") != null) {
+            
+            FallaEquipoBaja fallaEquipoBaja = fallaEquipoBajaService.findOne(id_fallaEquipoBaja);
+
+            fallaEquipoBaja.setEstado_fallaEquipoBaja("X");
+            fallaEquipoBajaService.save(fallaEquipoBaja);
+
+            flash.addAttribute("validado", "Se ah Eliminado Una Falla para Baja Con Exito!!");
+
+            return "redirect:/hardware-servicio/lista-fallas-bajas";
 		} else {
 			return "redirect:/hardware/login";
 		}
