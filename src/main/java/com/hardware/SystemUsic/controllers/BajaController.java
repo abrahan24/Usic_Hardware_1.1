@@ -47,5 +47,6 @@ public class BajaController {
 			return "redirect:/hardware/login";
 		}
     }
+
     
 }
