@@ -30,13 +30,14 @@
     </div>
 
     <div th:fragment="content2">
-      <h2>Tabla de Activos Seleccionados</h2>
+      <h3>Tabla de Activos Seleccionados</h3>
       <div class="body table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>COD ACTIVO</th>
                     <th>DESCRIPCION</th>
+                    <th>TIPO DE EQUIPO</th>
                     <th>SELECCIONE FALLAS</th>
                 </tr>
             </thead>
@@ -45,6 +46,21 @@
 
                     <td th:text="${a.cod_equipo}">Mark</td>
                     <td th:text="${a.descripcion}">Otto</td>
+                    <td >
+                      <a
+                        type="button"
+                        class="btn bg-red btn-block btn-lg waves-effect"
+                        disable
+                      >
+                        <i
+                          class="material-icons"
+                          style="font-size: 20px !important"
+                          th:text="${a.tipoEquipo.icono}"
+                        ></i
+                        ><br />
+                        <span th:text="${a.tipoEquipo.equipo}"></span>
+                      </a>
+                    </td>
                     <td >
                       <div class="demo-checkbox">
                         <th:block th:each="fe : ${a.tipoEquipo.fallaEquipoBajas}" th:if="${fe.estado_fallaEquipoBaja != 'X'}">
