@@ -56,10 +56,11 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="body">
-                            <form action="../../../../hardware-servicio/add_informe_baja" method="POST">
+                            <form action="../../../../hardware-servicio/add_informe_baja" id="formularioInformeBaja" method="POST">
                                 
                                 <div class="body">
                                     <div class="form-group demo-tagsinput-area">
+                                        <input type="hidden" th:field="${baja.id_baja}">
                                         <div class="alert alert-danger text-center">
                                             <strong>DIRIGIDO A: </strong>
                                         </div>
@@ -77,7 +78,7 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <textarea type="text" rows="2"  th:field="${baja.cite}" class="form-control no-resize" placeholder="Descripcion..."></textarea>
+                                                        <textarea type="text" rows="2"  th:field="${baja.cite}" class="form-control no-resize" placeholder="Descripcion..." required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -87,7 +88,7 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <textarea type="text" rows="2"  th:field="${baja.ref_baja}" class="form-control no-resize" placeholder="Descripcion..."></textarea>
+                                                        <textarea type="text" rows="1"  th:field="${baja.ref_baja}" class="form-control no-resize" placeholder="Descripcion..." required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,7 +98,7 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <textarea type="text" rows="2"  th:field="${baja.recomendacion_baja}" class="form-control no-resize" placeholder="Descripcion..."></textarea>
+                                                        <textarea type="text" rows="2"  th:field="${baja.recomendacion_baja}" class="form-control no-resize" placeholder="Descripcion..." required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -106,15 +107,8 @@
                                             <strong>SELECCIONE ACTIVOS: </strong>
                                         </div>
                                         <div>
-                                            <!-- <select id="optgroup" class="ms" multiple="multiple">
-                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
-                                                    <optgroup th:label="${a.tipoEquipo.equipo}">
-                                                        <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
-                                                    </optgroup>
-                                                </th:block>
-                                            </select> -->
                                             
-                                            <select multiple name="event_type[]" class="form-control" id="selectEvents" onchange="buscar_Activos()">
+                                            <select multiple name="id_almacen" class="form-control" id="id_almacen" onchange="buscar_Activos()" required>
                                                 <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
                                                     <optgroup th:label="${a.tipoEquipo.equipo}">
                                                         <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
@@ -145,7 +139,7 @@
     <script>
         function buscar_Activos() {
             // Obtener los valores seleccionados
-            var selectedValues = $('#selectEvents').val();
+            var selectedValues = $('#id_almacen').val();
 
             // Crear una URL con los valores seleccionados como parámetros de consulta
             var url = "../../../../hardware-servicio/activos?selectedValues=" + selectedValues.join(',');
@@ -159,6 +153,9 @@
             }
         }
     </script>
+
+  
+
     
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
@@ -241,10 +238,10 @@
          placeholder: "Seleccione Persona...",
          allowClear: true
      });
-    $("#selectEvents").select2({
-    placeholder: "Seleccione los Activos",
-    tags: true
-    });
+        $("#id_almacen").select2({
+        placeholder: "Seleccione los Activos",
+        tags: true
+        });
 
      </script>
  
