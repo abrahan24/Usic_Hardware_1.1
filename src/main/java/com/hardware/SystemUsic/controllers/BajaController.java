@@ -81,80 +81,46 @@ public class BajaController {
     }
 
 
-    // @RequestMapping(value = "/add_informe_baja",method = RequestMethod.POST)
-    // public String Form_Informe_Baja(Model model,@Validated Baja baja,
-    // @RequestParam(name = "id_persona",required = false)Long id_persona,
-    // @RequestParam(name = "id_almacen",required = false)Long [] id_almacen,
-    // @RequestParam(name = "id_fallaBaja",required = false)Long [] id_fallaBaja,
-    // RedirectAttributes flash, HttpServletRequest request ){
+    @RequestMapping(value = "/add_informe_baja",method = RequestMethod.POST)
+    public String Form_Informe_Baja(Model model,@Validated Baja baja,
+    @RequestParam(name = "id_persona",required = false)Long id_persona,
+    @RequestParam(name = "id_almacen",required = false)Long [] id_almacen,
+    @RequestParam(name = "id_fallaBaja",required = false)Long [] id_fallaBaja,
+    RedirectAttributes flash, HttpServletRequest request ){
 
-    //     if (request.getSession().getAttribute("persona") != null) {
+        if (request.getSession().getAttribute("persona") != null) {
             
-    //         baja.setEstado_baja("A");
-    //         baja.setPersona(personaService.findOne(id_persona));
-    //         baja.setFecha_baja(new Date());
-    //         baja.setObservacion_baja("ads");
-    //         bajaService.save(baja);
+            baja.setEstado_baja("A");
+            baja.setPersona(personaService.findOne(id_persona));
+            baja.setFecha_baja(new Date());
+            baja.setObservacion_baja("ads");
 
-    //         if (id_almacen != null) {
-    //             for (int i = 0; i < id_almacen.length; i++) {
+            if (id_almacen != null) {
+                for (int i = 0; i < id_almacen.length; i++) {
                 
-    //             if (id_fallaBaja != null) {
-    //                     for (int j = 0; j < id_fallaBaja.length; j++) {
-    //                         DetalleBaja detalleBaja = new DetalleBaja();
-    //                         detalleBaja.setAlmacen(almacenService.findOne(id_almacen[i]));
-    //                         detalleBaja.setBaja(bajaService.findOne(baja.getId_baja()));
-    //                         detalleBaja.setEstado_detalleBaja("A");
-    //                         detalleBaja.setFallaBaja(fallaBajaService.findOne(id_fallaBaja[i]));
-    //                         System.out.println(id_fallaBaja[j]);
-    //                         detalleBajaService.save(detalleBaja);
-    //                 }
-    //             }
-    //         }
-    //         }
+                if (id_fallaBaja != null) {
+                        for (int j = 0; j < id_fallaBaja.length; j++) {
+                            DetalleBaja detalleBaja = new DetalleBaja();
+                            detalleBaja.setAlmacen(almacenService.findOne(id_almacen[i]));
+                            // detalleBaja.setBaja(bajaService.findOne(baja.getId_baja()));
+                            detalleBaja.setEstado_detalleBaja("A");
+                            detalleBaja.setFallaBaja(fallaBajaService.findOne(id_fallaBaja[i]));
+                            System.out.println(id_fallaBaja[j]);
+                            detalleBajaService.save(detalleBaja);
+                    }
+                }
+            }
+            }
             
             
-    //         return "redirect:/hardware-servicio/informe_baja";
-	// 	} else {
-	// 		return "redirect:/hardware/login";
-	// 	} 
-    // }
+            return "redirect:/hardware-servicio/informe_baja";
+		} else {
+			return "redirect:/hardware/login";
+		} 
+    }
 
    
-    // @RequestMapping(value = "/add_informe_baja", method = RequestMethod.POST)
-    // public String Form_Informe_Baja(
-    //         Model model,
-    //         @Validated Baja baja,
-    //         @RequestParam(name = "id_persona", required = false) Long id_persona,
-    //         @RequestParam(name = "id_almacen", required = false) Long[] id_almacen,
-    //         @RequestParam(name = "id_fallaBaja", required = false) Long [] id_fallaBaja,
-    //         RedirectAttributes flash,
-    //         HttpServletRequest request
-    // ) {
-    //     if (request.getSession().getAttribute("persona") != null) {
-    //         baja.setEstado_baja("A");
-    //         baja.setPersona(personaService.findOne(id_persona));
-    //         baja.setFecha_baja(new Date());
-    //         baja.setObservacion_baja("ads");
-    //         bajaService.save(baja);
-
-    //         if (id_almacen != null ) {
-    //             for (int i = 0; i < id_almacen.length; i++) {
-    //             DetalleBaja detalleBaja = new DetalleBaja();
-    //             detalleBaja.setAlmacen(almacenService.findOne(id_almacen[i]));
-    //             detalleBaja.setBaja(bajaService.findOne(baja.getId_baja()));
-    //             detalleBaja.setEstado_detalleBaja("A");
-    //             detalleBaja.setFallaBaja(null);
-    //             detalleBajaService.save(detalleBaja);
-    //             }
-    //         }
-            
-
-    //         return "redirect:/hardware-servicio/informe_baja";
-    //     } else {
-    //         return "redirect:/hardware/login";
-    //     }
-    // }
+    
 
     
 }
