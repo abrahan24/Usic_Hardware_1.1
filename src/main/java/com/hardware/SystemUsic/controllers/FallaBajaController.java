@@ -1,5 +1,7 @@
 package com.hardware.SystemUsic.controllers;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,7 @@ public class FallaBajaController {
         if (request.getSession().getAttribute("persona") != null) {
             
             fallasBaja.setEstado_fallaBaja("A");
+            fallasBaja.setFecha_registroFallaBaja(new Date());
             fallaBajaService.save(fallasBaja);
 
             fallaEquipoBaja.setFallaBaja(fallaBajaService.findOne(fallasBaja.getId_fallaBaja()));

@@ -1,80 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head> </head>
 
-  <body>
-    <div th:fragment="content1">
-      <label>TIPO EQUIPO</label>
+<head> </head>
+
+<body>
+  <div th:fragment="content1">
+    <label>TIPO EQUIPO</label>
+    <div class="form-line">
+      <a type="button" class="btn bg-red btn-block btn-lg waves-effect" disable>
+        <i class="material-icons" style="font-size: 50px !important" th:text="${almacen.tipoEquipo.icono}"></i><br />
+        <span th:text="${almacen.tipoEquipo.equipo}"></span>
+      </a>
+    </div>
+    <br />
+    <label>DESCRIPCIÓN DEL EQUIPO</label>
+    <div class="form-group">
       <div class="form-line">
-        <a
-          type="button"
-          class="btn bg-red btn-block btn-lg waves-effect"
-          disable
-        >
-          <i
-            class="material-icons"
-            style="font-size: 50px !important"
-            th:text="${almacen.tipoEquipo.icono}"
-          ></i
-          ><br />
-          <span th:text="${almacen.tipoEquipo.equipo}"></span>
-        </a>
-      </div>
-      <br />
-      <label>DESCRIPCIÓN DEL EQUIPO</label>
-      <div class="form-group">
-        <div class="form-line">
-          <textarea th:field="${almacen.descripcion}"  type="text"  rows="3" class="form-control no-resize" disabled></textarea>
-        </div>
+        <textarea th:field="${almacen.descripcion}" type="text" rows="3" class="form-control no-resize"
+          disabled></textarea>
       </div>
     </div>
+  </div>
 
-    <div th:fragment="content2">
-      <h3>Tabla de Activos Seleccionados</h3>
-      <div class="body table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>TIPO DE EQUIPO</th>
-                    <th>COD ACTIVO</th>
-                    <th>DESCRIPCION</th>
-                    <th>SELECCIONE FALLAS</th>
-                    <th>SELECCIONE</th>
-                  </tr>
-            </thead>
-            <tbody>
-                <tr th:each="a : ${activos_selec}" th:if="${a.estado != 'X'}">
+  <div th:fragment="content2">
+    <h3>Tabla de Activos Seleccionados</h3>
+    <div class="body table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>TIPO DE EQUIPO</th>
+            <th>COD ACTIVO</th>
+            <th>DESCRIPCION</th>
+            <th>SELECCIONE FALLAS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="a : ${activos_selec}" th:if="${a.estado != 'X'}">
 
-                  <td >
-                    <a
-                      type="button"
-                      class="btn bg-red btn-block btn-lg waves-effect"
-                      disable
-                    >
-                      <i
-                        class="material-icons"
-                        style="font-size: 20px !important"
-                        th:text="${a.tipoEquipo.icono}"
-                      ></i
-                      ><br />
-                      <span th:text="${a.tipoEquipo.equipo}"></span>
-                    </a>
-                  </td>
-                    <td th:text="${a.cod_equipo}">Mark</td>
-                    <td th:text="${a.descripcion}">Otto</td>
-                    <td >
-                      <div class="demo-checkbox">
-                        <th:block th:each="fe : ${a.tipoEquipo.fallaEquipoBajas}" th:if="${fe.estado_fallaEquipoBaja != 'X'}">
-                            <input name="id_fallaBaja" th:value="${fe.fallaBaja.id_fallaBaja}" type="checkbox" th:id="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}" class="filled-in chk-col-red" />
-                            <label th:text="${fe.fallaBaja.nom_fallaBaja}" th:for="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}">RED</label>
-                        </th:block>
-                    </div>
-                    </td>
-                </tr>
-              
-            </tbody>
-        </table>
+            <td>
+              <a type="button" class="btn bg-red btn-block btn-lg waves-effect" disable>
+                <i class="material-icons" style="font-size: 20px !important" th:text="${a.tipoEquipo.icono}"></i><br />
+                <span th:text="${a.tipoEquipo.equipo}"></span>
+              </a>
+            </td>
+            <td th:text="${a.cod_equipo}">Mark</td>
+            <td th:text="${a.descripcion}">Otto</td>
+            <td>
+              <div class="demo-checkbox">
+                <th:block th:each="fe : ${a.tipoEquipo.fallaEquipoBajas}" th:if="${fe.estado_fallaEquipoBaja != 'X'}">
+                  <input th:name="${'id_fallaBaja_'+a.id_almacen}" th:value="${fe.fallaBaja.id_fallaBaja}" type="checkbox" th:id="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}" class="filled-in chk-col-red" />
+                  <label th:text="${fe.fallaBaja.nom_fallaBaja}"
+                    th:for="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}">RED</label>
+                </th:block>
+              </div>
+            </td>
+            
+          </tr>
+
+        </tbody>
+      </table>
     </div>
-    </div>
-  </body>
+  </div>
+</body>
+
 </html>

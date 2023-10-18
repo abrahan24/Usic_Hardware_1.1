@@ -1,6 +1,7 @@
 package com.hardware.SystemUsic.models.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,10 +28,12 @@ public class FallasBaja implements Serializable{
     private Long id_fallaBaja;
     private String estado_fallaBaja;
     private String nom_fallaBaja;
+    private Date fecha_registroFallaBaja;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fallaBaja", fetch = FetchType.LAZY)
 	private List<FallaEquipoBaja> fallaEquipoBajas;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fallaBaja", fetch = FetchType.LAZY)
-	private List<DetalleBaja> detalleBajas;
+	private List<DetalleAlmacenFallaBaja> detalleAlmacenFallaBajas;
+
 }

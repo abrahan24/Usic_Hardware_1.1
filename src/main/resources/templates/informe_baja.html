@@ -108,7 +108,7 @@
                                         </div>
                                         <div>
                                             
-                                            <select multiple name="id_almacen" class="form-control" id="id_almacen" onchange="buscar_Activos()" required>
+                                            <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()" required>
                                                 <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
                                                     <optgroup th:label="${a.tipoEquipo.equipo}">
                                                         <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
@@ -139,7 +139,7 @@
     <script>
         function buscar_Activos() {
             // Obtener los valores seleccionados
-            var selectedValues = $('#id_almacen').val();
+            var selectedValues = $('#id_Almacen').val();
 
             // Crear una URL con los valores seleccionados como parámetros de consulta
             var url = "../../../../hardware-servicio/activos?selectedValues=" + selectedValues.join(',');
@@ -238,7 +238,7 @@
          placeholder: "Seleccione Persona...",
          allowClear: true
      });
-        $("#id_almacen").select2({
+        $("#id_Almacen").select2({
         placeholder: "Seleccione los Activos",
         tags: true
         });

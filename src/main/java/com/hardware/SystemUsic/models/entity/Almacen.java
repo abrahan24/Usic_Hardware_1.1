@@ -19,8 +19,13 @@ import javax.xml.crypto.Data;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "almacen")
+@Setter
+@Getter
 public class Almacen implements Serializable{
     private static final long serialVersionUID = 2629195288020321924L;
     
