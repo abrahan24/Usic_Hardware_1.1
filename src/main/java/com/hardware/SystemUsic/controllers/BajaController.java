@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,12 +24,14 @@ import com.hardware.SystemUsic.models.entity.Baja;
 import com.hardware.SystemUsic.models.entity.DetalleAlmacenFallaBaja;
 import com.hardware.SystemUsic.models.entity.DetalleBaja;
 import com.hardware.SystemUsic.models.entity.FallasBaja;
+import com.hardware.SystemUsic.models.entity.Usuario;
 import com.hardware.SystemUsic.models.service.IAlmacenService;
 import com.hardware.SystemUsic.models.service.IBajaService;
 import com.hardware.SystemUsic.models.service.IDetalleAlmacenFallaBajaService;
 import com.hardware.SystemUsic.models.service.IDetalleBajaService;
 import com.hardware.SystemUsic.models.service.IFallaBajaService;
 import com.hardware.SystemUsic.models.service.IPersonaService;
+import com.hardware.SystemUsic.models.service.IUsuarioService;
 
 
 @Controller
@@ -53,6 +56,9 @@ public class BajaController {
     @Autowired
     private IDetalleAlmacenFallaBajaService detalleAlmacenFallaBajaService;
 
+    @Autowired
+    private IUsuarioService usuarioService;
+
 
     @RequestMapping(value = "/informe_baja",method = RequestMethod.GET)
     public String Informe_Baja(Model model, RedirectAttributes flash, HttpServletRequest request ){
@@ -64,6 +70,19 @@ public class BajaController {
             model.addAttribute("activos", almacenService.findAll());
             
             return "informe_baja";
+		} else {
+			return "redirect:/hardware/login";
+		}
+    }
+
+    @RequestMapping(value = "/lista_informes_bajas",method = RequestMethod.GET)
+    public String Lista_Informe_Baja(Model model, RedirectAttributes flash, HttpServletRequest request ){
+
+        if (request.getSession().getAttribute("persona") != null) {
+            
+            model.addAttribute("bajas", bajaService.findAll());
+            
+            return "INFORMES/Reporte_Informe_Baja";
 		} else {
 			return "redirect:/hardware/login";
 		}
@@ -136,6 +155,26 @@ public class BajaController {
         } else {
             return "redirect:/hardware/login";
         }
+    }
+
+    @RequestMapping("/ficha_tecnica_baja/{id_baja}")
+    public String Imprimir_Informe_Baja(Model model,@PathVariable("id_baja")Long id_baja,RedirectAttributes flash, HttpServletRequest request){
+
+        if (request.getSession().getAttribute("persona") != null) {
+            
+            Baja baja = bajaService.findOne(id_baja);
+
+            Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+            usuario = usuarioService.findOne(usuario.getId_usuario());
+
+            model.addAttribute("baja", bajaService.findOne(id_baja));
+            model.addAttribute("per_dirig", baja.getPersona().getNombre()+" "+baja.getPersona().getAp_paterno()+" "+baja.getPersona().getAp_materno()+"<br><b>"+baja.getPersona().getCargo().getCargo() );
+            model.addAttribute("user_tec", usuario.getPersona().getNombre()+" "+usuario.getPersona().getAp_paterno()+" "+usuario.getPersona().getAp_materno()+"<br><b>"+usuario.getPersona().getCargo().getCargo());
+            
+            return "INFORMES/ficha_baja";
+		} else {
+			return "redirect:/hardware/login";
+		}
     }
     
 

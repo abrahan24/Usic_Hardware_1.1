@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <!-- Favicon-->
+   <link rel="icon" href="../../../../favicon.ico" type="image/x-icon">
+
+   <!-- Google Fonts -->
+   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+   <!-- Bootstrap Core Css -->
+   
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> 
+<style type="text/css">
+    body {
+        font-size: 10px;
+        line-height: 1;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    h7 {
+        line-height: 0;
+    }
+
+    h6 {
+        margin-top: 10px;
+    }
+
+    #nota {
+        margin-top: 0px;
+    }
+
+    #tabla1 {
+        margin-bottom: 5px;
+        margin-top: 20px;
+    }
+
+    #tabla2 {
+        margin-bottom: 5px;
+    }
+
+    #tabla3 {
+        margin-bottom: 0px;
+    }
+
+    #tabla4 {
+        margin-top: 5px;
+        margin-bottom: 0px;
+    }
+
+    #tabla5 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    /* Establecer el tamaño de la hoja a carta (8.5x11 pulgadas) */
+    @page {
+        size: 8.5in 11in;
+        margin: 0.1in;
+        /* Márgenes de 0.5 pulgadas en cada lado */
+    }
+
+        header {
+        position: fixed;
+        top: 0.1in; /* Ajusta la posición vertical según tus necesidades */
+        left: 0.1in; /* Ajusta la posición horizontal según tus necesidades */
+        width: 100%;
+        text-align: center;
+    }
+
+    header img {
+        width: 800px;
+        height: 115px;
+    }
+
+    section {
+    position: absolute;
+    top: 100px; /* Ajusta la posición vertical según el tamaño de tu encabezado */
+    left: 0.1in; /* Ajusta la posición horizontal según tus necesidades */
+    width: 100%;
+    text-align: center;
+}
+
+    footer {
+    position: fixed;
+    bottom: 0.1in; /* Ajusta la posición vertical según tus necesidades */
+    left: 0.1in; /* Ajusta la posición horizontal según tus necesidades */
+    width: 100%;
+    text-align: center;
+}
+
+    footer img {
+        width: 800px;
+        height: 100px;
+    }
+</style>
+    <body>
+        <script>
+            
+                // Llama a la función comprobarAncho cuando se carga la página y cuando se cambia el tamaño de la ventana.
+                window.onload = function () {
+                    window.print();
+                };
+
+        </script>
+        <div class="container-fluid">
+            <header>
+                <img src="../../../../images/Encabezado.webp" alt="Header Image">
+            </header>
+            
+            <section>
+                <div >
+                    <table class="table table-bordered border-white" id="tabla1">
+                        <tbody>
+                            <tr>
+                                <th colspan="2">
+                                    <H6>INFORME</H6><br><span style="font-weight: bold; float: right; font-size: small;"><b
+                                            th:text="${'INF.D.H.S.-USIC-N°'+baja.id_baja+'/'+#dates.format(baja.fecha_baja, 'yyyy')}"></b></span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="row" width="10%">A: </th>
+                                <td class="text-md-start" th:utext="${per_dirig}"> </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" width="10%">VIA: </th>
+                                <td class="text-md-start">ING. LUIS ENRIQUE VILLCA MAMANI <br><b>JEFE a.i UNIDAD DE SISTEMAS DE INFORMACIÓN Y
+                                        COMUNICACIÓN</b> </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" width="10%">DE: </th>
+                                <td class="text-md-start" th:utext="${user_tec}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" width="10%" class="text-md-end">FECHA: </th>
+                                <td class="text-md-start" th:text="${#dates.format(baja.fecha_baja, 'dd MMMM yyyy')}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" width="5%"></th>
+                                <th scope="row" width="95%" class="text-md-start" th:text="${'REF.'+baja.ref_baja}"></th>
+                            </tr>
+                            <tr>
+                                <td colspan="2" scope="row" class="text-md-start"
+                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>    
+            </section>
+                     
+            <footer>
+                <img src="../../../../images/PiedePagina.webp" alt="Footer Image">
+            </footer>
+        </div>
+        
+                       
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+lfU1zK9z6v4iOmz5n5zce7gQipzRZ5z5w5j5Pzp5Qf5r5Pzp" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-Xe8dpq5lRs2s7x2J5w0nZt77jXnFqYeLs4z5j5z5z5g5B2p5kz5Sf5S5O5i5P5Z5z" crossorigin="anonymous"></script>
+       
+    </body>
+</html>
