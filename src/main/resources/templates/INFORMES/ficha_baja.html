@@ -121,7 +121,6 @@
             </header>
             
             <section>
-                <div >
                     <table class="table table-bordered border-white" id="tabla1">
                         <tbody>
                             <tr>
@@ -148,17 +147,40 @@
                                 <td class="text-md-start" th:text="${#dates.format(baja.fecha_baja, 'dd MMMM yyyy')}"></td>
                             </tr>
                             <tr>
-                                <th scope="row" width="5%"></th>
+                                <th scope="row" width="10%"></th>
                                 <th scope="row" width="95%" class="text-md-start" th:text="${'REF.'+baja.ref_baja}"></th>
                             </tr>
                             <tr>
-                                <td colspan="2" scope="row" class="text-md-start"
-                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                <td colspan="2" style="text-align: justify;" th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
                                 </td>
+                            </tr>
+                            <tr>
+                                <th class="text-start" colspan="2">
+                                    I. DESCRIPCIÓN DEL ESTADO DEL EQUIPO /S
+                                </th>
                             </tr>
                         </tbody>
                     </table>
-                </div>    
+                    <table class="table table-bordered border-dark" id="tabla2">
+                        <tbody>
+                            
+                            <tr>
+                                <th>N°</th>
+                                <th>CODIGO UAP</th>
+                                <th>CARACTERÍSTICAS DEL BIEN</th>
+                                <th>ESTADO DEL BIEN</th>
+                                <th>OBSERVACIONES</th>
+                            </tr>
+                            <tr>
+                                <td>N°</td>
+                                <td>CODIGO UAP</td>
+                                <td>CARACTERÍSTICAS DEL BIEN</td>
+                                <td>ESTADO DEL BIEN</td>
+                                <td>OBSERVACIONES</td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
             </section>
                      
             <footer>
