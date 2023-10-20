@@ -66,10 +66,9 @@
                                         </div>
                                         <div>
                                             <select name="id_persona" style="width: 100%" id="s2" class="js-states form-control" required>
-                                                <option selected disable hidden ></option>
+                                                <option selected disable hidden></option>
                                                 <th:block th:each="p : ${personas}" th:if="${p.estado != 'X'}">
-                                                    <option  th:value="${p.id_persona}" th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}"></option>
-                                                    
+                                                    <option th:value="${p.id_persona}" th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}"></option>
                                                 </th:block>
                                             </select>
                                         </div>
@@ -78,7 +77,9 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <textarea type="text" rows="2"  th:field="${baja.cite}" class="form-control no-resize" placeholder="Descripcion..." required></textarea>
+                                                        <textarea type="text" rows="1" th:field="${baja.cite}" class="form-control no-resize"
+                                                            placeholder="Descripcion..." style="text-transform:uppercase"
+                                                            required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,7 +89,9 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <textarea type="text" rows="1"  th:field="${baja.ref_baja}" class="form-control no-resize" placeholder="Descripcion..." required></textarea>
+                                                        <textarea type="text" rows="1" th:field="${baja.ref_baja}" class="form-control no-resize"
+                                                            placeholder="Descripcion..." style="text-transform:uppercase"
+                                                            required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -98,18 +101,29 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <textarea type="text" rows="2"  th:field="${baja.recomendacion_baja}" class="form-control no-resize" placeholder="Descripcion..." required></textarea>
+                                                        <textarea type="text" rows="2" th:field="${baja.recomendacion_baja}"
+                                                            class="form-control no-resize" style="text-transform:uppercase" placeholder="Descripcion..."
+                                                            required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <h2 class="card-inside-title">OBSERVACION : </h2>
+                                        <div class="demo-radio-button">
+                                            <input name="observacion_baja" type="radio" id="radio_7" class="radio-col-red"  value="PARA BAJA"/>
+                                            <label for="radio_7">PARA BAJA</label>
+                                            <input name="observacion_baja" type="radio" id="radio_8" class="radio-col-red"  value="PARA DEVOLUCIÓN"/>
+                                            <label for="radio_8">PARA DEVOLUCION</label>
+                                        </div>
+                                        <br>
                                         <div class="alert alert-danger text-center">
                                             <strong>SELECCIONE ACTIVOS: </strong>
                                         </div>
                                         <div>
-                                            
-                                            <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()" required>
-                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X'}">
+                                
+                                            <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()"
+                                                required>
+                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X' || a.estado != 'B'}">
                                                     <optgroup th:label="${a.tipoEquipo.equipo}">
                                                         <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
                                                     </optgroup>
@@ -117,11 +131,11 @@
                                             </select>
                                             <br>
                                             <div id="replace_div">
-                                    
+                                
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 
                                 
                                 <br><button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
@@ -153,7 +167,16 @@
         }
     </script>
 
-  
+        <script>
+        $(document).ready(function() {
+            // Captura el evento de cambio en los campos de entrada
+            $('textarea').on('change', function() {
+                // Convierte el valor a mayúsculas antes de enviarlo
+                var textoEnMayusculas = $(this).val().toUpperCase();
+                $(this).val(textoEnMayusculas);
+            });
+        });
+        </script>
 
     
     <!-- Jquery Core Js -->

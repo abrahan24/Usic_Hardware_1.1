@@ -107,7 +107,7 @@
                                     <div>
                                         <select name="id_almacen" style="width: 100%" id="s1" class="js-states form-control numero" onchange="buscar()" required>
                                             <option selected disable hidden ></option>
-                                            <th:block th:each="al : ${almacenes}">
+                                            <th:block th:each="al : ${almacenes}" th:if="${al.estado != 'X' || al.estado != 'B'}">
                                                 <option th:value="${al.id_almacen}" th:text="${al.cod_equipo}"></option>
                                             </th:block>
                                         </select>
@@ -133,7 +133,7 @@
                                     <div class="demo-checkbox">
                                         <th:block th:each="fe : ${tipoequipo.fallaEquipos}" th:if="${fe.estado != 'X'}">
                                             <input name="id_falla" th:value="${fe.falla.id_falla}" type="checkbox" th:id="${fe.falla.id_falla}" class="filled-in chk-col-red"  />
-                                            <label th:text="${fe.falla.falla}" th:for="${fe.falla.id_falla}">RED</label>
+                                            <label  th:text="${fe.falla.falla}" th:for="${fe.falla.id_falla}" style="text-transform:uppercase">RED</label>
                                         </th:block>
                                     </div>
                                     <span>

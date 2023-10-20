@@ -28,6 +28,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
+            <th>N°</th>
             <th>TIPO DE EQUIPO</th>
             <th>COD ACTIVO</th>
             <th>DESCRIPCION</th>
@@ -35,16 +36,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="a : ${activos_selec}" th:if="${a.estado != 'X'}">
+          <tr th:each="a, cont : ${activos_selec}" th:if="${a.estado != 'X'}">
 
+            <td th:text="${cont.count}"></td>
             <td>
               <a type="button" class="btn bg-red btn-block btn-lg waves-effect" disable>
                 <i class="material-icons" style="font-size: 20px !important" th:text="${a.tipoEquipo.icono}"></i><br />
                 <span th:text="${a.tipoEquipo.equipo}"></span>
               </a>
             </td>
-            <td th:text="${a.cod_equipo}">Mark</td>
-            <td th:text="${a.descripcion}">Otto</td>
+            <td th:text="${a.cod_equipo}"></td>
+            <td th:text="${a.descripcion}"></td>
             <td>
               <div class="demo-checkbox">
                 <th:block th:each="fe : ${a.tipoEquipo.fallaEquipoBajas}" th:if="${fe.estado_fallaEquipoBaja != 'X'}">

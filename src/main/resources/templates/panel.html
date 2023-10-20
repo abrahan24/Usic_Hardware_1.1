@@ -61,6 +61,7 @@
                                         <thead>
                                             <tr>
                                                 <th width="1%">Est</th>
+                                                <th width="1%">Codigo Servicio</th>
                                                 <th width="10%">Nombre Solicitante</th>
                                                 <th width="10%">Unidad Funcional</th>
                                                 <th width="5%">Codigo De Equipo</th>
@@ -74,7 +75,8 @@
                                         </thead>
                                         
                                         <tbody>
-                                            <tr th:each="ser : ${pr.procedencia.servicios}" th:if="${ser.estado != null}">
+                                            <tr th:each="ser, num : ${pr.procedencia.servicios}" th:if="${ser.estado != null}">
+                                                
                                                 <td>
                                                     <!-- <a th:if="${ser.estado == 'P'}" th:href="${'../../../../hardware-servicio/aceptar_servicio/' + ser.id_servicio}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="En Espera">
                                                         <i class="material-icons">report_problem</i>
@@ -89,6 +91,7 @@
                                                         <i class="material-icons">done</i>
                                                     </a>
                                                 </td>
+                                                <td th:text="${'N°'+ser.id_servicio}"></td>
                                                 <td th:text="${ser.persona.nombre + ' ' + ser.persona.ap_paterno + ' ' + ser.persona.ap_materno}"></td>
                                                 <td th:text="${ser.persona.unidad.unidad}"> </td>
                                                 <td th:text="${ser.almacen.cod_equipo}"></td>
@@ -161,6 +164,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th>Est</th>
+                                                <th>Codigo Servicio</th>
                                                 <th>Nombre Solicitante</th>
                                                 <th>Unidad Funcional</th>
                                                 <th>Codigo De Equipo</th>

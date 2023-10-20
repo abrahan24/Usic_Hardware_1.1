@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.hardware.SystemUsic.models.entity.Almacen;
 import com.hardware.SystemUsic.models.entity.Baja;
 import com.hardware.SystemUsic.models.entity.DetalleAlmacenFallaBaja;
 import com.hardware.SystemUsic.models.entity.DetalleBaja;
@@ -120,7 +121,6 @@ public class BajaController {
             baja.setEstado_baja("A");
             baja.setPersona(personaService.findOne(id_persona));
             baja.setFecha_baja(new Date());
-            baja.setObservacion_baja("ads");
             bajaService.save(baja);
 
             if (id_almacen != null) {
@@ -132,7 +132,10 @@ public class BajaController {
                             .toArray(Long[]::new);
 
                     DetalleBaja detalleBaja = new DetalleBaja();
-                    detalleBaja.setAlmacen(almacenService.findOne(id));
+                    Almacen almacen = almacenService.findOne(id);
+                    almacen.setEstado("B"); // Cambia el estado del activo a B Estado de Baja
+                    almacenService.save(almacen);
+                    detalleBaja.setAlmacen(almacen);
                     detalleBaja.setEstado_detalleBaja("A");
                     detalleBaja.setBaja(baja);
                     detalleBaja.setFecha_registro(new Date());

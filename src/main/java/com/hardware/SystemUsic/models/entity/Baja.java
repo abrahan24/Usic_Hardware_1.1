@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.Length;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +34,7 @@ public class Baja implements Serializable{
     private String estado_baja;
     private Date fecha_baja;
     private String ref_baja;
+    @Length(min = 1,max = 10000)
     private String recomendacion_baja;
     private String cite;
     private String observacion_baja;
