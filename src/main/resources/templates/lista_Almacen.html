@@ -58,6 +58,7 @@
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
                                             <tr>
+                                                <th>N°</th>
                                                 <th>Cod Equipo</th>
                                                 <th>Descripción</th>
                                                 <th>Fecha Adquisición</th>
@@ -67,7 +68,8 @@
                                         </thead>
                                         
                                         <tbody>
-                                            <tr th:each="a : ${almacenes}" th:if="${a.estado != 'X'}">
+                                            <tr th:each="a, num : ${almacenes}" th:if="${a.estado != 'X' && a.estado != 'B'}">
+                                                <td th:text="${num.count}"></td>
                                                 <td th:text="${a.cod_equipo}"></td>
                                                 <td th:text="${a.descripcion}"></td>
                                                 <td th:text="${#dates.format(a.fecha_adquisicion , 'dd/MM/yyyy')}"></td>
@@ -86,6 +88,7 @@
 
                                         <tfoot>
                                             <tr>
+                                                <th>N°</th>
                                                 <th>Cod Equipo</th>
                                                 <th>Descripción</th>
                                                 <th>Fecha Adquisición</th>

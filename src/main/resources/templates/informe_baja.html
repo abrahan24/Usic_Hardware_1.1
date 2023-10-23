@@ -123,7 +123,7 @@
                                 
                                             <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()"
                                                 required>
-                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X' || a.estado != 'B'}">
+                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X' && a.estado != 'B'}">
                                                     <optgroup th:label="${a.tipoEquipo.equipo}">
                                                         <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
                                                     </optgroup>

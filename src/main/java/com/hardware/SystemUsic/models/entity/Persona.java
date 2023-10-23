@@ -33,6 +33,10 @@ public class Persona implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cargo")
     private Cargo cargo;
+//Tabla Cargo
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_gradoAcademico")
+    private GradoAcademico gradoAcademico;
 //Tabla Unidad
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_unidad")

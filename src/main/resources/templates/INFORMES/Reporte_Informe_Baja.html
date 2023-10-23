@@ -59,6 +59,7 @@
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th>N°</th>
                                             <th>Numero de Informe</th>
                                             <th>Dirigido a</th>-
                                             <th>Referencia</th>
@@ -69,7 +70,10 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr th:each="b : ${bajas}" th:if="${b.estado_baja != 'X'}">
+                                        <tr th:each="b, num : ${bajas}" th:if="${b.estado_baja != 'X'}">
+                                            <td
+                                                th:text="${num.count}">
+                                            </td>
                                             <td
                                                 th:text="${'INF.DHS.-USIC-N°'+b.id_baja+'/'+#dates.format(b.fecha_baja, 'yyyy')}">
                                             </td>
@@ -106,6 +110,7 @@
 
                                     <tfoot>
                                         <tr>
+                                            <th>N°</th>
                                             <th>Numero de Informe</th>
                                             <th>Dirigido a</th>-
                                             <th>Referencia</th>
