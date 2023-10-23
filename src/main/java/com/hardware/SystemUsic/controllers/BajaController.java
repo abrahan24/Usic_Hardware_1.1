@@ -69,7 +69,7 @@ public class BajaController {
             model.addAttribute("baja", new Baja());
             model.addAttribute("personas", personaService.findAll());
             model.addAttribute("activos", almacenService.findAll());
-            
+
             return "informe_baja";
 		} else {
 			return "redirect:/hardware/login";
@@ -77,10 +77,14 @@ public class BajaController {
     }
 
     @RequestMapping(value = "/lista_informes_bajas",method = RequestMethod.GET)
-    public String Lista_Informe_Baja(Model model, RedirectAttributes flash, HttpServletRequest request ){
+    public String Lista_Informe_Baja(Model model,@RequestParam(name = "validado",required = false)String validado, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             
+            if (validado != null ) {
+                model.addAttribute("validado", validado);
+            }
+
             model.addAttribute("bajas", bajaService.findAll());
             
             return "INFORMES/Reporte_Informe_Baja";
@@ -154,7 +158,9 @@ public class BajaController {
                 }
             }
 
-            return "redirect:/hardware-servicio/informe_baja";
+            flash.addAttribute("validado", "Se ha Realizado el Informe Con Éxito!");
+            
+            return "redirect:/hardware-servicio/lista_informes_bajas";
         } else {
             return "redirect:/hardware/login";
         }
@@ -180,6 +186,59 @@ public class BajaController {
 		}
     }
     
+    @RequestMapping("/eliminar_ficha_tecnica_baja/{id_baja}")
+    public String Eliminar_Informe_Baja(Model model,@PathVariable("id_baja")long id_baja,RedirectAttributes flash, HttpServletRequest request){
 
+         if (request.getSession().getAttribute("persona") != null) {
+            
+            Baja baja = bajaService.findOne(id_baja);
+
+            baja.setEstado_baja("X");
+
+            bajaService.save(baja);
+
+            flash.addAttribute("validado", "Se ah Eliminado el Informe N°"+baja.getId_baja()+" Con Exito!");
+            
+            return "redirect:/hardware-servicio/lista_informes_bajas";
+		} else {
+			return "redirect:/hardware/login";
+		}
+    }
+
+    @RequestMapping("/editar_ficha_tecnica_baja/{id_baja}")
+    public String Editar_Informe_Baja(Model model,@PathVariable("id_baja")long id_baja,RedirectAttributes flash, HttpServletRequest request){
+
+         if (request.getSession().getAttribute("persona") != null) {
+            
+            Baja baja = bajaService.findOne(id_baja);
+
+            for (DetalleBaja detalleBaja : baja.getDetalleBajas()) {
+                
+                Almacen almacen = almacenService.findOne(detalleBaja.getAlmacen().getId_almacen());
+                almacen.setEstado("A");
+                almacenService.save(almacen);
+            }
+
+            model.addAttribute("baja", baja);
+            model.addAttribute("personas", personaService.findAll());
+            model.addAttribute("activos", almacenService.findAll());
+            
+            return "informe_baja";
+		} else {
+			return "redirect:/hardware/login";
+		}
+    }
+
+    private void realizarEdicionDeInforme(Baja baja) {
+        baja.getDetalleBajas().forEach(detalleBaja -> {
+            detalleBaja.setEstado_detalleBaja("X");
+            detalleBajaService.save(detalleBaja);
+    
+            detalleBaja.getDetalleAlmacenFallaBajas().forEach(detalleAlmacenFallaBaja -> {
+                detalleAlmacenFallaBaja.setEstado_detalleAlmacenFallaBaja("X");
+                detalleAlmacenFallaBajaService.save(detalleAlmacenFallaBaja);
+            });
+        });
+    }
 }
 

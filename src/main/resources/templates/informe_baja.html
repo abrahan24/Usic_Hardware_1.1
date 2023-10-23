@@ -68,7 +68,23 @@
                                             <select name="id_persona" style="width: 100%" id="s2" class="js-states form-control" required>
                                                 <option selected disable hidden></option>
                                                 <th:block th:each="p : ${personas}" th:if="${p.estado != 'X'}">
-                                                    <option th:value="${p.id_persona}" th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}"></option>
+                                            
+                                                    <th:block th:if="${baja.persona == null}">
+
+                                                        <option th:value="${p.id_persona}" th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}"></option>
+                                                       
+                                                    </th:block>
+                                            
+                                                    <th:block th:if="${baja.persona != null}">
+
+                                                        <option th:if="${baja.persona.id_persona != p.id_persona}" th:value="${p.id_persona}"
+                                                            th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}" >
+                                                        </option>
+                                                        <option th:if="${baja.persona.id_persona == p.id_persona}" th:value="${p.id_persona}"
+                                                            th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}" selected>
+                                                        </option>
+
+                                                    </th:block>
                                                 </th:block>
                                             </select>
                                         </div>
@@ -110,23 +126,78 @@
                                         </div>
                                         <h2 class="card-inside-title">OBSERVACION : </h2>
                                         <div class="demo-radio-button">
-                                            <input name="observacion_baja" type="radio" id="radio_7" class="radio-col-red"  value="PARA BAJA"/>
-                                            <label for="radio_7">PARA BAJA</label>
-                                            <input name="observacion_baja" type="radio" id="radio_8" class="radio-col-red"  value="PARA DEVOLUCIÓN"/>
-                                            <label for="radio_8">PARA DEVOLUCION</label>
+                                            <th:block th:if="${baja.observacion_baja == null}">
+                                                <input name="observacion_baja" type="radio" id="radio_7" class="radio-col-red" value="PARA BAJA" />
+                                                <label for="radio_7">PARA BAJA</label>
+                                                <input name="observacion_baja" type="radio" id="radio_8" class="radio-col-red" value="PARA DEVOLUCIÓN" />
+                                                <label for="radio_8">PARA DEVOLUCIÓN</label>
+                                            </th:block>
+                                            <th:block th:if="${baja.observacion_baja != null}">
+                                                <input type="radio" name="observacion_baja" id="radio_7" class="radio-col-red" th:value="'PARA BAJA'"
+                                                    th:checked="${baja.observacion_baja == 'PARA BAJA'}" />
+                                                <label for="radio_7">PARA BAJA</label>
+                                            
+                                                <input type="radio" name="observacion_baja" id="radio_8" class="radio-col-red" th:value="'PARA DEVOLUCIÓN'"
+                                                    th:checked="${baja.observacion_baja == 'PARA DEVOLUCIÓN'}" />
+                                                <label for="radio_8">PARA DEVOLUCIÓN</label>
+                                            </th:block>
+                                            
                                         </div>
                                         <br>
+                                        <div th:if="${baja.detalleBajas != null and not #lists.isEmpty(baja.detalleBajas)}">
+                                            <div class="alert alert-danger text-center">
+                                                <strong>ACTIVOS SELECCIONADOS: </strong>
+                                            </div>
+                                            <div class="body table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead class="text-center">
+                                                        <tr >
+                                                            <th>N°</th>
+                                                            <th>TIPO DE EQUIPO</th>
+                                                            <th>COD ACTIVO</th>
+                                                            <th>DESCRIPCIÓN</th>
+                                                            <th>FALLAS SELECCIONADAS</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr th:each="a, cont : ${baja.detalleBajas}" th:if="${a.estado_detalleBaja != 'X'}">
+                                        
+                                                            <td th:text="${cont.count}"></td>
+                                                            <td>
+                                                                <a type="button" class="btn bg-red btn-check btn-lg waves-effect" disable>
+                                                                    <i class="material-icons" style="font-size: 15px !important"
+                                                                        th:text="${a.almacen.tipoEquipo.icono}"></i><br />
+                                                                    <span th:text="${a.almacen.tipoEquipo.equipo}"></span>
+                                                                </a>
+                                                            </td>
+                                                            <td th:text="${a.almacen.cod_equipo}"></td>
+                                                            <td th:text="${a.almacen.descripcion}"></td>
+                                                            <td>
+                                                                <div class="demo-checkbox">
+                                                                    <th:block th:each="dab : ${a.detalleAlmacenFallaBajas}" th:if="${dab.estado_detalleAlmacenFallaBaja != 'X'}">
+                                                                        <li class="col-12" style="text-transform: uppercase;" th:text="${dab.fallaBaja.nom_fallaBaja}">
+                                                                        </li>
+                                                                    </th:block>
+                                                                </div>
+                                                            </td>
+                                        
+                                                        </tr>
+                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                         <div class="alert alert-danger text-center">
                                             <strong>SELECCIONE ACTIVOS: </strong>
                                         </div>
                                         <div>
-                                
-                                            <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()"
-                                                required>
+                                            <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()" required>
                                                 <th:block th:each="a : ${activos}" th:if="${a.estado != 'X' && a.estado != 'B'}">
-                                                    <optgroup th:label="${a.tipoEquipo.equipo}">
-                                                        <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
-                                                    </optgroup>
+                                            
+                                                        <optgroup th:label="${a.tipoEquipo.equipo}">
+                                                            <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
+                                                        </optgroup>
+                                                    
                                                 </th:block>
                                             </select>
                                             <br>

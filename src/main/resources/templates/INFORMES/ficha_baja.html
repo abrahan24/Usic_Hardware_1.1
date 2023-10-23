@@ -59,11 +59,9 @@
         header {
             position: static;
             top: 0.1in;
-            /* Ajusta la posición vertical según tus necesidades */
             left: 0.1in;
-            /* Ajusta la posición horizontal según tus necesidades */
-            right: 5in;
-            width: 95%;
+            right: 0.1in; /* Puedes usar un valor absoluto para el lado derecho o ajustarlo según tus necesidades */
+            width: 100%; /* Ocupa todo el ancho de la página */
             text-align: center;
         }
     
@@ -154,23 +152,23 @@
                         </tbody>
                     </table>
                     
-                    <table class="table table-bordered border-dark" id="tabla2">
+                    <table class="table table-bordered border-dark" id="tabla2" >
                         <tbody>
                             
-                            <tr >
-                                <th>N°</th>
-                                <th>CODIGO UAP</th>
-                                <th>CARACTERÍSTICAS DEL BIEN</th>
-                                <th>ESTADO DEL BIEN</th>
-                                <th>OBSERVACIONES</th>
+                            <tr>
+                                <th width="1%">N°</th>
+                                <th width="15%">CODIGO UAP</th>
+                                <th width="39%">CARACTERÍSTICAS DEL BIEN</th>
+                                <th width="30%">ESTADO DEL BIEN</th>
+                                <th width="5%">OBSERVACIONES</th>
                             </tr>
-                            <tr th:each="bd, cont : ${baja.detalleBajas}" style="page-break-inside: avoid;">
+                            <tr th:each="bd, cont : ${baja.detalleBajas}" th:if="${bd.estado_detalleBaja != 'X'}" style="page-break-inside: avoid;">
                                 <td th:text="${cont.count}">N°</td>
                                 <td th:text="${bd.almacen.cod_equipo}">CODIGO UAP</td>
                                 <td th:text="${bd.almacen.descripcion}">CARACTERÍSTICAS DEL BIEN</td>
                                 <td style="text-align: start;" >
-                                    <div class="col">
-                                        <th:block th:each="dab : ${bd.detalleAlmacenFallaBajas}">                             
+                                    <div class="col" style="font-size: 9px;">
+                                        <th:block th:each="dab : ${bd.detalleAlmacenFallaBajas}" th:if="${dab.estado_detalleAlmacenFallaBaja != 'X'}">                             
                                             <li class="col-12" style="text-transform: uppercase;" th:text="${dab.fallaBaja.nom_fallaBaja}">   
                                             </li>                            
                                         </th:block>
