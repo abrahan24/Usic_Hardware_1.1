@@ -118,8 +118,13 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">MENU DE NAVEGACION</li>
-                
-                <li th:if="${session.persona != null}" >
+                <li th:if="${session.persona != null}">
+                    <a th:href="${'../../../../hardware-servicio/'}">
+                        <i class="material-icons">home</i>
+                        <span>INICIO</span>
+                    </a>
+                </li>
+                <!-- <li th:if="${session.persona != null}" >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">home</i>
                         <span>INICIO</span>
@@ -145,6 +150,7 @@
                         </li>
                         
                     </ul>
+                </li> -->
                 <li th:if="${session.persona != null}" >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">home</i>
