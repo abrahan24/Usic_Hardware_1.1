@@ -53,6 +53,11 @@
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
+                            <div class="header">
+                                <h2>
+                                    LISTA DE SERVICIOS EN ESPERA (PENDIENTES)
+                                </h2>
+                            </div>
                             <div class="body">
                                 <div th:replace="layaut/layaut :: alert"></div>
                                 <div class="table-responsive">
@@ -75,7 +80,277 @@
                                         </thead>
                                         
                                         <tbody>
-                                            <tr th:each="ser, num : ${pr.procedencia.servicios}" th:if="${ser.estado != null}">
+                                            <tr th:each="ser, num : ${pr.procedencia.servicios}" th:if="${ser.estado != null && ser.estado == 'P'}">
+                                                
+                                                <td>
+                                                    <!-- <a th:if="${ser.estado == 'P'}" th:href="${'../../../../hardware-servicio/aceptar_servicio/' + ser.id_servicio}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="En Espera">
+                                                        <i class="material-icons">report_problem</i>
+                                                    </a> -->
+                                                    <button th:if="${ser.estado == 'P'}" th:attr="onclick=${'tipoServicio(' + ser.id_servicio + ' , '+ tipoServicios.size() +')'}" type="button" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="modal" data-target="#exampleModal2" title="Aceptar Servicio">
+                                                        <i class="material-icons">report</i>
+                                                    </button>
+                                                    <a th:if="${ser.estado == 'A'|| ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" type="button" class="btn bg-yellow btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="En Proceso">
+                                                        <i class="material-icons">settings</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'T' }" type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Terminado" disable>
+                                                        <i class="material-icons">done</i>
+                                                    </a>
+                                                </td>
+                                                <td th:text="${'N°'+ser.id_servicio}"></td>
+                                                <td th:text="${ser.persona.nombre + ' ' + ser.persona.ap_paterno + ' ' + ser.persona.ap_materno}"></td>
+                                                <td th:text="${ser.persona.unidad.unidad}"> </td>
+                                                <td th:text="${ser.almacen.cod_equipo}"></td>
+                                                <td th:text="${ser.tipoEquipo.equipo}"></td>
+                                                <td >
+                                                    <th:block th:each="det : ${ser.detalleFallas}">
+                                                        <ul >
+                                                            <li th:text="${det.falla.falla}">   
+                                                            </li>
+                                                        </ul>
+                                                    </th:block>
+                                                </td>
+                                                <td th:text="${#dates.format(ser.fecha_recepcion, 'dd/MM/yyyy')}"></td>
+                                                <td >
+                                                    <th:block th:each="col : ${ser.colaboradores}">
+                                                    <span th:if="${col.estado == 'A'}" class="label bg-green" th:text="${col.persona.nombre +' '+col.persona.ap_paterno +' '+ col.persona.ap_materno}" >
+                                                    </span>
+                                                    <span th:if="${col.estado == 'B'}" class="label bg-blue" th:text="${col.persona.nombre +' '+col.persona.ap_paterno +' '+ col.persona.ap_materno}" >
+                                                    </span>
+                                                    </th:block>
+                                                </td>
+                                                <td>
+                                                    
+                                                    <a th:href="${'../../../../hardware-servicio/ficha-tecnica/' + ser.id_servicio}" target="_blank" th:if="${ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" type="button" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Imprimir Ficha">
+                                                        <i class="material-icons">print</i>
+                                                    </a>
+                                                    <button th:if="${ser.estado == 'A' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:attr="onclick=${'directo(' + ser.id_servicio + ' , '+ usuarios.size() +')'}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="modal" data-target="#exampleModal" title="Añadir Colaborador">
+                                                        <i class="material-icons">person_add</i>
+                                                    </button>
+                                                    <a th:if="${ser.estado == 'T' || ser.estado == 'B' && ser.persona.celular != null }"  th:href="${'https://api.whatsapp.com/send?phone=+591'+ser.persona.celular+'&text=Unidad%20de%20Sistemas%20de%20Informaci%C3%B3n%20y%20Comunicaci%C3%B3n%20SISEMAH'}" target="_blank" type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Enviar Whatsapp">
+                                                        <i class="material-icons">call</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'A' }" th:href="${'../../../../hardware-servicio/informe_tecnico/' + ser.id_servicio}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Correctivo">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'AS' }" th:href="${'../../../../hardware-servicio/informe_soporte_tec/' + ser.id_servicio}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Soporte">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'AP' }" th:href="${'../../../../hardware-servicio/informe_preventivo/' + ser.id_servicio}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Preventivo">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'B' || ser.estado == 'T' }" th:href="${'../../../../hardware-servicio/editar-informe_tecnico/' + ser.id_servicio}" type="button" class="btn bg-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Editar Informe">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                </td>
+                                                <td >
+                                                    <a th:if="${ser.estado == 'P' || ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/historial_servicio/' + ser.almacen.id_almacen}" type="button" class="btn bg-deep-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Historial">
+                                                        <i class="material-icons">restore</i>
+                                                    </a>
+                                        
+                                                    <a th:href="${'../../../../hardware-servicio/eliminar_servicio/'+ ser.id_servicio}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                                        <i class="material-icons">delete</i>
+                                                    </a>
+
+                                                    <a th:href="${'../../../../hardware-servicio/editar-servicio/'+ ser.id_servicio}"  type="button" class="btn bg-light-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Editar">
+                                                        <i class="material-icons">create</i>
+                                                    </a>
+
+                                                    <a th:if="${ser.estado == 'A' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/terminar_servicio/'+ser.id_servicio}" type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Terminar Servicio">
+                                                        <i class="material-icons">done</i>
+                                                    </a>
+                                                    
+                                                   <!--<a th:if="${ser.estado == 'A'}" th:href="${'../../../../hardware-servicio/informe_tecnico_baja/' + ser.id_servicio}" type="button" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Baja">
+                                                        <i class="material-icons">description</i>
+                                                    </a>-->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>Est</th>
+                                                <th>Codigo Servicio</th>
+                                                <th>Nombre Solicitante</th>
+                                                <th>Unidad Funcional</th>
+                                                <th>Codigo De Equipo</th>
+                                                <th>Tipo Equipo</th>
+                                                <th>Estado de Equipo</th>
+                                                <th>Fecha Registro</th>
+                                                <th>Colaborador</th>
+                                                <th>Administrador</th>
+                                                <th>Operación</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    LISTA DE SERVICIOS EN PROCESO
+                                </h2>
+                            </div>
+                            <div class="body">
+                                <div th:replace="layaut/layaut :: alert"></div>
+                                <div class="table-responsive">
+                                    <br>
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="miTabla">
+                                        <thead>
+                                            <tr>
+                                                <th width="1%">Est</th>
+                                                <th width="1%">Codigo Servicio</th>
+                                                <th width="10%">Nombre Solicitante</th>
+                                                <th width="10%">Unidad Funcional</th>
+                                                <th width="5%">Codigo De Equipo</th>
+                                                <th width="5%">Tipo Equipo</th>
+                                                <th width="10%">Estado de Equipo</th>
+                                                <th width="5%">Fecha Registro</th>
+                                                <th width="5%">Colaborador</th>
+                                                <th width="5%">Administrador</th>
+                                                <th width="5%">Operación</th>
+                                            </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                            <tr th:each="ser, num : ${pr.procedencia.servicios}" th:if="${ser.estado != null && ser.estado == 'A'|| ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}">
+                                                
+                                                <td>
+                                                    <!-- <a th:if="${ser.estado == 'P'}" th:href="${'../../../../hardware-servicio/aceptar_servicio/' + ser.id_servicio}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="En Espera">
+                                                        <i class="material-icons">report_problem</i>
+                                                    </a> -->
+                                                    <button th:if="${ser.estado == 'P'}" th:attr="onclick=${'tipoServicio(' + ser.id_servicio + ' , '+ tipoServicios.size() +')'}" type="button" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="modal" data-target="#exampleModal2" title="Aceptar Servicio">
+                                                        <i class="material-icons">report</i>
+                                                    </button>
+                                                    <a th:if="${ser.estado == 'A'|| ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" type="button" class="btn bg-yellow btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="En Proceso">
+                                                        <i class="material-icons">settings</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'T' }" type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Terminado" disable>
+                                                        <i class="material-icons">done</i>
+                                                    </a>
+                                                </td>
+                                                <td th:text="${'N°'+ser.id_servicio}"></td>
+                                                <td th:text="${ser.persona.nombre + ' ' + ser.persona.ap_paterno + ' ' + ser.persona.ap_materno}"></td>
+                                                <td th:text="${ser.persona.unidad.unidad}"> </td>
+                                                <td th:text="${ser.almacen.cod_equipo}"></td>
+                                                <td th:text="${ser.tipoEquipo.equipo}"></td>
+                                                <td >
+                                                    <th:block th:each="det : ${ser.detalleFallas}">
+                                                        <ul >
+                                                            <li th:text="${det.falla.falla}">   
+                                                            </li>
+                                                        </ul>
+                                                    </th:block>
+                                                </td>
+                                                <td th:text="${#dates.format(ser.fecha_recepcion, 'dd/MM/yyyy')}"></td>
+                                                <td >
+                                                    <th:block th:each="col : ${ser.colaboradores}">
+                                                    <span th:if="${col.estado == 'A'}" class="label bg-green" th:text="${col.persona.nombre +' '+col.persona.ap_paterno +' '+ col.persona.ap_materno}" >
+                                                    </span>
+                                                    <span th:if="${col.estado == 'B'}" class="label bg-blue" th:text="${col.persona.nombre +' '+col.persona.ap_paterno +' '+ col.persona.ap_materno}" >
+                                                    </span>
+                                                    </th:block>
+                                                </td>
+                                                <td>
+                                                    
+                                                    <a th:href="${'../../../../hardware-servicio/ficha-tecnica/' + ser.id_servicio}" target="_blank" th:if="${ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" type="button" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Imprimir Ficha">
+                                                        <i class="material-icons">print</i>
+                                                    </a>
+                                                    <button th:if="${ser.estado == 'A' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:attr="onclick=${'directo(' + ser.id_servicio + ' , '+ usuarios.size() +')'}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="modal" data-target="#exampleModal" title="Añadir Colaborador">
+                                                        <i class="material-icons">person_add</i>
+                                                    </button>
+                                                    <a th:if="${ser.estado == 'T' || ser.estado == 'B' && ser.persona.celular != null }"  th:href="${'https://api.whatsapp.com/send?phone=+591'+ser.persona.celular+'&text=Unidad%20de%20Sistemas%20de%20Informaci%C3%B3n%20y%20Comunicaci%C3%B3n%20SISEMAH'}" target="_blank" type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Enviar Whatsapp">
+                                                        <i class="material-icons">call</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'A' }" th:href="${'../../../../hardware-servicio/informe_tecnico/' + ser.id_servicio}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Correctivo">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'AS' }" th:href="${'../../../../hardware-servicio/informe_soporte_tec/' + ser.id_servicio}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Soporte">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'AP' }" th:href="${'../../../../hardware-servicio/informe_preventivo/' + ser.id_servicio}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Preventivo">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                    <a th:if="${ser.estado == 'B' || ser.estado == 'T' }" th:href="${'../../../../hardware-servicio/editar-informe_tecnico/' + ser.id_servicio}" type="button" class="btn bg-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Editar Informe">
+                                                        <i class="material-icons">description</i>
+                                                    </a>
+                                                </td>
+                                                <td >
+                                                    <a th:if="${ser.estado == 'P' || ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/historial_servicio/' + ser.almacen.id_almacen}" type="button" class="btn bg-deep-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Historial">
+                                                        <i class="material-icons">restore</i>
+                                                    </a>
+                                        
+                                                    <a th:href="${'../../../../hardware-servicio/eliminar_servicio/'+ ser.id_servicio}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                                        <i class="material-icons">delete</i>
+                                                    </a>
+
+                                                    <a th:href="${'../../../../hardware-servicio/editar-servicio/'+ ser.id_servicio}"  type="button" class="btn bg-light-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Editar">
+                                                        <i class="material-icons">create</i>
+                                                    </a>
+
+                                                    <a th:if="${ser.estado == 'A' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/terminar_servicio/'+ser.id_servicio}" type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Terminar Servicio">
+                                                        <i class="material-icons">done</i>
+                                                    </a>
+                                                    
+                                                   <!--<a th:if="${ser.estado == 'A'}" th:href="${'../../../../hardware-servicio/informe_tecnico_baja/' + ser.id_servicio}" type="button" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Baja">
+                                                        <i class="material-icons">description</i>
+                                                    </a>-->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>Est</th>
+                                                <th>Codigo Servicio</th>
+                                                <th>Nombre Solicitante</th>
+                                                <th>Unidad Funcional</th>
+                                                <th>Codigo De Equipo</th>
+                                                <th>Tipo Equipo</th>
+                                                <th>Estado de Equipo</th>
+                                                <th>Fecha Registro</th>
+                                                <th>Colaborador</th>
+                                                <th>Administrador</th>
+                                                <th>Operación</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2>
+                                    LISTA DE SERVICIOS EN TERMINADOS
+                                </h2>
+                            </div>
+                            <div class="body">
+                                <div th:replace="layaut/layaut :: alert"></div>
+                                <div class="table-responsive">
+                                    <br>
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="miTabla">
+                                        <thead>
+                                            <tr>
+                                                <th width="1%">Est</th>
+                                                <th width="1%">Codigo Servicio</th>
+                                                <th width="10%">Nombre Solicitante</th>
+                                                <th width="10%">Unidad Funcional</th>
+                                                <th width="5%">Codigo De Equipo</th>
+                                                <th width="5%">Tipo Equipo</th>
+                                                <th width="10%">Estado de Equipo</th>
+                                                <th width="5%">Fecha Registro</th>
+                                                <th width="5%">Colaborador</th>
+                                                <th width="5%">Administrador</th>
+                                                <th width="5%">Operación</th>
+                                            </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                            <tr th:each="ser, num : ${pr.procedencia.servicios}" th:if="${ser.estado != null && ser.estado == 'T'}">
                                                 
                                                 <td>
                                                     <!-- <a th:if="${ser.estado == 'P'}" th:href="${'../../../../hardware-servicio/aceptar_servicio/' + ser.id_servicio}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="En Espera">
