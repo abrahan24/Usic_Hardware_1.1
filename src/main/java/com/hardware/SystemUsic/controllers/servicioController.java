@@ -141,7 +141,7 @@ public class servicioController {
             servicio.setEstado("T");
             servicio.setFecha_entrega(new Date());
             servicioService.save(servicio);
-            flash.addAttribute("validado", "Servicio Terminado Con Exito!");
+            flash.addAttribute("validado", "Servicio N°"+servicio.getId_servicio() +" Terminado Con Exito!");
             
             return "redirect:/hardware-servicio/";
 		} else {

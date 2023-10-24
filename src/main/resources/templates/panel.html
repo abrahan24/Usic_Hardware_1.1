@@ -59,7 +59,7 @@
                                 </h2>
                             </div>
                             <div class="body">
-                                <div th:replace="layaut/layaut :: alert"></div>
+                                <!-- <div th:replace="layaut/layaut :: alert"></div> -->
                                 <div class="table-responsive">
                                     <br>
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="miTabla">
@@ -197,7 +197,7 @@
                                 <div th:replace="layaut/layaut :: alert"></div>
                                 <div class="table-responsive">
                                     <br>
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="miTabla">
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="miTabla2">
                                         <thead>
                                             <tr>
                                                 <th width="1%">Est</th>
@@ -332,7 +332,7 @@
                                 <div th:replace="layaut/layaut :: alert"></div>
                                 <div class="table-responsive">
                                     <br>
-                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="miTabla">
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable" id="miTabla3">
                                         <thead>
                                             <tr>
                                                 <th width="1%">Est</th>
@@ -657,6 +657,45 @@
             }
         }
     </script>
+    <script>
+        // Obtén el elemento <tbody>
+        var tbody = document.getElementById("miTabla2").getElementsByTagName('tbody')[0];
     
+        // Convierte las filas en una matriz (Array)
+        var rows = Array.prototype.slice.call(tbody.rows);
+    
+        // Invierte el orden de las filas
+        rows.reverse();
+    
+        // Elimina todas las filas existentes del <tbody>
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+    
+        // Agrega las filas en el orden invertido al <tbody>
+        rows.forEach(function(row) {
+            tbody.appendChild(row);
+        });
+    </script>
+    <script>
+        // Obtén el elemento <tbody>
+        var tbody = document.getElementById("miTabla3").getElementsByTagName('tbody')[0];
+    
+        // Convierte las filas en una matriz (Array)
+        var rows = Array.prototype.slice.call(tbody.rows);
+    
+        // Invierte el orden de las filas
+        rows.reverse();
+    
+        // Elimina todas las filas existentes del <tbody>
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+    
+        // Agrega las filas en el orden invertido al <tbody>
+        rows.forEach(function(row) {
+            tbody.appendChild(row);
+        });
+    </script>
 </body>
 </html>
