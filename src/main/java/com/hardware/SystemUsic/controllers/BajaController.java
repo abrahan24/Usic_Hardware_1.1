@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -156,9 +157,14 @@ public class BajaController {
                         }
                     }
                 }
+
             }
 
-            flash.addAttribute("validado", "Se ha Realizado el Informe Con Éxito!");
+            if (baja.getId_baja() == null) {
+                flash.addAttribute("validado", "Se ha Realizado el Informe N°"+baja.getId_baja()+" Con Éxito!");
+            }else{
+                flash.addAttribute("validado", "Se ha Editado el Informe N°"+baja.getId_baja()+" Con Éxito!");
+            }
             
             return "redirect:/hardware-servicio/lista_informes_bajas";
         } else {
@@ -179,7 +185,14 @@ public class BajaController {
             model.addAttribute("baja", bajaService.findOne(id_baja));
             model.addAttribute("per_dirig", baja.getPersona().getNombre()+" "+baja.getPersona().getAp_paterno()+" "+baja.getPersona().getAp_materno()+"<br><b>"+baja.getPersona().getCargo().getCargo() );
             model.addAttribute("user_tec", usuario.getPersona().getNombre()+" "+usuario.getPersona().getAp_paterno()+" "+usuario.getPersona().getAp_materno()+"<br><b>"+usuario.getPersona().getCargo().getCargo());
-            
+
+            List<DetalleBaja> detalleBajasFiltrados = baja.getDetalleBajas()
+                    .stream()
+                    .filter(bd -> !bd.getEstado_detalleBaja().equals("X"))
+                    .collect(Collectors.toList());
+
+            model.addAttribute("detalleBajasFiltrados", detalleBajasFiltrados);
+    
             return "INFORMES/ficha_baja";
 		} else {
 			return "redirect:/hardware/login";
@@ -213,10 +226,15 @@ public class BajaController {
             Baja baja = bajaService.findOne(id_baja);
 
             for (DetalleBaja detalleBaja : baja.getDetalleBajas()) {
-                
+                detalleBaja.setEstado_detalleBaja("X");
                 Almacen almacen = almacenService.findOne(detalleBaja.getAlmacen().getId_almacen());
                 almacen.setEstado("A");
                 almacenService.save(almacen);
+                detalleBajaService.save(detalleBaja);
+                for (DetalleAlmacenFallaBaja detalleAlmacenFallaBaja : detalleBaja.getDetalleAlmacenFallaBajas()) {
+                    detalleAlmacenFallaBaja.setEstado_detalleAlmacenFallaBaja("X");
+                    detalleAlmacenFallaBajaService.save(detalleAlmacenFallaBaja);
+                }
             }
 
             model.addAttribute("baja", baja);
@@ -229,16 +247,5 @@ public class BajaController {
 		}
     }
 
-    private void realizarEdicionDeInforme(Baja baja) {
-        baja.getDetalleBajas().forEach(detalleBaja -> {
-            detalleBaja.setEstado_detalleBaja("X");
-            detalleBajaService.save(detalleBaja);
-    
-            detalleBaja.getDetalleAlmacenFallaBajas().forEach(detalleAlmacenFallaBaja -> {
-                detalleAlmacenFallaBaja.setEstado_detalleAlmacenFallaBaja("X");
-                detalleAlmacenFallaBajaService.save(detalleAlmacenFallaBaja);
-            });
-        });
-    }
 }
 

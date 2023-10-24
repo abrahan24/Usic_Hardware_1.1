@@ -162,8 +162,8 @@
                                 <th width="30%">ESTADO DEL BIEN</th>
                                 <th width="5%">OBSERVACIONES</th>
                             </tr>
-                            <tr th:each="bd, cont : ${baja.detalleBajas}" th:if="${bd.estado_detalleBaja != 'X'}" style="page-break-inside: avoid;">
-                                <td th:text="${cont.count}">N°</td>
+                            <tr th:each="bd, iterStat : ${detalleBajasFiltrados}" data-hidden th:if="${bd.estado_detalleBaja != 'X'}" style="page-break-inside: avoid;">
+                                <td th:text="${iterStat.count}" ></td>
                                 <td th:text="${bd.almacen.cod_equipo}">CODIGO UAP</td>
                                 <td th:text="${bd.almacen.descripcion}">CARACTERÍSTICAS DEL BIEN</td>
                                 <td style="text-align: start;" >
@@ -213,7 +213,22 @@
             </footer> -->
         </div>
         
-                       
+                    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var table = document.getElementById('tabla2');
+                var rowCount = 0;
+        
+                for (var i = 0; i < table.rows.length; i++) {
+                    var row = table.rows[i];
+                    if (!row.hasAttribute('data-hidden')) {
+                        rowCount++;
+                    }
+                }
+        
+                console.log("Número de filas visibles: " + rowCount);
+            });
+        </script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+lfU1zK9z6v4iOmz5n5zce7gQipzRZ5z5w5j5Pzp5Qf5r5Pzp" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-Xe8dpq5lRs2s7x2J5w0nZt77jXnFqYeLs4z5j5z5z5g5B2p5kz5Sf5S5O5i5P5Z5z" crossorigin="anonymous"></script>
        

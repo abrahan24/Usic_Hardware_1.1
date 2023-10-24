@@ -160,7 +160,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr th:each="a, cont : ${baja.detalleBajas}" th:if="${a.estado_detalleBaja != 'X'}">
+                                                        <tr th:each="a, cont : ${baja.detalleBajas}" th:if="${a.estado_detalleBaja == 'X'}">
                                         
                                                             <td th:text="${cont.count}"></td>
                                                             <td>
@@ -174,7 +174,7 @@
                                                             <td th:text="${a.almacen.descripcion}"></td>
                                                             <td>
                                                                 <div class="demo-checkbox">
-                                                                    <th:block th:each="dab : ${a.detalleAlmacenFallaBajas}" th:if="${dab.estado_detalleAlmacenFallaBaja != 'X'}">
+                                                                    <th:block th:each="dab : ${a.detalleAlmacenFallaBajas}" th:if="${dab.estado_detalleAlmacenFallaBaja == 'X'}">
                                                                         <li class="col-12" style="text-transform: uppercase;" th:text="${dab.fallaBaja.nom_fallaBaja}">
                                                                         </li>
                                                                     </th:block>
