@@ -73,8 +73,8 @@
                                                 <th width="5%">Tipo Equipo</th>
                                                 <th width="10%">Estado de Equipo</th>
                                                 <th width="5%">Fecha Registro</th>
-                                                <th width="5%">Colaborador</th>
-                                                <th width="5%">Administrador</th>
+                                                <!-- <th width="5%">Colaborador</th>
+                                                <th width="5%">Administrador</th> -->
                                                 <th width="5%">Operación</th>
                                             </tr>
                                         </thead>
@@ -110,15 +110,15 @@
                                                     </th:block>
                                                 </td>
                                                 <td th:text="${#dates.format(ser.fecha_recepcion, 'dd/MM/yyyy')}"></td>
-                                                <td >
+                                                <!-- <td >
                                                     <th:block th:each="col : ${ser.colaboradores}">
                                                     <span th:if="${col.estado == 'A'}" class="label bg-green" th:text="${col.persona.nombre +' '+col.persona.ap_paterno +' '+ col.persona.ap_materno}" >
                                                     </span>
                                                     <span th:if="${col.estado == 'B'}" class="label bg-blue" th:text="${col.persona.nombre +' '+col.persona.ap_paterno +' '+ col.persona.ap_materno}" >
                                                     </span>
                                                     </th:block>
-                                                </td>
-                                                <td>
+                                                </td> -->
+                                                <!-- <td>
                                                     
                                                     <a th:href="${'../../../../hardware-servicio/ficha-tecnica/' + ser.id_servicio}" target="_blank" th:if="${ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" type="button" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Imprimir Ficha">
                                                         <i class="material-icons">print</i>
@@ -141,7 +141,7 @@
                                                     <a th:if="${ser.estado == 'B' || ser.estado == 'T' }" th:href="${'../../../../hardware-servicio/editar-informe_tecnico/' + ser.id_servicio}" type="button" class="btn bg-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Editar Informe">
                                                         <i class="material-icons">description</i>
                                                     </a>
-                                                </td>
+                                                </td> -->
                                                 <td >
                                                     <a th:if="${ser.estado == 'P' || ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/historial_servicio/' + ser.almacen.id_almacen}" type="button" class="btn bg-deep-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Historial">
                                                         <i class="material-icons">restore</i>
@@ -176,8 +176,8 @@
                                                 <th>Tipo Equipo</th>
                                                 <th>Estado de Equipo</th>
                                                 <th>Fecha Registro</th>
-                                                <th>Colaborador</th>
-                                                <th>Administrador</th>
+                                                <!-- <th>Colaborador</th>
+                                                <th>Administrador</th> -->
                                                 <th>Operación</th>
                                             </tr>
                                         </tfoot>

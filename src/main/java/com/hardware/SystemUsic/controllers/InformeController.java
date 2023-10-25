@@ -47,7 +47,6 @@ public class InformeController {
 
             model.addAttribute("tipoequipo", tipoEquipoService.findOne(servicio.getTipoEquipo().getId_tipoequipo()));
             model.addAttribute("servicio", servicio);
-            model.addAttribute("baja", bajaService.findOne(servicio.getId_servicio()));
 
             return "informe_soporte_tec";
         } else {
@@ -64,7 +63,6 @@ public class InformeController {
 
             model.addAttribute("tipoequipo", tipoEquipoService.findOne(servicio.getTipoEquipo().getId_tipoequipo()));
             model.addAttribute("servicio", servicio);
-            model.addAttribute("baja", bajaService.findOne(servicio.getId_servicio()));
 
             return "informe_preventivo";
         } else {
@@ -81,7 +79,6 @@ public class InformeController {
 
             model.addAttribute("tipoequipo", tipoEquipoService.findOne(servicio.getTipoEquipo().getId_tipoequipo()));
             model.addAttribute("servicio", servicio);
-            model.addAttribute("baja", bajaService.findOne(servicio.getId_servicio()));
 
             return "informe_tecnico";
         } else {
@@ -89,6 +86,7 @@ public class InformeController {
         }
     }
 
+    
     @RequestMapping("/editar-informe_tecnico/{id_servicio}")
     public String Editar_informe_Tecnico(Model model, @PathVariable("id_servicio") Long id_servicio,
             RedirectAttributes flash, HttpServletRequest request) {
@@ -99,20 +97,27 @@ public class InformeController {
             /* model.addAttribute("detalleSolucion", new DetalleSolucion()); */
             model.addAttribute("tipoequipo", tipoEquipoService.findOne(servicio.getTipoEquipo().getId_tipoequipo()));
             model.addAttribute("servicio", servicio);
-            model.addAttribute("baja", bajaService.findOne(servicio.getId_servicio()));
 
-            return "informe_tecnico";
+            if (servicio.getTiposervicio() != null && servicio.getTiposervicio().getId_TipoServicio() == 1) {
+                return "informe_soporte_tec";
+            } else {
+                if (servicio.getTiposervicio() != null && servicio.getTiposervicio().getId_TipoServicio() == 2) {
+                    return "informe_preventivo";
+                }else{
+                    return "informe_tecnico";
+                }
+            }
         } else {
             return "redirect:/hardware/login";
         }
     }
+
 
     @RequestMapping(value = "/add_informe_soporte_tec", method = RequestMethod.POST)
     public String informeTecnico_Soporte_Tec(Model model,
             @RequestParam(name = "observacion", required = false) String observacion,
             @RequestParam(name = "id_servicio", required = false) Long id_servicio,
             @RequestParam(name = "id_solucion", required = false) Long[] id_solucion,
-            @RequestParam(name = "id_detalleSolucion", required = false) Long id_detalleSolucion,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -127,19 +132,34 @@ public class InformeController {
                 servicio.setObservacion(observacion);
             }
 
-            servicio.setEstado("B"); // B = Estado En Proceso
+            if (servicio.getEstado() == "T") {
+                servicio.setEstado("T");
+            } else {
+                if (servicio.getEstado() == "B") {
+                    servicio.setEstado("B");
+                }
+
+            } // B = Estado En Proceso
             servicioService.save(servicio);
+
+            if (servicio.getDetalleSolucions().size() > 0) {
+                for (DetalleSolucion detalleSolucion : servicio.getDetalleSolucions()) {
+                    detalleSolucion.setEstado("X");
+                    detalleSolucionService.save(detalleSolucion);
+                }
+            }
 
             if (id_solucion != null) {
                 for (int i = 0; i < id_solucion.length; i++) {
                     DetalleSolucion detalleSolucion = new DetalleSolucion();
                     detalleSolucion.setSolucion(solucionService.findOne(id_solucion[i]));
                     detalleSolucion.setServicio(servicioService.findOne(id_servicio));
+                    detalleSolucion.setEstado("A");
                     detalleSolucionService.save(detalleSolucion);
                 }
             }
 
-            flash.addAttribute("validado", "Informe de Soporte Técnico Realizado Con Exito!");
+            flash.addAttribute("validado", "Informe de Soporte Técnico N°"+servicio.getId_servicio()+" Realizado Con Exito!");
 
             return "redirect:/hardware-servicio/";
         } else {
@@ -151,7 +171,6 @@ public class InformeController {
     public String informeTecnico_Preventivo(Model model, @RequestParam("observacion") String observacion,
             @RequestParam(name = "id_servicio", required = false) Long id_servicio,
             @RequestParam(name = "id_solucion", required = false) Long[] id_solucion,
-            @RequestParam(name = "id_detalleSolucion", required = false) Long id_detalleSolucion,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -166,19 +185,34 @@ public class InformeController {
                 servicio.setObservacion(observacion);
             }
 
-            servicio.setEstado("B"); // B = Estado En Proceso
+            if (servicio.getEstado() == "T") {
+                servicio.setEstado("T");
+            } else {
+                if (servicio.getEstado() == "B") {
+                    servicio.setEstado("B");
+                }
+
+            } // B = Estado En Proceso
             servicioService.save(servicio);
+
+            if (servicio.getDetalleSolucions().size() > 0) {
+                for (DetalleSolucion detalleSolucion : servicio.getDetalleSolucions()) {
+                    detalleSolucion.setEstado("X");
+                    detalleSolucionService.save(detalleSolucion);
+                }
+            }
 
             if (id_solucion != null) {
                 for (int i = 0; i < id_solucion.length; i++) {
                     DetalleSolucion detalleSolucion = new DetalleSolucion();
                     detalleSolucion.setSolucion(solucionService.findOne(id_solucion[i]));
                     detalleSolucion.setServicio(servicioService.findOne(id_servicio));
+                    detalleSolucion.setEstado("A");
                     detalleSolucionService.save(detalleSolucion);
                 }
             }
 
-            flash.addAttribute("validado", "Informe De Mantenimiento Preventivo Realizado Con Exito!");
+            flash.addAttribute("validado", "Informe De Mantenimiento Preventivo N°"+servicio.getId_servicio()+" Realizado Con Exito!");
 
             return "redirect:/hardware-servicio/";
         } else {
@@ -200,19 +234,34 @@ public class InformeController {
             servicio.setConclucion(conclucion);
             servicio.setRecomendacion(recomendacion);
             servicio.setObservacion(observacion);
-            servicio.setEstado("B");
+            if (servicio.getEstado() == "T") {
+                servicio.setEstado("T");
+            } else {
+                if (servicio.getEstado() == "B") {
+                    servicio.setEstado("B");
+                }
+
+            }
             servicioService.save(servicio);
+
+            if (servicio.getDetalleSolucions().size() > 0) {
+                for (DetalleSolucion detalleSolucion : servicio.getDetalleSolucions()) {
+                    detalleSolucion.setEstado("X");
+                    detalleSolucionService.save(detalleSolucion);
+                }
+            }
 
             if (id_solucion != null) {
                 for (int i = 0; i < id_solucion.length; i++) {
                     DetalleSolucion detalleSolucion = new DetalleSolucion();
                     detalleSolucion.setSolucion(solucionService.findOne(id_solucion[i]));
                     detalleSolucion.setServicio(servicioService.findOne(id_servicio));
+                    detalleSolucion.setEstado("A");
                     detalleSolucionService.save(detalleSolucion);
                 }
             }
-            if (servicio != null) {
-                flash.addAttribute("validado", "Informe de Mantenimiento Correctivo Realizado Con Exito!");
+            if (servicio != null ) {
+                flash.addAttribute("validado", "Informe de Mantenimiento Correctivo N°"+servicio.getId_servicio()+" Realizado Con Exito!");
             }
 
             return "redirect:/hardware-servicio/";
