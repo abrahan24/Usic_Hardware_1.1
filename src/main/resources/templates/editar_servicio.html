@@ -41,66 +41,12 @@
                         <div class="body">
                             <div th:replace="layaut/layaut :: alert"></div>
                             <div class="alert alert-danger text-center">
-                                <strong>DATOS SOLICITANTES</strong>
+                                <strong>FALLAS SELECCIONADAS (CHECKED)</strong>
                             </div>
                             <form action="../../../../hardware/servicio" method="POST">
-                                <label >NOMBRES</label>
-                                <input type="hidden" th:field="${persona.id_persona}" >
+                                
                                 <input type="hidden" th:field="${servicio.id_servicio}">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" th:field="${persona.nombre}" class="form-control" disabled>
-                                    </div>
-                                </div>
-                                <label >APELLIDO PATERNO</label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" th:field="${persona.ap_paterno}" class="form-control" disabled>
-                                    </div>
-                                </div>
-                                <label >APELLIDO MATERNO  </label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" th:field="${persona.ap_materno}" class="form-control" disabled>
-                                    </div>
-                                </div>
-                                <label >CARNET DE IDENTIDAD (CI)  </label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" th:field="${persona.ci}" class="form-control" disabled>
-                                    </div>
-                                </div>
-                                <label for="password">CELULAR  </label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="number" th:field="${persona.celular}" class="form-control" disabled>
-                                    </div>
-                                </div>
-                               <!-- <label >UNIDAD </label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" th:field="${persona.unidad.unidad}" class="form-control" >
-                                    </div>
-                                </div>
-                                <label >CARGO </label>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" th:field="${persona.cargo.cargo}" class="form-control" >
-                                    </div>
-                                </div>-->
-                                <div class="alert alert-danger text-center">
-                                    <strong>PROCEDENCIA</strong>
-                                </div>
-                                <label >PROCEDENCIA DE ENTREGA</label>
-                                <div>
-                                    <select name="id_procedencia" style="width: 100%" id="s2" class="js-states form-control" required>
-                                        <option selected disable hidden ></option>
-                                        <th:block th:each="pr : ${procedencias}">
-                                            <option th:value="${pr.id_procedencia}" th:text="${pr.procedencia}"></option>
-                                        </th:block>
-                                    </select>
-                                </div>
-                                <br>
+                                
                                 <div class="alert alert-danger text-center">
                                     <strong>DATOS DEL EQUIPO</strong>
                                 </div>
@@ -133,7 +79,7 @@
                                         <strong>POSIBLES FALLAS</strong>
                                     </div>
                                     <div class="demo-checkbox">
-                                        <th:block th:each="fe : ${tipoequipo.fallaEquipos}">
+                                        <th:block th:each="fe : ${tipoequipo.fallaEquipos}" th:if="${fe.estado != 'X'}">
                                             <input name="id_falla" th:value="${fe.falla.id_falla}" type="checkbox" th:id="${fe.falla.id_falla}" class="filled-in chk-col-red"  />
                                             <label th:text="${fe.falla.falla}" th:for="${fe.falla.id_falla}">RED</label>
                                     </th:block>

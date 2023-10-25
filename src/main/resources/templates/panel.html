@@ -143,9 +143,9 @@
                                                     </a>
                                                 </td> -->
                                                 <td >
-                                                    <a th:if="${ser.estado == 'P' || ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/historial_servicio/' + ser.almacen.id_almacen}" type="button" class="btn bg-deep-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Historial">
+                                                    <!-- <a th:if="${ser.estado == 'P' || ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/historial_servicio/' + ser.almacen.id_almacen}" type="button" class="btn bg-deep-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Historial">
                                                         <i class="material-icons">restore</i>
-                                                    </a>
+                                                    </a> -->
                                         
                                                     <a th:href="${'../../../../hardware-servicio/eliminar_servicio/'+ ser.id_servicio}" class="btn bg-red btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Eliminar">
                                                         <i class="material-icons">delete</i>
@@ -273,9 +273,9 @@
                                                     <a th:if="${ser.estado == 'AP' }" th:href="${'../../../../hardware-servicio/informe_preventivo/' + ser.id_servicio}" type="button" class="btn bg-blue btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Realizar Informe Preventivo">
                                                         <i class="material-icons">description</i>
                                                     </a>
-                                                    <a th:if="${ser.estado == 'B' || ser.estado == 'T' }" th:href="${'../../../../hardware-servicio/editar-informe_tecnico/' + ser.id_servicio}" type="button" class="btn bg-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Editar Informe">
+                                                    <!-- <a th:if="${ser.estado == 'B' || ser.estado == 'T' }" th:href="${'../../../../hardware-servicio/editar-informe_tecnico/' + ser.id_servicio}" type="button" class="btn bg-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top"  title="Editar Informe">
                                                         <i class="material-icons">description</i>
-                                                    </a>
+                                                    </a> -->
                                                 </td>
                                                 <td >
                                                     <a th:if="${ser.estado == 'P' || ser.estado == 'A' || ser.estado == 'T' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP'}" th:href="${'../../../../hardware-servicio/historial_servicio/' + ser.almacen.id_almacen}" type="button" class="btn bg-deep-orange btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Historial">

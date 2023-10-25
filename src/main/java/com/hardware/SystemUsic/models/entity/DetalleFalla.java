@@ -12,14 +12,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "detallefalla")
+@Setter
+@Getter
 public class DetalleFalla implements Serializable{
     private static final long serialVersionUID = 2629195288020321924L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_detallefalla;
     private Date fecha_registro;
+    private String estado_detalleFalla;
 //Tabla Falla
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_falla")

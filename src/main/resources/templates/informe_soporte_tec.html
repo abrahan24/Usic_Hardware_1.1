@@ -63,7 +63,6 @@
                                 
                                             <th:block th:each="ds : ${servicio.detalleSolucions}" th:if="${ds.estado == 'A'}">
                                 
-                                
                                                 <input th:if="${ds.solucion.id_solucion == se.solucion.id_solucion}" 
                                                     th:value="${se.solucion.id_solucion}" type="checkbox" class="filled-in chk-col-red" checked
                                                     disabled />
