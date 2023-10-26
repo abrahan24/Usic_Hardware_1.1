@@ -22,6 +22,7 @@ import com.hardware.SystemUsic.models.dao.IFallaEquipoDao;
 import com.hardware.SystemUsic.models.entity.Almacen;
 import com.hardware.SystemUsic.models.entity.Cargo;
 import com.hardware.SystemUsic.models.entity.Colaborador;
+import com.hardware.SystemUsic.models.entity.DetalleFalla;
 import com.hardware.SystemUsic.models.entity.DetalleSolucion;
 import com.hardware.SystemUsic.models.entity.Falla;
 import com.hardware.SystemUsic.models.entity.FallaEquipo;
@@ -38,6 +39,7 @@ import com.hardware.SystemUsic.models.service.IAlmacenService;
 import com.hardware.SystemUsic.models.service.IBajaService;
 import com.hardware.SystemUsic.models.service.ICargoService;
 import com.hardware.SystemUsic.models.service.IColaboradorService;
+import com.hardware.SystemUsic.models.service.IDetalleFallaService;
 import com.hardware.SystemUsic.models.service.IDetalleSolucionService;
 import com.hardware.SystemUsic.models.service.IFallaEquipoService;
 import com.hardware.SystemUsic.models.service.IFallaService;
@@ -88,6 +90,8 @@ public class servicioController {
     private ISolucionEquipoService solucionEquipoService;
     @Autowired
     private ITipoServicioService tipoServicioService;
+    @Autowired
+    private IDetalleFallaService detalleFallaService;
 
     @RequestMapping("/")
     public String servicios(Model model,RedirectAttributes flash, HttpServletRequest request , @RequestParam(name = "validado",required = false)String validado){
@@ -739,12 +743,45 @@ public class servicioController {
             Servicio servicio = servicioService.findOne(id_servicio);
             
 			model.addAttribute("servicio", servicio);
-            model.addAttribute("procedencias", procedenciaService.findAll());
             model.addAttribute("almacenes", almacenService.getAllAlmacenTipoEquipo(servicio.getTipoEquipo().getId_tipoequipo()));
-            model.addAttribute("persona", personaService.findOne(servicio.getPersona().getId_persona()));
             model.addAttribute("tipoequipo", tipoEquipoService.findOne(servicio.getTipoEquipo().getId_tipoequipo()));
            
             return "editar_servicio";
+		} else {
+			return "redirect:/hardware/login";
+		}
+    }
+
+    @RequestMapping(value = "/edit_servicio",method = RequestMethod.POST)
+    public String editar_Servicio(Model model,@RequestParam(name = "id_servicio",required = false)Long id_servicio ,
+    @RequestParam(name = "id_falla",required = false)Long [] id_falla, RedirectAttributes flash, HttpServletRequest request ){
+
+        if (request.getSession().getAttribute("persona") != null) {
+            
+            Servicio servicio = servicioService.findOne(id_servicio);
+            
+            if (servicio.getDetalleFallas().size() > 0 && servicio.getDetalleFallas() != null) {
+                for (DetalleFalla detalleFalla : servicio.getDetalleFallas()) {
+                    detalleFalla.setEstado_detalleFalla("X");
+                    detalleFallaService.save(detalleFalla);
+                }
+            }
+            servicioService.save(servicio);
+            if (id_falla != null) {
+                
+                for (int i = 0; i < id_falla.length; i++) {
+                    DetalleFalla detalleFalla = new DetalleFalla();
+                    detalleFalla.setServicio(servicio);
+                    detalleFalla.setFalla(fallaService.findOne(id_falla[i]));
+                    detalleFalla.setEstado_detalleFalla("A");
+                    detalleFalla.setFecha_registro(new Date());
+                    detalleFallaService.save(detalleFalla);
+                }
+            }
+			
+            flash.addAttribute("validado", "Se ah Editado Con Exito el Servicio N°"+servicio.getId_servicio());
+           
+            return "redirect:/hardware-servicio/";
 		} else {
 			return "redirect:/hardware/login";
 		}

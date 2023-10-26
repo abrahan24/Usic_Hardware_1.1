@@ -40,52 +40,31 @@
                     <div class="card">
                         <div class="body">
                             <div th:replace="layaut/layaut :: alert"></div>
-                            <div class="alert alert-danger text-center">
-                                <strong>FALLAS SELECCIONADAS (CHECKED)</strong>
-                            </div>
-                            <form action="../../../../hardware/servicio" method="POST">
-                                
-                                <input type="hidden" th:field="${servicio.id_servicio}">
-                                
+                            <form action="../../../../hardware-servicio/edit_servicio" method="POST">
                                 <div class="alert alert-danger text-center">
-                                    <strong>DATOS DEL EQUIPO</strong>
+                                    <strong>FALLAS SELECCIONADAS (CHECKED)</strong>
                                 </div>
-                                <label >CODIGO UAP</label>
-                                    <div>
-                                        <select name="id_almacen" style="width: 100%" id="s1" class="js-states form-control" onchange="buscar()" required>
-                                            <option selected disable hidden ></option>
-                                            <th:block th:each="al : ${almacenes}">
-                                                <option th:value="${al.id_almacen}" th:text="${al.cod_equipo}"></option>
-                                            </th:block>
-                                        </select>
-                                        
-                                    </div>
-                                    
-                                  <br>
-                                  <div id="replace_div">
-                                    
-                                  </div>
-                                    <label >ACCESORIOS </label><br>
-                                    <br>
-                                    <div <div class="row clearfix">
-                                    <div class="col-sm-3">
-                                        <div class="demo-switch-title"></div>
-                                        <div class="switch">
-                                            <label>NO<input name="accesorio" type="checkbox"><span class="lever switch-col-red"></span>SI</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                   <div class="alert alert-danger text-center">
-                                        <strong>POSIBLES FALLAS</strong>
-                                    </div>
-                                    <div class="demo-checkbox">
-                                        <th:block th:each="fe : ${tipoequipo.fallaEquipos}" th:if="${fe.estado != 'X'}">
-                                            <input name="id_falla" th:value="${fe.falla.id_falla}" type="checkbox" th:id="${fe.falla.id_falla}" class="filled-in chk-col-red"  />
-                                            <label th:text="${fe.falla.falla}" th:for="${fe.falla.id_falla}">RED</label>
+                                <input type="hidden" th:field="${servicio.id_servicio}">
+                                <div class="demo-checkbox">
+                                    <th:block th:each="det : ${servicio.detalleFallas}" th:if="${det.estado_detalleFalla != 'X'}">
+                                        <input th:value="${det.falla.id_falla}" type="checkbox" th:id="${det.id_detallefalla}"
+                                            class="chk-col-red" checked disabled/>
+                                        <label th:text="${det.falla.falla}" th:for="${det.id_detallefalla}" >RED</label>
                                     </th:block>
-                                    
-                                    </div>
-                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
+                                </div>
+                                <br>       
+                                <div class="alert alert-danger text-center">
+                                    <strong>SELECCIONE POSIBLES FALLAS NUEVAS</strong>
+                                </div>
+                                <div class="demo-checkbox">
+                                    <th:block th:each="fe : ${tipoequipo.fallaEquipos}" th:if="${fe.estado != 'X'}">
+                                        <input name="id_falla" th:value="${fe.falla.id_falla}" type="checkbox" th:id="${fe.falla.id_falla}"
+                                            class="filled-in chk-col-red" />
+                                        <label th:text="${fe.falla.falla}" th:for="${fe.falla.id_falla}">RED</label>
+                                    </th:block>
+                            
+                                </div>
+                                <button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
                             </form>
                         </div>
                     </div>
@@ -94,22 +73,6 @@
             
     </section>
 
-
-    <script>
-        function buscar() {
-			//call function when page is loaded
-			getContent();
-			//set on change listener
-			$('#s1').change(getContent);
-			function getContent() {
-				//create url to request fragment
-				var url = "../../../../hardware/almacen/"
-						+ $('#s1').val();
-				//load fragment and replace content
-				$('#replace_div').load(url);
-			}
-		}
-    </script>
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 
@@ -158,16 +121,7 @@
    
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script>
-       $("#s1").select2({
-           placeholder: "Seleccione...",
-           allowClear: true
-       });
-       $("#s2").select2({
-        placeholder: "Seleccione...",
-        allowClear: true
-    });
-    </script>
+    
 </body>
 
 </html>
