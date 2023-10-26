@@ -139,9 +139,11 @@
                                 <th scope="row" width="95%" class="text-md-start" style="text-transform:uppercase" th:text="${'REF.'+baja.ref_baja}"></th>
                             </tr>
                             <tr>
-                                <td colspan="2" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() == 1}"  th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                <td colspan="2" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() == 1}"
+                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
                                 </td>
-                                <td colspan="2" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() > 1}"  th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Los Equipos solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                <td colspan="2" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() > 1}"
+                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Los Equipos solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
                                 </td>
                             </tr>
                             <tr>

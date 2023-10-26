@@ -6,11 +6,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.zxing.qrcode.encoder.QRCode;
@@ -105,7 +113,7 @@ public class IndexController {
         return "formCliente";
     }
 
-    @RequestMapping(value = "verificar/{id}")
+    @RequestMapping(value = "/verificar/{id}")
     public String verificar_id(Model model , @PathVariable("id")Long id,RedirectAttributes flash,@RequestParam(name = "succes",required = false) String succes){
 
         if (succes != null) {
@@ -116,8 +124,25 @@ public class IndexController {
     }
     
     @RequestMapping(value = "/verificar", method = RequestMethod.POST)
-    public String verificar(Model model, @RequestParam("ci")String ci, @RequestParam("id_tipoequipo")Long id_tipoequipo,RedirectAttributes flash){
-        Persona persona= personaService.getCIpersona(ci);
+    public String verificar(Model model, @RequestParam("dato")String dato, @RequestParam("id_tipoequipo")Long id_tipoequipo,RedirectAttributes flash){
+        Persona persona= personaService.getCIpersona(dato);
+
+        Map<String, Object> requests = new HashMap<String, Object>();
+
+        requests.put("usuario", dato);
+
+        String url = "https://digital.uap.edu.bo/api/londra/api/londraPost/v1/personaLondra/obtenerDatos";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<HashMap> req = new HttpEntity(requests, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);
+
         if (persona!=null) {
             model.addAttribute("persona", persona);
         }else{
@@ -192,6 +217,14 @@ public class IndexController {
 		model.addAttribute("almacen", almacenService.findOne(id_almacen));
        
 		return "content :: content1";
+	}
+
+    @RequestMapping(value = "/personas/{dato}")
+	public String getContent3(@PathVariable(value = "dato")String dato, Model model, HttpServletRequest request){
+	
+		model.addAttribute("personas", personaService.getPersonas_Nombre_Or_Ci(dato));
+       
+		return "content :: content3";
 	}
 
     @RequestMapping(value = "/seguimiento/{id_servicio}")

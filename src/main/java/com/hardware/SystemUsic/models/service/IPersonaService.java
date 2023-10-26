@@ -15,5 +15,7 @@ public interface IPersonaService {
 	public void delete(Long id);
 
 	public Persona getCIpersona(String ci);
+
+	public List<Persona>getPersonas_Nombre_Or_Ci(String dato);
 }
 

@@ -205,7 +205,7 @@
                                                 <th width="10%">Nombre Solicitante</th>
                                                 <th width="10%">Unidad Funcional</th>
                                                 <th width="5%">Codigo De Equipo</th>
-                                                <th width="5%">Tipo Equipo</th>
+                                                <th width="5%">Tipo De Servicio</th>
                                                 <th width="10%">Estado de Equipo</th>
                                                 <th width="5%">Fecha Registro</th>
                                                 <th width="5%">Colaborador</th>
@@ -234,8 +234,9 @@
                                                 <td th:text="${'N°'+ser.id_servicio}"></td>
                                                 <td th:text="${ser.persona.nombre + ' ' + ser.persona.ap_paterno + ' ' + ser.persona.ap_materno}"></td>
                                                 <td th:text="${ser.persona.unidad.unidad}"> </td>
-                                                <td th:text="${ser.almacen.cod_equipo}"></td>
-                                                <td th:text="${ser.tipoEquipo.equipo}"></td>
+                                                <td th:utext="${ser.almacen.cod_equipo+'<br>'+ser.tipoEquipo.equipo}"></td>
+                                                <td th:if="${ser.tiposervicio != null}" th:text="${ser.tiposervicio.nom_TipoServicio}"></td>
+                                                <td th:if="${ser.tiposervicio == null}" th:text="${'MANTENIMIENTO CORRECTIVO'}"></td>
                                                 <td >
                                                     <th:block th:each="det : ${ser.detalleFallas}" th:if="${det.estado_detalleFalla != 'X'}">
                                                         <ul >
@@ -307,8 +308,8 @@
                                                 <th>Codigo Servicio</th>
                                                 <th>Nombre Solicitante</th>
                                                 <th>Unidad Funcional</th>
-                                                <th>Codigo De Equipo</th>
-                                                <th>Tipo Equipo</th>
+                                                <th width="5%">Codigo De Equipo</th>
+                                                <th width="5%">Tipo De Servicio</th>
                                                 <th>Estado de Equipo</th>
                                                 <th>Fecha Registro</th>
                                                 <th>Colaborador</th>
@@ -340,7 +341,7 @@
                                                 <th width="10%">Nombre Solicitante</th>
                                                 <th width="10%">Unidad Funcional</th>
                                                 <th width="5%">Codigo De Equipo</th>
-                                                <th width="5%">Tipo Equipo</th>
+                                                <th width="5%">Tipo De Servicio</th>
                                                 <th width="10%">Estado de Equipo</th>
                                                 <th width="5%">Fecha Registro</th>
                                                 <th width="5%">Colaborador</th>
@@ -369,8 +370,9 @@
                                                 <td th:text="${'N°'+ser.id_servicio}"></td>
                                                 <td th:text="${ser.persona.nombre + ' ' + ser.persona.ap_paterno + ' ' + ser.persona.ap_materno}"></td>
                                                 <td th:text="${ser.persona.unidad.unidad}"> </td>
-                                                <td th:text="${ser.almacen.cod_equipo}"></td>
-                                                <td th:text="${ser.tipoEquipo.equipo}"></td>
+                                                <td th:utext="${ser.almacen.cod_equipo+'<br>'+ser.tipoEquipo.equipo}"></td>
+                                                <td th:if="${ser.tiposervicio != null}" th:text="${ser.tiposervicio.nom_TipoServicio}"></td>
+                                                <td th:if="${ser.tiposervicio == null}" th:text="${'MANTENIMIENTO CORRECTIVO'}"></td>
                                                 <td >
                                                     <th:block th:each="det : ${ser.detalleFallas}">
                                                         <ul >
@@ -442,8 +444,8 @@
                                                 <th>Codigo Servicio</th>
                                                 <th>Nombre Solicitante</th>
                                                 <th>Unidad Funcional</th>
-                                                <th>Codigo De Equipo</th>
-                                                <th>Tipo Equipo</th>
+                                                <th width="5%">Codigo De Equipo</th>
+                                                <th width="5%">Tipo De Servicio</th>
                                                 <th>Estado de Equipo</th>
                                                 <th>Fecha Registro</th>
                                                 <th>Colaborador</th>

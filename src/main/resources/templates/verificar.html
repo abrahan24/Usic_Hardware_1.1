@@ -49,20 +49,36 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                BUSCAR USUARIO POR CI
+                                BUSCAR USUARIO POR<br> CI / NOMBRE / COD FUNCIONARIO
                             </h2>
                         </div>
                         <div class="body">
                             <div th:replace="layaut/layaut :: alert2"></div>
-                            <form action="../../../../hardware/verificar" method="POST">
+                            <!-- <form action="../../../../hardware/verificar" method="POST"> -->
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="text" id="ci" name="ci" class="form-control" required>
-                                        <input type="hidden" th:field="${tipoequipo.id_tipoequipo}" >
+                                        <input type="text" name="dato" class="form-control"  required>
+                                        
                                     </div>
                                 </div>
-                                <button  class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
-                            </form>
+                                <!-- <button  class="btn btn-primary m-t-15 waves-effect">ENVIAR</button> -->
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                SELECCIONE PERSONA
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <div th:replace="layaut/layaut :: alert2"></div>
+                            <div id="replace_div">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,6 +87,18 @@
     </section>
 
 
+    <script>
+        document.querySelector('input[name="dato"]').addEventListener('keyup', function () {
+            // Obtiene el valor del input
+            var valor = this.value;
+
+            // Crea la URL de la solicitud
+            var url = "../../../../hardware/personas/" + valor;
+
+            // Carga el contenido en el elemento con id 'replace_div'
+            $('#replace_div').load(url);
+        });
+    </script>
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 

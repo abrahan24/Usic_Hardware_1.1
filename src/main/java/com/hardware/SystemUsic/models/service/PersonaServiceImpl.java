@@ -42,5 +42,11 @@ public class PersonaServiceImpl implements IPersonaService{
         
         return personaDao.getCIpersona(ci);
     }
+
+    @Override
+    public List<Persona> getPersonas_Nombre_Or_Ci(String dato) {
+        // TODO Auto-generated method stub
+        return personaDao.getPersonas_Nombre_Or_Ci(dato);
+    }
     
 }

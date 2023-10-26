@@ -64,6 +64,44 @@
       </table>
     </div>
   </div>
+  <div th:fragment="content3">
+    <div class="body table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>NOMBRE COMPLETO</th>
+            <th>CI</th>
+            <th>CARGO</th>
+            <th>UNIDAD FUNCIONAL</th>
+            <th>SELECCIONE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="p, cont : ${personas}" th:if="${p.estado != 'X'}">
+          
+            <td th:text="${cont.count}"></td>
+            <td  th:text="${p.nombre+' '+p.ap_paterno+' '+p.ap_materno}">
+            </td>
+            <td th:text="${p.ci}"></td>
+            <td th:text="${p.cargo.cargo}"></td>
+            <td th:if="${p.unidad != null}" th:text="${p.unidad.unidad}"></td>
+            <td>
+              <form action="" method="post">
+                <input type="hidden" name="id_persona" th:value="${p.id_persona}">
+                <!-- <input type="hidden" th:field="${tipoequipo.id_tipoequipo}" > -->
+              </form>
+              <a type="submit" class="btn btn-success waves-effect">
+                <i class="material-icons">home</i>
+                <span>Seleccionar</span>
+              </a>
+            </td>
+          </tr>
+  
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 
 </html>

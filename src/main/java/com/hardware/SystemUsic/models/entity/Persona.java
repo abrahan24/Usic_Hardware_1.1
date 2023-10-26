@@ -14,8 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity 
 @Table(name = "persona")
+@Setter
+@Getter
 public class Persona implements Serializable{
 
     private static final long serialVersionUID = 2629195288020321924L;
@@ -28,6 +33,7 @@ public class Persona implements Serializable{
     private String ap_paterno;
     private String ap_materno;
     private Integer celular;
+    private String cod_funcionario;
 
 //Tabla Cargo
     @ManyToOne(fetch = FetchType.LAZY)
