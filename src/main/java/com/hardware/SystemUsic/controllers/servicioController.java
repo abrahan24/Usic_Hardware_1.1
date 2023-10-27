@@ -855,21 +855,6 @@ public class servicioController {
 		}
     }
 
-    // @RequestMapping("/informe_tecnico_baja/{id_servicio}")
-    // public String informeTecnicoBaja(Model model,@PathVariable("id_servicio")Long id_servicio,RedirectAttributes flash, HttpServletRequest request ){
-    //     if (request.getSession().getAttribute("persona") != null) {
-           
-    //         Servicio servicio = servicioService.findOne(id_servicio);
-            
-    //         model.addAttribute("servicio", servicio);
-    //         model.addAttribute("almacen", almacenService.getAllAlmacenTipoEquipo(servicio.getTipoEquipo().getId_tipoequipo()));
-            
-    //         return "informe_baja";
-	// 	} else {
-	// 		return "redirect:/hardware/login";
-	// 	}
-    // }
-
     @RequestMapping(value = "/add_TipoServicio",method = RequestMethod.POST)
     public String Seleccion_TipoServicio(RedirectAttributes flash, HttpServletRequest request, @RequestParam("aux")Integer aux, @RequestParam(name = "id_TipoServicio",required = false)Long id_TipoServicio){
 

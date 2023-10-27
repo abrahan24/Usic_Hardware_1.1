@@ -87,14 +87,15 @@
             <td th:text="${p.cargo.cargo}"></td>
             <td th:if="${p.unidad != null}" th:text="${p.unidad.unidad}"></td>
             <td>
-              <form action="" method="post">
+              <form action="../../../../hardware/verificar" method="POST">
                 <input type="hidden" name="id_persona" th:value="${p.id_persona}">
-                <!-- <input type="hidden" th:field="${tipoequipo.id_tipoequipo}" > -->
+                <input type="hidden" th:field="${tipoEquipo.id_tipoequipo}">
+                <button type="submit" class="btn btn-success waves-effect">
+                  <i class="material-icons">check</i>
+                  <span>Seleccionar</span>
+                </button>
               </form>
-              <a type="submit" class="btn btn-success waves-effect">
-                <i class="material-icons">home</i>
-                <span>Seleccionar</span>
-              </a>
+              
             </td>
           </tr>
   

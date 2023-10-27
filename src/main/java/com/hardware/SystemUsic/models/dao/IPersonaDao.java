@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.hardware.SystemUsic.models.entity.Almacen;
 import com.hardware.SystemUsic.models.entity.Persona;
 
 public interface IPersonaDao extends CrudRepository<Persona, Long>{

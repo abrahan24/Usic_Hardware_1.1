@@ -124,24 +124,24 @@ public class IndexController {
     }
     
     @RequestMapping(value = "/verificar", method = RequestMethod.POST)
-    public String verificar(Model model, @RequestParam("dato")String dato, @RequestParam("id_tipoequipo")Long id_tipoequipo,RedirectAttributes flash){
-        Persona persona= personaService.getCIpersona(dato);
+    public String verificar(Model model, @RequestParam("id_persona")Long id_persona, @RequestParam("id_tipoequipo")Long id_tipoequipo,RedirectAttributes flash){
+        Persona persona= personaService.findOne(id_persona);
 
-        Map<String, Object> requests = new HashMap<String, Object>();
+        // Map<String, Object> requests = new HashMap<String, Object>();
 
-        requests.put("usuario", dato);
+        // requests.put("usuario", dato);
 
-        String url = "https://digital.uap.edu.bo/api/londra/api/londraPost/v1/personaLondra/obtenerDatos";
+        // String url = "https://digital.uap.edu.bo/api/londra/api/londraPost/v1/personaLondra/obtenerDatos";
 
-        HttpHeaders headers = new HttpHeaders();
+        // HttpHeaders headers = new HttpHeaders();
 
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        // headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<HashMap> req = new HttpEntity(requests, headers);
+        // HttpEntity<HashMap> req = new HttpEntity(requests, headers);
 
-        RestTemplate restTemplate = new RestTemplate();
+        // RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);
+        // ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);
 
         if (persona!=null) {
             model.addAttribute("persona", persona);
@@ -219,9 +219,12 @@ public class IndexController {
 		return "content :: content1";
 	}
 
-    @RequestMapping(value = "/personas/{dato}")
-	public String getContent3(@PathVariable(value = "dato")String dato, Model model, HttpServletRequest request){
+    @RequestMapping(value = "/personas/{dato}/{id_tipoequipo}")
+	public String getContent3(@PathVariable(value = "dato")String dato,@PathVariable("id_tipoequipo")Long id_tipoequipo, Model model, HttpServletRequest request){
 	
+        TipoEquipo tipoEquipo = tipoEquipoService.findOne(id_tipoequipo);
+
+        model.addAttribute("tipoEquipo", tipoEquipo);
 		model.addAttribute("personas", personaService.getPersonas_Nombre_Or_Ci(dato));
        
 		return "content :: content3";

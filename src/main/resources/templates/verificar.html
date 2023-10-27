@@ -54,15 +54,12 @@
                         </div>
                         <div class="body">
                             <div th:replace="layaut/layaut :: alert2"></div>
-                            <!-- <form action="../../../../hardware/verificar" method="POST"> -->
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="text" name="dato" class="form-control"  required>
-                                        
-                                    </div>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="dato" class="form-control" required>
+                                    <input type="hidden" th:field="${tipoequipo.id_tipoequipo}">
                                 </div>
-                                <!-- <button  class="btn btn-primary m-t-15 waves-effect">ENVIAR</button> -->
-                            <!-- </form> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,9 +88,10 @@
         document.querySelector('input[name="dato"]').addEventListener('keyup', function () {
             // Obtiene el valor del input
             var valor = this.value;
-
+            // Obtiene el valor del input oculto
+            var valorIdTipoEquipo = document.querySelector('input[name="id_tipoequipo"]').value;
             // Crea la URL de la solicitud
-            var url = "../../../../hardware/personas/" + valor;
+            var url = "../../../../hardware/personas/" + valor+"/"+valorIdTipoEquipo;
 
             // Carga el contenido en el elemento con id 'replace_div'
             $('#replace_div').load(url);
