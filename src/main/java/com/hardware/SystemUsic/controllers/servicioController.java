@@ -694,8 +694,6 @@ public class servicioController {
         }
     }
 
-    
-
     @RequestMapping(value = "/add_colaborador", method = RequestMethod.POST)
     public String addColaborador(RedirectAttributes flash, HttpServletRequest request, @RequestParam("aux") Integer aux,
             @RequestParam("id_persona") Long id_persona) {

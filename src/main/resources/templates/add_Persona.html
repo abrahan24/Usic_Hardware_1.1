@@ -109,7 +109,7 @@
                                     <strong>CARGO</strong>
                                 </div>
                                 <div>
-                                    <select name="id_cargo" style="width: 100%" id="s1" class="js-states form-control" required>
+                                    <select name="id_cargo" style="width: 100%" id="s1" class="js-states form-control"  required>
                                         <option selected disable hidden ></option>
                                         <th:block th:each="c : ${cargos}">
                                             <th:block th:if="${persona.cargo != null}">
@@ -133,9 +133,20 @@
 
         </div>
     </section>
-
-
+ 
+    <script>
+        // Pide al usuario que ingrese su COD Funcionario
+        var nombre = prompt("Por favor, ingrese su COD Funcionario:");
     
+        // Verifica si el usuario ingresó un nombre
+        if (nombre !== null && nombre.trim() !== "") {
+            // Muestra un saludo en la página
+            alert(nombre);
+        } else {
+            // Maneja el caso en el que el usuario cancela la solicitud o no ingresa nada
+            alert("No ingresó el COD Funcionario. Por favor, regístrelo de manera manual.");
+        }
+    </script>
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 
