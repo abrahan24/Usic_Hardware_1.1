@@ -136,12 +136,44 @@
  
     <script>
         // Pide al usuario que ingrese su COD Funcionario
-        var nombre = prompt("Por favor, ingrese su COD Funcionario:");
-    
+        var cod = prompt("Por favor, ingrese su COD Funcionario:");
+
+            const apiUrlAdmin = 'https://digital.uap.edu.bo/api/londra/api/londraPost/v1/personaLondra/obtenerDatos'; // API DE ADMINISTRATIVOS POR COD FUNCIONARIO
+
+            const adminData = {
+                usuario: cod
+            };
+            const adminHeaders = {
+                'Content-Type': 'application/json'
+            };
+
+            const adminOptions = {
+                method: 'POST',
+                headers: adminHeaders,
+                body: JSON.stringify(adminData)
+            };
+
+            
+
+            fetch(apiUrlAdmin, adminOptions)
+                .then(response => {
+                    if (!response.ok || response.status !== 200) {
+                        throw new Error('Error en la solicitud de la API');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Trabajar con los datos JSON
+                    console.log('Datos recibidos:', data);
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+
         // Verifica si el usuario ingresó un nombre
-        if (nombre !== null && nombre.trim() !== "") {
+        if (cod !== null && cod.trim() !== "") {
             // Muestra un saludo en la página
-            alert(nombre);
+            alert(cod);
         } else {
             // Maneja el caso en el que el usuario cancela la solicitud o no ingresa nada
             alert("No ingresó el COD Funcionario. Por favor, regístrelo de manera manual.");
