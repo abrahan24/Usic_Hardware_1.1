@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layaut/layaut :: head"></head>
+<head th:replace="layaut/layaut :: head">
+
+</head>
 
 <body class="theme-red">
     <!-- Page Loader -->
@@ -58,6 +60,7 @@
                             <form action="../../../../hardware-servicio/add_persona" method="POST">
                                 <label >NOMBRES</label>
                                 <input type="hidden" name="id_persona" th:field="${persona.id_persona}">
+                                <input type="hidden" name="cod_funcionario" th:field="${persona.cod_funcionario}">
                                 <div class="form-group">
                                     <div class="form-line">
                                         <input type="text" name="nombre" th:field="${persona.nombre}" class="form-control" required>
@@ -134,51 +137,7 @@
         </div>
     </section>
  
-    <script>
-        // Pide al usuario que ingrese su COD Funcionario
-        var cod = prompt("Por favor, ingrese su COD Funcionario:");
-
-            const apiUrlAdmin = 'https://digital.uap.edu.bo/api/londra/api/londraPost/v1/personaLondra/obtenerDatos'; // API DE ADMINISTRATIVOS POR COD FUNCIONARIO
-
-            const adminData = {
-                usuario: cod
-            };
-            const adminHeaders = {
-                'Content-Type': 'application/json'
-            };
-
-            const adminOptions = {
-                method: 'POST',
-                headers: adminHeaders,
-                body: JSON.stringify(adminData)
-            };
-
-            
-
-            fetch(apiUrlAdmin, adminOptions)
-                .then(response => {
-                    if (!response.ok || response.status !== 200) {
-                        throw new Error('Error en la solicitud de la API');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Trabajar con los datos JSON
-                    console.log('Datos recibidos:', data);
-                })
-                .catch(error => {
-                    console.error('Error en la solicitud:', error);
-                });
-
-        // Verifica si el usuario ingresó un nombre
-        if (cod !== null && cod.trim() !== "") {
-            // Muestra un saludo en la página
-            alert(cod);
-        } else {
-            // Maneja el caso en el que el usuario cancela la solicitud o no ingresa nada
-            alert("No ingresó el COD Funcionario. Por favor, regístrelo de manera manual.");
-        }
-    </script>
+    <script src="../../../../js/api.js"></script>
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 

@@ -507,21 +507,7 @@ public class servicioController {
         }
     }
 
-    @RequestMapping("/lista_personas")
-    public String lista_Personas(Model model, @RequestParam(name = "validado", required = false) String validado,
-            RedirectAttributes flash, HttpServletRequest request) {
-
-        if (request.getSession().getAttribute("persona") != null) {
-
-            if (validado != null) {
-                model.addAttribute("validado", validado);
-            }
-            model.addAttribute("personas", personaService.findAll());
-            return "lista_Persona";
-        } else {
-            return "redirect:/hardware/login";
-        }
-    }
+    
 
     @RequestMapping("/editar-unidad/{id_unidad}")
     public String editar_Unidad(Model model, @PathVariable("id_unidad") Long id_unidad, RedirectAttributes flash,
@@ -584,38 +570,6 @@ public class servicioController {
         }
     }
 
-    @RequestMapping("/editar-persona/{ip_persona}")
-    public String editar_Persona(Model model, @PathVariable("ip_persona") Long ip_persona, RedirectAttributes flash,
-            HttpServletRequest request) {
-
-        if (request.getSession().getAttribute("persona") != null) {
-            Persona persona = personaService.findOne(ip_persona);
-
-            model.addAttribute("persona", persona);
-            model.addAttribute("cargos", cargoService.findAll());
-            model.addAttribute("unidades", unidadService.findAll());
-            return "add_Persona";
-        } else {
-            return "redirect:/hardware/login";
-        }
-    }
-
-    @RequestMapping("/eliminar-persona/{ip_persona}")
-    public String eliminar_Persona(Model model, @PathVariable("ip_persona") Long ip_persona, RedirectAttributes flash,
-            HttpServletRequest request) {
-
-        if (request.getSession().getAttribute("persona") != null) {
-            Persona persona = personaService.findOne(ip_persona);
-
-            persona.setEstado("X");
-            personaService.save(persona);
-            flash.addAttribute("validado", "Persona Eliminada Con Exito!!");
-            return "redirect:/hardware-servicio/lista_personas";
-        } else {
-            return "redirect:/hardware/login";
-        }
-    }
-
     @RequestMapping(value = "/add_cargo", method = RequestMethod.POST)
     public String add_Cargo(Model model, @RequestParam(name = "id_cargo", required = false) Long id_cargo,
             @RequestParam("cargo") String cargo_nom, RedirectAttributes flash, HttpServletRequest request) {
@@ -656,43 +610,7 @@ public class servicioController {
         }
     }
 
-    @RequestMapping("/add_Persona")
-    public String add_Persona_Service(Model model, @RequestParam(name = "validado", required = false) String validado,
-            RedirectAttributes flash, HttpServletRequest request) {
-
-        if (request.getSession().getAttribute("persona") != null) {
-
-            if (validado != null) {
-                model.addAttribute("validado", validado);
-            }
-            model.addAttribute("persona", new Persona());
-            model.addAttribute("unidades", unidadService.findAll());
-            model.addAttribute("cargos", cargoService.findAll());
-
-            return "add_Persona";
-        } else {
-            return "redirect:/hardware/login";
-        }
-    }
-
-    @RequestMapping(value = "/add_persona", method = RequestMethod.POST)
-    public String add_Persona(Model model, @Validated Persona persona,
-            @RequestParam(name = "id_unidad", required = false) Long id_unidad,
-            @RequestParam(name = "id_cargo", required = false) Long id_cargo, RedirectAttributes flash,
-            HttpServletRequest request) {
-
-        if (request.getSession().getAttribute("persona") != null) {
-            persona.setCargo(cargoService.findOne(id_cargo));
-            persona.setUnidad(unidadService.findOne(id_unidad));
-            personaService.save(persona);
-
-            flash.addAttribute("validado", "Persona Agregada Con Exito!");
-
-            return "redirect:/hardware-servicio/add_Persona";
-        } else {
-            return "redirect:/hardware/login";
-        }
-    }
+    
 
     @RequestMapping(value = "/add_colaborador", method = RequestMethod.POST)
     public String addColaborador(RedirectAttributes flash, HttpServletRequest request, @RequestParam("aux") Integer aux,
