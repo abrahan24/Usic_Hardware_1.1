@@ -59,6 +59,7 @@ public class PersonaController {
 
             if (personaService.getCIpersona(persona.getCi()) == null) {
                 // Si no existe, continúa con el proceso de guardar
+                persona.setEstado("A");
                 persona.setCargo(cargoService.findOne(id_cargo));
                 persona.setUnidad(unidadService.findOne(id_unidad));
                 personaService.save(persona);
@@ -66,6 +67,27 @@ public class PersonaController {
             } else {
                 flash.addAttribute("succes", "Ya existe una Persona con el mismo CI.");
             }
+            return "redirect:/hardware-servicio/lista_personas";
+        } else {
+            return "redirect:/hardware/login";
+        }
+    }
+
+    @RequestMapping(value = "/add_Persona", method = RequestMethod.POST)
+    public String add_Persona_edit(Model model, @Validated Persona persona,
+            @RequestParam(name = "id_unidad", required = false) Long id_unidad,
+            @RequestParam(name = "id_cargo", required = false) Long id_cargo, RedirectAttributes flash,
+            HttpServletRequest request) {
+        
+        if (request.getSession().getAttribute("persona") != null) {
+
+            persona.setEstado("A");
+            persona.setCargo(cargoService.findOne(id_cargo));
+            persona.setUnidad(unidadService.findOne(id_unidad));
+            personaService.save(persona);
+
+            flash.addAttribute("validado", "Persona Con CI:"+persona.getCi()+" Editada Con Éxito!");
+
             return "redirect:/hardware-servicio/lista_personas";
         } else {
             return "redirect:/hardware/login";
