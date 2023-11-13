@@ -26,9 +26,7 @@ public class Unidad implements Serializable{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidad", fetch = FetchType.LAZY)
 	private List<Persona> personas;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "unidad", fetch = FetchType.LAZY)
-	private List<Previo> previos;
-
+   
 
     public Long getId_unidad() {
         return id_unidad;
@@ -69,15 +67,4 @@ public class Unidad implements Serializable{
         this.estado = estado;
     }
 
-
-    public List<Previo> getPrevios() {
-        return previos;
-    }
-
-
-    public void setPrevios(List<Previo> previos) {
-        this.previos = previos;
-    }
-
-    
 }
