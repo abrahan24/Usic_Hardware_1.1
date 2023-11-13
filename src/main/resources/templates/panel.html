@@ -98,7 +98,8 @@
                                                 </td>
                                                 <td th:text="${'N°'+ser.id_servicio}"></td>
                                                 <td th:text="${ser.persona.nombre + ' ' + ser.persona.ap_paterno + ' ' + ser.persona.ap_materno}"></td>
-                                                <td th:text="${ser.persona.unidad.unidad}"> </td>
+                                                <td th:if="${ser.persona.unidad != null}" th:text="${ser.persona.unidad.unidad}"> </td>
+                                                <td th:if="${ser.persona.unidad == null}" th:text="${'SIN UNIDAD'}"> </td>
                                                 <td th:text="${ser.almacen.cod_equipo}"></td>
                                                 <td th:text="${ser.tipoEquipo.equipo}"></td>
                                                 <td >
