@@ -137,14 +137,14 @@
                             </tr>
                             <tr>
                                 <th colspan="2" scope="row" style="text-align: end;" width="5%" th:text="${'FECHA: '}"></th>
-                                <th colspan="3" style="text-transform:uppercase" width="20%" th:text="${#dates.format(baja.fecha_baja, 'dd MMMM yyyy')}"></th>
+                                <td colspan="3" style="text-transform:uppercase" width="20%" th:text="${#dates.format(baja.fecha_baja, 'dd MMMM yyyy')}"></td>
                             </tr>
                             <tr>
                                 <td colspan="4" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() == 1}"
-                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo (A) cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo (A) cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE: <b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
                                 </td>
                                 <td colspan="4" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() > 1}"
-                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo (A) cordialmente y a la vez hacerle llegar el Informe Técnico del Los Equipos solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo (A) cordialmente y a la vez hacerle llegar el Informe Técnico del Los Equipos solicitado en CITE: <b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
                                 </td>
                             </tr>
                             <tr>
