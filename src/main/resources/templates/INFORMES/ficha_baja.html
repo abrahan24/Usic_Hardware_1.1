@@ -132,7 +132,7 @@
                             
                             <tr>
                                 <th colspan="2" scope="row" style="text-align: end;" width="5%" th:text="${'REF.'}"></th>
-                                <td style="text-transform:uppercase" width="80%" th:text="${baja.ref_baja}"></td>
+                                <td style="text-transform:uppercase" width="80%" th:utext="${'<b>'+baja.ref_baja+''</b>}"></td>
                                 <!-- <th colspan="3" style="text-transform:uppercase" width="20%" th:text="${#dates.format(baja.fecha_baja, 'dd MMMM yyyy')}"></th> -->
                             </tr>
                             <tr>
