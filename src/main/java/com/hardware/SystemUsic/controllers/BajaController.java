@@ -182,9 +182,31 @@ public class BajaController {
             Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
             usuario = usuarioService.findOne(usuario.getId_usuario());
 
-            model.addAttribute("baja", bajaService.findOne(id_baja));
-            model.addAttribute("per_dirig",baja.getPersona().getGradoAcademico().getSigla_gradoAcademico()+" "+baja.getPersona().getNombre()+" "+baja.getPersona().getAp_paterno()+" "+baja.getPersona().getAp_materno()+"<br><b>"+baja.getPersona().getCargo().getCargo() );
-            model.addAttribute("user_tec",usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico()+" "+ usuario.getPersona().getNombre()+" "+usuario.getPersona().getAp_paterno()+" "+usuario.getPersona().getAp_materno()+"<br><b>"+usuario.getPersona().getCargo().getCargo());
+            if (baja.getPersona().getGradoAcademico() != null) {
+
+                model.addAttribute("baja", bajaService.findOne(id_baja));
+                model.addAttribute("per_dirig",
+                        baja.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
+                                + baja.getPersona().getNombre() + " " + baja.getPersona().getAp_paterno() + " "
+                                + baja.getPersona().getAp_materno() + "<br><b>"
+                                + baja.getPersona().getCargo().getCargo());
+                model.addAttribute("user_tec", usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
+                        + usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno() + " "
+                        + usuario.getPersona().getAp_materno() + "<br><b>"
+                        + usuario.getPersona().getCargo().getCargo());
+            } else {
+                model.addAttribute("baja", bajaService.findOne(id_baja));
+                model.addAttribute("per_dirig",
+                        baja.getPersona().getNombre() + " " + baja.getPersona().getAp_paterno() + " "
+                                + baja.getPersona().getAp_materno() + "<br><b>"
+                                + baja.getPersona().getCargo().getCargo());
+                model.addAttribute("user_tec",
+                        usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " " +
+                                usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno() + " "
+                                + usuario.getPersona().getAp_materno() + "<br><b>"
+                                + usuario.getPersona().getCargo().getCargo());
+            }
+
 
             List<DetalleBaja> detalleBajasFiltrados = baja.getDetalleBajas()
                     .stream()
