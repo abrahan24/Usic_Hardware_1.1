@@ -33,7 +33,7 @@
         }
     
         #tabla0 {
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
 
         #tabla1 {
@@ -116,35 +116,40 @@
                         <tbody>
                            
                             <tr>
-                                <th colspan="2" style="text-align: center;" height="75px" width="1%">A: </th>
+                                <th colspan="2" style="text-align: end;" height="75px" width="5%">A: </th>
                                 <td colspan="3" class="text-md-start" th:utext="${per_dirig}"> </td>
                             </tr>
                             <tr>
-                                <th colspan="2" style="text-align: center;" height="75px" scope="row">VIA: </th>
+                                <th colspan="2" style="text-align: end;" height="75px" scope="row">VIA: </th>
                                 <td colspan="3" class="text-md-start" width="100%">ING. LUIS ENRIQUE VILLCA MAMANI <br><b>JEFE a.i UNIDAD DE
                                         SISTEMAS DE INFORMACIÓN Y
                                         COMUNICACIÓN</b> </td>
                             </tr>
                             <tr>
-                                <th colspan="2" style="text-align: center;" height="75px" scope="row">DE: </th>
+                                <th colspan="2" style="text-align: end;" height="75px" scope="row">DE: </th>
                                 <td colspan="3" class="text-md-start" th:utext="${user_tec}"></td>
                             </tr>
                             
                             <tr>
-                                <th colspan="2" scope="row" style="text-align: center;" width="1%" th:text="${'REF.'}"></th>
+                                <th colspan="2" scope="row" style="text-align: end;" width="5%" th:text="${'REF.'}"></th>
                                 <td style="text-transform:uppercase" width="80%" th:text="${baja.ref_baja}"></td>
+                                <!-- <th colspan="3" style="text-transform:uppercase" width="20%" th:text="${#dates.format(baja.fecha_baja, 'dd MMMM yyyy')}"></th> -->
+                            </tr>
+                            <tr>
+                                <th colspan="2" scope="row" style="text-align: end;" width="5%" th:text="${'FECHA: '}"></th>
                                 <th colspan="3" style="text-transform:uppercase" width="20%" th:text="${#dates.format(baja.fecha_baja, 'dd MMMM yyyy')}"></th>
                             </tr>
                             <tr>
                                 <td colspan="4" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() == 1}"
-                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo (A) cordialmente y a la vez hacerle llegar el Informe Técnico del Equipo solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
                                 </td>
                                 <td colspan="4" style="text-align: justify; text-transform: uppercase;" th:if="${baja.detalleBajas.size() > 1}"
-                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo /a cordialmente y a la vez hacerle llegar el Informe Técnico del Los Equipos solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
+                                    th:utext="${'Tengo a bien dirigirme a su persona para saludarlo (A) cordialmente y a la vez hacerle llegar el Informe Técnico del Los Equipos solicitado en CITE:<b>'+baja.cite+'</b>'+', bajo los argumentos técnicos que a continuación se detalla:'}">
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan="5" > I. DESCRIPCIÓN DEL ESTADO DEL EQUIPO /S</th>
+                                <th colspan="5" th:if="${baja.detalleBajas.size() == 1}" > I. DESCRIPCIÓN DEL ESTADO DEL EQUIPO </th>
+                                <th colspan="5" th:if="${baja.detalleBajas.size() > 1}" > I. DESCRIPCIÓN DEL ESTADO DEL LOS EQUIPOS</th>
                                
                             </tr>
                            

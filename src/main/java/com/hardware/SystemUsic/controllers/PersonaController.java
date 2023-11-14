@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hardware.SystemUsic.models.entity.Persona;
 import com.hardware.SystemUsic.models.service.ICargoService;
+import com.hardware.SystemUsic.models.service.IGradoAcademicoService;
 import com.hardware.SystemUsic.models.service.IPersonaService;
 import com.hardware.SystemUsic.models.service.IUnidadService;
 
@@ -29,6 +30,9 @@ public class PersonaController {
 
     @Autowired
     private IPersonaService personaService;
+
+    @Autowired
+    private IGradoAcademicoService gradoAcademicoService;
 
     @RequestMapping("/add_Persona")
     public String add_Persona_Service(Model model, @RequestParam(name = "validado", required = false) String validado,
@@ -76,7 +80,8 @@ public class PersonaController {
     @RequestMapping(value = "/add_Persona", method = RequestMethod.POST)
     public String add_Persona_edit(Model model, @Validated Persona persona,
             @RequestParam(name = "id_unidad", required = false) Long id_unidad,
-            @RequestParam(name = "id_cargo", required = false) Long id_cargo, RedirectAttributes flash,
+            @RequestParam(name = "id_cargo", required = false) Long id_cargo,
+            @RequestParam("id_gradoAcademico")Long id_gradoAcademico, RedirectAttributes flash,
             HttpServletRequest request) {
         
         if (request.getSession().getAttribute("persona") != null) {
@@ -84,6 +89,7 @@ public class PersonaController {
             persona.setEstado("A");
             persona.setCargo(cargoService.findOne(id_cargo));
             persona.setUnidad(unidadService.findOne(id_unidad));
+            persona.setGradoAcademico(gradoAcademicoService.findOne(id_gradoAcademico));
             personaService.save(persona);
 
             flash.addAttribute("validado", "Persona Con CI:"+persona.getCi()+" Editada Con Éxito!");
@@ -124,6 +130,7 @@ public class PersonaController {
             model.addAttribute("persona", persona);
             model.addAttribute("cargos", cargoService.findAll());
             model.addAttribute("unidades", unidadService.findAll());
+            model.addAttribute("grados", gradoAcademicoService.findAll());
             return "Edit_Persona";
         } else {
             return "redirect:/hardware/login";

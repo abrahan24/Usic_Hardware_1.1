@@ -61,6 +61,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Nombre Completo</th>
+                                                <th>Grado Academico</th>
                                                 <th>Carnet De Identidad</th>
                                                 <th>Celular</th>
                                                 <th>Cargo</th>
@@ -73,6 +74,8 @@
                                             <tr th:each="p : ${personas}" th:if="${p.estado != 'X'}">
                                                 <td th:if="${p.ap_materno == null}" th:text="${p.nombre + ' ' + p.ap_paterno}"></td>
                                                 <td th:if="${p.ap_materno != null}"  th:text="${p.nombre + ' ' + p.ap_paterno + ' ' + p.ap_materno}"></td>
+                                                <td th:if="${p.gradoAcademico != null}"  th:text="${p.gradoAcademico.nom_gradoAcademico}"></td>
+                                                <td th:if="${p.gradoAcademico == null}"  th:text="${'SIN GRADO ACADEMICO'}"></td>
                                                 <td th:text="${p.ci}"></td>
                                                 <td th:text="${p.celular}"></td>
                                                 <td th:if="${p.cargo != null}" th:text="${p.cargo.cargo}"></td>
@@ -93,6 +96,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th>Nombre Completo</th>
+                                                <th>Grado Academico</th>
                                                 <th>Carnet De Identidad</th>
                                                 <th>Celular</th>
                                                 <th>Cargo</th>

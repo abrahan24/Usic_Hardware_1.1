@@ -125,6 +125,23 @@
                                         </th:block>
                                     </select>
                                 </div>
+                                <div class="alert alert-danger text-center">
+                                    <strong>Grado Academico</strong>
+                                </div>
+                                <div>
+                                    <select name="id_gradoAcademico" style="width: 100%" id="s3" class="js-states form-control"  required>
+                                        <option selected disable hidden ></option>
+                                        <th:block th:each="g : ${grados}" th:if="${g.estado_gradoAcademico != 'X'}">
+                                            <th:block th:if="${persona.gradoAcademico != null}">
+                                            <option th:if="${persona.gradoAcademico.id_gradoAcademico != g.id_gradoAcademico }"  th:value="${g.id_gradoAcademico}" th:text="${g.nom_gradoAcademico}"></option>
+                                            <option th:if="${persona.gradoAcademico.id_gradoAcademico == g.id_gradoAcademico }" th:value="${g.id_gradoAcademico}" th:text="${g.nom_gradoAcademico}" selected></option>
+                                            </th:block>
+                                            <th:block th:if="${persona.gradoAcademico == null}">
+                                            <option th:value="${g.id_gradoAcademico}" th:text="${g.nom_gradoAcademico}"></option>
+                                            </th:block>
+                                        </th:block>
+                                    </select>
+                                </div>
                                 <br>
                                 <br><button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
                                 </span>
@@ -182,6 +199,10 @@
            allowClear: true
        });
        $("#s2").select2({
+        placeholder: "Seleccione...",
+        allowClear: true
+    });
+       $("#s3").select2({
         placeholder: "Seleccione...",
         allowClear: true
     });
