@@ -60,6 +60,7 @@
                                 
                                 <div class="body">
                                     <div class="form-group demo-tagsinput-area">
+                                        <input type="hidden" th:name="${'id_usuario'}" th:value="${session.usuario.id_usuario}">
                                         <input type="hidden" th:field="${baja.id_baja}">
                                         <div class="alert alert-danger text-center">
                                             <strong>DIRIGIDO A: </strong>

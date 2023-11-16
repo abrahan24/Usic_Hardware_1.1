@@ -86,7 +86,21 @@ public class BajaController {
                 model.addAttribute("validado", validado);
             }
 
+            for (Baja baja : bajaService.findAll()) {
+                
+                Usuario usuario = usuarioService.findOne(baja.getUsuario_reg().longValue());
+
+                if (usuario != null) {
+                    model.addAttribute("user",
+                            usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
+                                    + usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno()
+                                    + " " + usuario.getPersona().getAp_materno());
+                }
+                 
+            }
+            
             model.addAttribute("bajas", bajaService.findAll());
+           
             
             return "INFORMES/Reporte_Informe_Baja";
 		} else {
@@ -117,6 +131,7 @@ public class BajaController {
     @RequestMapping(value = "/add_informe_baja", method = RequestMethod.POST)
     public String Form_Informe_Baja(Model model, @Validated Baja baja,
             @RequestParam(name = "id_persona", required = false) Long id_persona,
+            @RequestParam(name = "id_usuario",required = false)Integer id_usuario,
             @RequestParam(name = "id_almacen", required = false) Long[] id_almacen,
             @RequestParam MultiValueMap<String, String> params, // Recibir todos los parámetros
             RedirectAttributes flash, HttpServletRequest request) {
@@ -126,6 +141,7 @@ public class BajaController {
             baja.setEstado_baja("A");
             baja.setPersona(personaService.findOne(id_persona));
             baja.setFecha_baja(new Date());
+            baja.setUsuario_reg(id_usuario);
             bajaService.save(baja);
 
             if (id_almacen != null) {
@@ -246,6 +262,7 @@ public class BajaController {
          if (request.getSession().getAttribute("persona") != null) {
             
             Baja baja = bajaService.findOne(id_baja);
+            baja.setFecha_modificacion(new Date());
 
             for (DetalleBaja detalleBaja : baja.getDetalleBajas()) {
                 detalleBaja.setEstado_detalleBaja("X");
