@@ -86,18 +86,18 @@ public class BajaController {
                 model.addAttribute("validado", validado);
             }
 
-            for (Baja baja : bajaService.findAll()) {
+            // for (Baja baja : bajaService.findAll()) {
                 
-                Usuario usuario = usuarioService.findOne(baja.getUsuario_reg().longValue());
+            //     Usuario usuario = usuarioService.findOne(baja.getUsuario_reg().longValue());
 
-                if (usuario != null) {
-                    model.addAttribute("user",
-                            usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
-                                    + usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno()
-                                    + " " + usuario.getPersona().getAp_materno());
-                }
+            //     if (usuario != null) {
+            //         model.addAttribute("user",
+            //                 usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
+            //                         + usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno()
+            //                         + " " + usuario.getPersona().getAp_materno());
+            //     }
                  
-            }
+            // }
             
             model.addAttribute("bajas", bajaService.findAll());
            
