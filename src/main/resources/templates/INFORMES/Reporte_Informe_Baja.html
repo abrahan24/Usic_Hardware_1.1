@@ -65,7 +65,7 @@
                                             <th>Referencia</th>
                                             <th>Cite</th>
                                             <th>Observacion</th>
-                                            <!-- <th>Tec Colaborador</th> -->
+                                            <th>Tec Colaborador</th>
                                             <th>Operación</th>
                                         </tr>
                                     </thead>
@@ -86,8 +86,7 @@
                                             <td th:text="${b.ref_baja}"></td>
                                             <td th:text="${b.cite}"></td>
                                             <td th:text="${b.observacion_baja}"></td>
-                                            <!-- <td th:if="${b.usuario_reg != null}" th:text="${user}"></td>
-                                            <td th:if="${b.usuario_reg == null}" th:text="${'SIN REGISTRO'}"></td> -->
+                                            <td th:text="${b.usuario.persona.nombre+' '+b.usuario.persona.ap_paterno+' '+b.usuario.persona.ap_materno}"></td>
 
                                             <td>
                                                 <a th:href="${'../../../../hardware-servicio/eliminar_ficha_tecnica_baja/'+ b.id_baja}"
@@ -119,7 +118,7 @@
                                             <th>Referencia</th>
                                             <th>Cite</th>
                                             <th>Observacion</th>
-                                            <!-- <th>Tec Colaborador</th> -->
+                                            <th>Tec Colaborador</th>
                                             <th>Operación</th>
                                         </tr>
                                     </tfoot>

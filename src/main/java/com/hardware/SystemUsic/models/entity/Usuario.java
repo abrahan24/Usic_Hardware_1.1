@@ -34,6 +34,9 @@ public class Usuario implements Serializable{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario", fetch = FetchType.LAZY)
 	private List<Previo> previos;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario", fetch = FetchType.LAZY)
+	private List<Baja> bajas;
+
     public Long getId_usuario() {
         return id_usuario;
     }

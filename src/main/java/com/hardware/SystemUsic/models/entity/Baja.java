@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,9 +38,11 @@ public class Baja implements Serializable{
     private String recomendacion_baja;
     private String cite;
     private String observacion_baja;
-    private Integer usuario_reg;
     private Date fecha_modificacion;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_persona")

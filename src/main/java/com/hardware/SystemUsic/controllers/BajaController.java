@@ -1,11 +1,8 @@
 package com.hardware.SystemUsic.controllers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,22 +83,8 @@ public class BajaController {
                 model.addAttribute("validado", validado);
             }
 
-            // for (Baja baja : bajaService.findAll()) {
-                
-            //     Usuario usuario = usuarioService.findOne(baja.getUsuario_reg().longValue());
-
-            //     if (usuario != null) {
-            //         model.addAttribute("user",
-            //                 usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
-            //                         + usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno()
-            //                         + " " + usuario.getPersona().getAp_materno());
-            //     }
-                 
-            // }
-            
             model.addAttribute("bajas", bajaService.findAll());
            
-            
             return "INFORMES/Reporte_Informe_Baja";
 		} else {
 			return "redirect:/hardware/login";
@@ -131,7 +114,7 @@ public class BajaController {
     @RequestMapping(value = "/add_informe_baja", method = RequestMethod.POST)
     public String Form_Informe_Baja(Model model, @Validated Baja baja,
             @RequestParam(name = "id_persona", required = false) Long id_persona,
-            @RequestParam(name = "id_usuario",required = false)Integer id_usuario,
+            @RequestParam(name = "id_usuario",required = false)Long id_usuario,
             @RequestParam(name = "id_almacen", required = false) Long[] id_almacen,
             @RequestParam MultiValueMap<String, String> params, // Recibir todos los parámetros
             RedirectAttributes flash, HttpServletRequest request) {
@@ -141,7 +124,7 @@ public class BajaController {
             baja.setEstado_baja("A");
             baja.setPersona(personaService.findOne(id_persona));
             baja.setFecha_baja(new Date());
-            baja.setUsuario_reg(id_usuario);
+            baja.setUsuario(usuarioService.findOne(id_usuario));
             bajaService.save(baja);
 
             if (id_almacen != null) {
@@ -206,10 +189,12 @@ public class BajaController {
                                 + baja.getPersona().getNombre() + " " + baja.getPersona().getAp_paterno() + " "
                                 + baja.getPersona().getAp_materno() + "<br><b>"
                                 + baja.getPersona().getCargo().getCargo());
-                model.addAttribute("user_tec", usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
-                        + usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno() + " "
-                        + usuario.getPersona().getAp_materno() + "<br><b>"
-                        + usuario.getPersona().getCargo().getCargo());
+                model.addAttribute("user_tec",
+                        baja.getUsuario().getPersona().getGradoAcademico().getSigla_gradoAcademico() + " "
+                                + baja.getUsuario().getPersona().getNombre() + " "
+                                + baja.getUsuario().getPersona().getAp_paterno() + " "
+                                + baja.getUsuario().getPersona().getAp_materno() + "<br><b>"
+                                + baja.getUsuario().getPersona().getCargo().getCargo());
             } else {
                 model.addAttribute("baja", bajaService.findOne(id_baja));
                 model.addAttribute("per_dirig",
@@ -217,10 +202,11 @@ public class BajaController {
                                 + baja.getPersona().getAp_materno() + "<br><b>"
                                 + baja.getPersona().getCargo().getCargo());
                 model.addAttribute("user_tec",
-                        usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico() + " " +
-                                usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno() + " "
-                                + usuario.getPersona().getAp_materno() + "<br><b>"
-                                + usuario.getPersona().getCargo().getCargo());
+                        baja.getUsuario().getPersona().getGradoAcademico().getSigla_gradoAcademico() + " " +
+                                baja.getUsuario().getPersona().getNombre() + " "
+                                + baja.getUsuario().getPersona().getAp_paterno() + " "
+                                + baja.getUsuario().getPersona().getAp_materno() + "<br><b>"
+                                + baja.getUsuario().getPersona().getCargo().getCargo());
             }
 
 
