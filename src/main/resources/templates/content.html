@@ -47,8 +47,8 @@
             </td>
             <td th:text="${a.cod_equipo}"></td>
             <td th:text="${a.descripcion}"></td>
-            <td>
-              <div class="demo-checkbox">
+            <td width="600px" >
+              <div class="demo-checkbox col-6">
                 <th:block th:each="fe : ${a.tipoEquipo.fallaEquipoBajas}" th:if="${fe.estado_fallaEquipoBaja != 'X'}">
                   <input th:name="${'id_fallaBaja_'+a.id_almacen}" th:value="${fe.fallaBaja.id_fallaBaja}" type="checkbox"
                     th:id="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}" class="filled-in chk-col-red" />
