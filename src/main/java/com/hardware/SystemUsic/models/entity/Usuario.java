@@ -14,8 +14,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "usuario")
+@Setter
+@Getter
 public class Usuario implements Serializable{
     private static final long serialVersionUID = 2629195288020321924L;
 
@@ -30,49 +35,10 @@ public class Usuario implements Serializable{
 	@JoinColumn(name = "id_persona")    
     private Persona persona;
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario", fetch = FetchType.LAZY)
 	private List<Previo> previos;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario", fetch = FetchType.LAZY)
 	private List<Baja> bajas;
 
-    public Long getId_usuario() {
-        return id_usuario;
-    }
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-    public String getUsuario() {
-        return usuario;
-    }
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-    public String getContrasena() {
-        return contrasena;
-    }
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-    public Character getEstado() {
-        return estado;
-    }
-    public void setEstado(Character estado) {
-        this.estado = estado;
-    }
-    public Persona getPersona() {
-        return persona;
-    }
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
-    public List<Previo> getPrevios() {
-        return previos;
-    }
-    public void setPrevios(List<Previo> previos) {
-        this.previos = previos;
-    }
-   
-    
 }
