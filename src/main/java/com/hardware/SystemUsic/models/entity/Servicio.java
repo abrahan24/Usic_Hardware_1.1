@@ -29,6 +29,7 @@ public class Servicio implements Serializable{
     private Long id_servicio;
     private Date fecha_recepcion;
     private String estado;
+    private String estado_servicio;
     private String accesorio;
     private String observacion;
     private String recomendacion;

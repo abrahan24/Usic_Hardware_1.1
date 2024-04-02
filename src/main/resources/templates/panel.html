@@ -80,7 +80,7 @@
     
                                         <tbody>
                                             <tr th:each="ser, num : ${pr.procedencia.servicios}"
-                                                th:if="${ser.estado != null && ser.estado == 'P'}">
+                                                th:if="${ser.estado_servicio != null && ser.estado_servicio == 'P'}">
     
                                                 <td>
                                                     <button
@@ -187,7 +187,7 @@
     
                                         <tbody>
                                             <tr th:each="ser : ${pr.procedencia.servicios}"
-                                            th:if="${ser.estado != 'null' && (ser.estado == 'A' || ser.estado == 'B' || ser.estado == 'AS' || ser.estado == 'AP')}">
+                                            th:if="${ser.estado_servicio != 'null' && (ser.estado_servicio == 'A' || ser.estado_servicio == 'B' || ser.estado_servicio == 'AS' || ser.estado_servicio == 'AP')}">
     
                                                 <td>
     
@@ -368,7 +368,7 @@
     
                                         <tbody>
                                             <tr th:each="ser, num : ${pr.procedencia.servicios}"
-                                                th:if="${ser.estado != null && ser.estado == 'T'}">
+                                                th:if="${ser.estado_servicio != null && ser.estado_servicio == 'T'}">
     
                                                 <td>
                                                     <a type="button"
