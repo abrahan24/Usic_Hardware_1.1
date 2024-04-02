@@ -774,11 +774,11 @@ public class servicioController {
 
 
              if (id_TipoServicio.intValue() == 1) {
-                servicio.setEstado("AS"); // AS = Activo Soporte Tecnico
+                servicio.setEstado_servicio("AS"); // AS = Activo Soporte Tecnico
             }if (id_TipoServicio.intValue() == 2) {
-                servicio.setEstado("AP"); // AP = Activo Mantenimiento Preventivo
+                servicio.setEstado_servicio("AP"); // AP = Activo Mantenimiento Preventivo
             }if (id_TipoServicio.intValue() == 3) {
-                servicio.setEstado("A"); 
+                servicio.setEstado_servicio("A"); 
             }
             
             System.out.println(id_TipoServicio);
