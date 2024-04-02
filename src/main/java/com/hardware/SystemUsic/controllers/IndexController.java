@@ -6,32 +6,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.zxing.qrcode.encoder.QRCode;
 import com.hardware.SystemUsic.Metodos;
-import com.hardware.SystemUsic.models.entity.Almacen;
 import com.hardware.SystemUsic.models.entity.DetalleFalla;
 import com.hardware.SystemUsic.models.entity.Persona;
 import com.hardware.SystemUsic.models.entity.Servicio;
@@ -39,7 +28,6 @@ import com.hardware.SystemUsic.models.entity.TipoEquipo;
 import com.hardware.SystemUsic.models.entity.Usuario;
 import com.hardware.SystemUsic.models.service.IAlmacenService;
 import com.hardware.SystemUsic.models.service.IDetalleFallaService;
-import com.hardware.SystemUsic.models.service.IDetalleService;
 import com.hardware.SystemUsic.models.service.IFallaService;
 import com.hardware.SystemUsic.models.service.IPersonaService;
 import com.hardware.SystemUsic.models.service.IProcedenciaService;
@@ -178,7 +166,7 @@ public class IndexController {
         }
         servicio.setPersona(persona);
         servicio.setFecha_recepcion(new Date());
-        servicio.setEstado("P");
+        servicio.setEstado_servicio("P");
         servicio.setProcedencia(procedenciaService.findOne(id_procedencia));
         servicio.setAlmacen(almacenService.findOne(id_almacen));
         servicio.setTipoEquipo(almacenService.findOne(id_almacen).getTipoEquipo());

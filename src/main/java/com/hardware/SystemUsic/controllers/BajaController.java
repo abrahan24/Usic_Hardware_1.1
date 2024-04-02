@@ -22,7 +22,6 @@ import com.hardware.SystemUsic.models.entity.Almacen;
 import com.hardware.SystemUsic.models.entity.Baja;
 import com.hardware.SystemUsic.models.entity.DetalleAlmacenFallaBaja;
 import com.hardware.SystemUsic.models.entity.DetalleBaja;
-import com.hardware.SystemUsic.models.entity.FallasBaja;
 import com.hardware.SystemUsic.models.entity.Usuario;
 import com.hardware.SystemUsic.models.service.IAlmacenService;
 import com.hardware.SystemUsic.models.service.IBajaService;

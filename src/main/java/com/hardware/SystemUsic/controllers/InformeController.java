@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hardware.SystemUsic.models.entity.DetalleSolucion;
 import com.hardware.SystemUsic.models.entity.Servicio;
-import com.hardware.SystemUsic.models.service.IBajaService;
 import com.hardware.SystemUsic.models.service.IDetalleSolucionService;
 import com.hardware.SystemUsic.models.service.IServicioService;
 import com.hardware.SystemUsic.models.service.ISolucionService;
@@ -28,9 +27,6 @@ public class InformeController {
 
     @Autowired
     private ITipoEquipoService tipoEquipoService;
-
-    @Autowired
-    private IBajaService bajaService;
 
     @Autowired
     private ISolucionService solucionService;
@@ -132,11 +128,11 @@ public class InformeController {
                 servicio.setObservacion(observacion);
             }
 
-            if (servicio.getEstado() == "T") {
-                servicio.setEstado("T");
+            if (servicio.getEstado_servicio() == "T") {
+                servicio.setEstado_servicio("T");
             } else {
-                if (servicio.getEstado() == "B") {
-                    servicio.setEstado("B");
+                if (servicio.getEstado_servicio() == "B") {
+                    servicio.setEstado_servicio("B");
                 }
 
             } // B = Estado En Proceso
@@ -185,11 +181,11 @@ public class InformeController {
                 servicio.setObservacion(observacion);
             }
 
-            if (servicio.getEstado() == "T") {
-                servicio.setEstado("T");
+            if (servicio.getEstado_servicio() == "T") {
+                servicio.setEstado_servicio("T");
             } else {
-                if (servicio.getEstado() == "B") {
-                    servicio.setEstado("B");
+                if (servicio.getEstado_servicio() == "B") {
+                    servicio.setEstado_servicio("B");
                 }
 
             } // B = Estado En Proceso
@@ -234,11 +230,11 @@ public class InformeController {
             servicio.setConclucion(conclucion);
             servicio.setRecomendacion(recomendacion);
             servicio.setObservacion(observacion);
-            if (servicio.getEstado() == "T") {
-                servicio.setEstado("T");
+            if (servicio.getEstado_servicio() == "T") {
+                servicio.setEstado_servicio("T");
             } else {
-                if (servicio.getEstado() == "B") {
-                    servicio.setEstado("B");
+                if (servicio.getEstado_servicio() == "B") {
+                    servicio.setEstado_servicio("B");
                 }
 
             }

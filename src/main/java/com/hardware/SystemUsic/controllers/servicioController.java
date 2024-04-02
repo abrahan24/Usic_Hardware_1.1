@@ -1,13 +1,11 @@
 package com.hardware.SystemUsic.controllers;
 
 import java.util.Date;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.ReplaceOverride;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -17,35 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.hardware.SystemUsic.models.dao.ICargoDao;
-import com.hardware.SystemUsic.models.dao.IFallaEquipoDao;
 import com.hardware.SystemUsic.models.entity.Almacen;
 import com.hardware.SystemUsic.models.entity.Cargo;
 import com.hardware.SystemUsic.models.entity.Colaborador;
 import com.hardware.SystemUsic.models.entity.DetalleFalla;
-import com.hardware.SystemUsic.models.entity.DetalleSolucion;
 import com.hardware.SystemUsic.models.entity.Falla;
 import com.hardware.SystemUsic.models.entity.FallaEquipo;
 import com.hardware.SystemUsic.models.entity.Persona;
-import com.hardware.SystemUsic.models.entity.Previo;
 import com.hardware.SystemUsic.models.entity.Servicio;
 import com.hardware.SystemUsic.models.entity.Solucion;
 import com.hardware.SystemUsic.models.entity.SolucionEquipo;
-import com.hardware.SystemUsic.models.entity.TipoEquipo;
 import com.hardware.SystemUsic.models.entity.TipoServicio;
 import com.hardware.SystemUsic.models.entity.Unidad;
 import com.hardware.SystemUsic.models.entity.Usuario;
 import com.hardware.SystemUsic.models.service.IAlmacenService;
-import com.hardware.SystemUsic.models.service.IBajaService;
 import com.hardware.SystemUsic.models.service.ICargoService;
 import com.hardware.SystemUsic.models.service.IColaboradorService;
 import com.hardware.SystemUsic.models.service.IDetalleFallaService;
-import com.hardware.SystemUsic.models.service.IDetalleSolucionService;
 import com.hardware.SystemUsic.models.service.IFallaEquipoService;
 import com.hardware.SystemUsic.models.service.IFallaService;
 import com.hardware.SystemUsic.models.service.IPersonaService;
-import com.hardware.SystemUsic.models.service.IPrevioService;
-import com.hardware.SystemUsic.models.service.IProcedenciaService;
 import com.hardware.SystemUsic.models.service.IServicioService;
 import com.hardware.SystemUsic.models.service.ISolucionEquipoService;
 import com.hardware.SystemUsic.models.service.ISolucionService;
@@ -69,19 +58,13 @@ public class servicioController {
     @Autowired
     private IColaboradorService colaboradorService;
     @Autowired
-    private IProcedenciaService procedenciaService;
-    @Autowired
     private IPersonaService personaService;
     @Autowired
     private IServicioService servicioService;
     @Autowired
     private IUsuarioService usuarioService;
     @Autowired
-    private IBajaService bajaService;
-    @Autowired
     private ISolucionService solucionService;
-    @Autowired
-    private IDetalleSolucionService detalleSolucionService;
     @Autowired
     private IFallaEquipoService  fallaEquipoService;
     @Autowired
@@ -143,6 +126,7 @@ public class servicioController {
 			
             Servicio servicio = servicioService.findOne(id_servicio);
             servicio.setEstado("T");
+            servicio.setEstado_servicio("T");
             servicio.setFecha_entrega(new Date());
             servicioService.save(servicio);
             flash.addAttribute("validado", "Servicio N°"+servicio.getId_servicio() +" Terminado Con Exito!");
@@ -161,6 +145,7 @@ public class servicioController {
             persona = personaService.findOne(persona.getId_persona());
             Servicio servicio = servicioService.findOne(id_servicio);
             servicio.setEstado("A");
+            servicio.setEstado_servicio("A");
 
             servicioService.save(servicio);
             Colaborador colaborador = new Colaborador();
