@@ -1,6 +1,6 @@
 var cod = prompt("Por favor, ingrese su COD Funcionario:");
 
-const apiUrlAdmin = 'https://digital.uap.edu.bo/api/londra/api/londraPost/v1/personaLondra/obtenerDatos'; // API DE ADMINISTRATIVOS POR COD FUNCIONARIO
+const apiUrlAdmin = 'http://172.16.21.2:3333/api/londraPost/v1/personaLondra/obtenerDatos'; // API DE ADMINISTRATIVOS POR COD FUNCIONARIO
 
 const adminData = {
     usuario: cod
