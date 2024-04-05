@@ -1,8 +1,18 @@
 package com.hardware.SystemUsic.controllers;
 
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -10,6 +20,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hardware.SystemUsic.models.entity.Persona;
@@ -43,6 +56,7 @@ public class PersonaController {
             if (validado != null) {
                 model.addAttribute("validado", validado);
             }
+        
             model.addAttribute("persona", new Persona());
             model.addAttribute("unidades", unidadService.findAll());
             model.addAttribute("cargos", cargoService.findAll());
@@ -152,4 +166,133 @@ public class PersonaController {
             return "redirect:/hardware/login";
         }
     }
+
+    // @RequestMapping("/persona")
+    // public String Api_Persona(Model model, @RequestParam("cod_persona")String cod_persona,RedirectAttributes flash,
+    // HttpServletRequest request)throws ParseException {
+
+    //     if (request.getSession().getAttribute("persona") != null) {
+    //         System.out.println(cod_persona);
+
+    //         Map<String, Object> requests = new HashMap<String, Object>();
+
+    //         requests.put("usuario", cod_persona);
+
+    //         //String url = "http://localhost:3333/api/londraPost/v1/personaLondra/obtenerDatos";
+    //         // String url = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos";
+    //         String url = "http://192.168.20.6:5555/api/londraPost/v1/personaLondra/obtenerDatos2";
+
+    //         HttpHeaders headers = new HttpHeaders();
+
+    //         headers.setContentType(MediaType.APPLICATION_JSON);
+
+    //         HttpEntity<HashMap> req = new HttpEntity(requests, headers);
+
+    //         RestTemplate restTemplate = new RestTemplate();
+    //         ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);	
+	// 		System.out.println(resp.getBody().get("status").toString());
+	// 		System.out.println(resp.getBody().get("ok").toString());
+			
+    //             if (resp.getBody().get("ok").toString() == "true") {
+    //                 Persona p = new Persona();
+    //                 p.setNombre(resp.getBody().get("per_nombres").toString());
+    //                 p.setAp_paterno(resp.getBody().get("per_ap_paterno").toString());
+    //                 p.setAp_materno(resp.getBody().get("per_ap_materno").toString());
+    //                 p.setCi(resp.getBody().get("per_num_doc").toString());
+    //                 p.setCelular(Integer.parseInt(resp.getBody().get("perd_celular").toString()));
+    //                 model.addAttribute("persona", p);
+    //                 model.addAttribute("unidades", unidadService.findAll());
+    //                 model.addAttribute("cargos", cargoService.findAll());
+    //                 return "add_Persona";
+    //             } else {
+    //                 return "redirect:/hardware-servicio/add_Persona";
+    //             }
+            
+    //         // return "redirect:/hardware-servicio/add_Persona";
+    //     } else {
+    //         return "redirect:/hardware/login";
+    //     }
+    // }
+
+    // @RequestMapping("/persona")
+    // public String Api_Persona2(Model model, @RequestParam("cod_persona")String cod_persona,RedirectAttributes flash,
+    // HttpServletRequest request)throws ParseException {
+
+    //     if (request.getSession().getAttribute("persona") != null) {
+    //         System.out.println(cod_persona);
+
+    //         // Consumir la URL y manejar los datos
+    //         // String apiUrl = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos2";
+    //         String apiUrl = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/obtenerDatos";
+    //         HttpHeaders headers = new HttpHeaders();
+    //         headers.setContentType(MediaType.APPLICATION_JSON);
+    //         RestTemplate restTemplate = new RestTemplate();
+    //         // Crear un objeto JSON con el parámetro cod_persona
+    //         String requestBody = "{\"usuario\": \"" + cod_persona + "\",\"contrasena\": \"" + 420267 + "\"}";
+    //         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+    //         // Hacer la solicitud POST
+    //         ResponseEntity<Map> resp = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, Map.class);	
+	// 		System.out.println(resp.getBody().get("status").toString());
+            
+    //         return "redirect:/hardware-servicio/add_Persona";
+    //     } else {
+    //         return "redirect:/hardware/login";
+    //     }
+    // }
+
+    @RequestMapping(value = "/persona", method = RequestMethod.POST)
+	public String logearseCa(Model model, HttpServletRequest request,
+			@RequestParam(name = "cod_persona", required = false) String cod_persona, RedirectAttributes flash)
+			throws ParseException {
+
+		Map<String, Object> requests = new HashMap<String, Object>();
+
+		requests.put("usuario", cod_persona);
+
+		//String url = "http://localhost:3333/api/londraPost/v1/obtenerDatos";
+		String url = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos2";
+
+		HttpHeaders headers = new HttpHeaders();
+
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<HashMap> req = new HttpEntity(requests, headers);
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		try {
+            ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);   
+            
+            if (resp.getStatusCode() == HttpStatus.OK) { // Verificar el estado de la respuesta
+
+                System.out.println("1");
+                Persona p = new Persona();
+                p.setNombre(resp.getBody().get("per_nombres").toString());
+                p.setAp_paterno(resp.getBody().get("per_ap_paterno").toString());
+                p.setAp_materno(resp.getBody().get("per_ap_materno").toString());
+                p.setCi(resp.getBody().get("per_num_doc").toString());
+                p.setCelular(Integer.parseInt(resp.getBody().get("perd_celular").toString()));
+                model.addAttribute("persona", p);
+                model.addAttribute("unidades", unidadService.findAll());
+                model.addAttribute("cargos", cargoService.findAll());
+                
+            } 
+            return "add_Persona";
+        } catch (HttpServerErrorException.InternalServerError e) {
+            System.out.println("4");
+            flash.addFlashAttribute("error", "Ha ocurrido un error en el servidor");
+            return "redirect:/hardware-servicio/add_Persona";
+        } 
+         catch (HttpClientErrorException e) {
+            System.out.println("5");
+            flash.addFlashAttribute("error", "Error en la solicitud al servidor");
+            return "redirect:/hardware-servicio/add_Persona";
+        } catch (Exception e) {
+            System.out.println("6");
+            flash.addFlashAttribute("error", "Error inesperado");
+            return "redirect:/hardware-servicio/add_Persona";
+        }
+		
+	}
+    
 }

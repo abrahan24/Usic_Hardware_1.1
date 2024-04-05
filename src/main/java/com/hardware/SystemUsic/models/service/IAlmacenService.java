@@ -17,4 +17,9 @@ public interface IAlmacenService {
 
 	public List<Almacen>Lista_Activos_Por_Id(List<Long> id_almacenes);
 
+	public List<Almacen>Lista_Activos_Cod_Equipo(String cod_equipo);
+
+	public List<Almacen>Lista_Activos_Por_Codigo_Equipo(List<String> cod_equipo);
+
+
 }

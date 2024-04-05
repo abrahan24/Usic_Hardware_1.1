@@ -1,5 +1,6 @@
 package com.hardware.SystemUsic.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -13,11 +14,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hardware.SystemUsic.models.entity.Almacen;
 import com.hardware.SystemUsic.models.entity.Baja;
 import com.hardware.SystemUsic.models.entity.DetalleAlmacenFallaBaja;
@@ -30,6 +36,7 @@ import com.hardware.SystemUsic.models.service.IDetalleBajaService;
 import com.hardware.SystemUsic.models.service.IFallaBajaService;
 import com.hardware.SystemUsic.models.service.IPersonaService;
 import com.hardware.SystemUsic.models.service.IUsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Controller
@@ -65,7 +72,7 @@ public class BajaController {
             
             model.addAttribute("baja", new Baja());
             model.addAttribute("personas", personaService.findAll());
-            model.addAttribute("activos", almacenService.findAll());
+            // model.addAttribute("activos", almacenService);
 
             return "informe_baja";
 		} else {
@@ -105,9 +112,69 @@ public class BajaController {
             List<Long> idsSeleccionados = Arrays.asList(id_almacen);
             model.addAttribute("activos_selec", almacenService.Lista_Activos_Por_Id(idsSeleccionados));
         }
-
         return "content :: content2";
     }
+
+    // @RequestMapping(value = "/activos/{selectedValues}")
+    // public String getContent3(@PathVariable(value = "selectedValues", required = false)String selectedValues, Model model, HttpServletRequest request) {
+    //     if (selectedValues != null) {
+            
+    //         System.out.println(selectedValues);
+    //         model.addAttribute("activos_selec", almacenService.Lista_Activos_Por_Codigo_Equipo(selectedValues));
+    //     }
+
+    //     return "content :: content2";
+    // }
+
+    @RequestMapping(value = "/obtener_activos/{cod_equipo}", method = RequestMethod.GET)
+    public String getContent4(@PathVariable("cod_equipo") String cod_equipo, Model model) {
+        if (cod_equipo != null) {
+            model.addAttribute("Activos_S", almacenService.Lista_Activos_Cod_Equipo(cod_equipo));
+
+        }
+        return "content :: content4";
+    }
+
+    // @RequestMapping(value = "/activos", method = RequestMethod.POST)
+    // public String getContent3(@RequestBody String[] selectedValues, Model model) {
+    //     if (selectedValues != null) {
+    //         // Realizar las operaciones necesarias con los datos capturados
+    //         String[] cod_selec = new String[selectedValues.length];
+    //         for (int i = 0; i < selectedValues.length; i++) {
+    //             System.out.println(selectedValues[i]);
+    //             cod_selec[i] = selectedValues[i];
+    //         }
+
+    //         List<String> cod_seleccionados = Arrays.asList(cod_selec);
+    //         model.addAttribute("activos_selec", almacenService.Lista_Activos_Por_Codigo_Equipo(cod_seleccionados));
+    //     }
+    
+    //     return "content :: content2";
+    // }
+
+    // @RequestMapping(value = "/activos")
+    // public String getContent2(@RequestParam(value = "selectedValues", required = false) String selectedValues,
+    //         Model model, HttpServletRequest request) {
+    //     if (selectedValues != null) {
+    //         String[] selectedValuesArray = selectedValues.split(",");
+    //         List<Long> idsSeleccionados = new ArrayList<>();
+
+    //         for (String value : selectedValuesArray) {
+    //             try {
+    //                 idsSeleccionados.add(Long.parseLong(value));
+    //             } catch (NumberFormatException e) {
+    //                 // Manejar la conversión fallida si es necesario
+    //                 e.printStackTrace();
+    //             }
+    //         }
+
+    //         if (!idsSeleccionados.isEmpty()) {
+    //             model.addAttribute("activos_selec", almacenService.Lista_Activos_Por_Id(idsSeleccionados));
+    //         }
+    //     }
+
+    //     return "content :: content2";
+    // }
 
 
     @RequestMapping(value = "/add_informe_baja", method = RequestMethod.POST)

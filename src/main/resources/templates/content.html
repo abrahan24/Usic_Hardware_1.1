@@ -33,33 +33,37 @@
             <th>COD ACTIVO</th>
             <th>DESCRIPCION</th>
             <th>SELECCIONE FALLAS</th>
+            <th>OPCION</th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="a, cont : ${activos_selec}" th:if="${a.estado != 'X'}">
+          <tr th:each="a, cont : ${activos_selec}" th:if="${a.estado != 'X' && a.estado != 'B'}">
   
             <td th:text="${cont.count}"></td>
-            <td>
-              <a type="button" class="btn bg-red btn-block btn-lg waves-effect" disable>
+            <td width="75px">
+              <a type="button" class="btn bg-indigo waves-effect" disable>
                 <i class="material-icons" style="font-size: 20px !important" th:text="${a.tipoEquipo.icono}"></i><br />
                 <span th:text="${a.tipoEquipo.equipo}"></span>
               </a>
             </td>
             <td th:text="${a.cod_equipo}"></td>
             <td th:text="${a.descripcion}"></td>
-            <td width="600px" >
+            <td width="900px" >
               <div class="demo-checkbox col-6">
                 <th:block th:each="fe : ${a.tipoEquipo.fallaEquipoBajas}" th:if="${fe.estado_fallaEquipoBaja != 'X'}">
                   <input th:name="${'id_fallaBaja_'+a.id_almacen}" th:value="${fe.fallaBaja.id_fallaBaja}" type="checkbox"
                     th:id="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}" class="filled-in chk-col-red" />
-                  <label th:text="${fe.fallaBaja.nom_fallaBaja}"
-                    th:for="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}">RED</label>
+                  <label th:text="${fe.fallaBaja.nom_fallaBaja}" th:for="${a.id_almacen+'_'+fe.fallaBaja.id_fallaBaja}">RED</label>
                 </th:block>
               </div>
             </td>
-  
+            <td width="20px" >
+              <button type="button" class="btn btn-danger waves-effect" onclick="eliminarFila(this)">
+                <i class="material-icons">close</i>
+                <span>ELIMINAR</span>
+              </button>
+            </td>
           </tr>
-  
         </tbody>
       </table>
     </div>
@@ -95,10 +99,41 @@
                   <span>Seleccionar</span>
                 </button>
               </form>
-              
             </td>
           </tr>
-  
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div th:fragment ="content4">
+    <div class="body table-responsive ">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th width="100px">TIPO DE EQUIPO</th>
+            <th>COD ACTIVO</th>
+            <th>DESCRIPCION</th>
+            <th>OPCION</th>
+          </tr>
+        </thead>
+        <tbody style="text-transform:uppercase;">
+          <tr th:each="a, cont : ${Activos_S}" th:if="${a.estado != 'X'}">
+          
+            <td>
+              <a type="button" class="btn bg-indigo waves-effect" disable>
+                <i class="material-icons" style="font-size: 20px !important" th:text="${a.tipoEquipo.icono}"></i><br />
+                <span th:text="${a.tipoEquipo.equipo}"></span>
+              </a>
+            </td>
+            <td th:text="${a.cod_equipo}"></td>
+            <td th:text="${a.descripcion}"></td>
+            <td>
+                <button type="button" class="btn btn-success waves-effect" th:attr="onclick=${'buscar_Activos(' + a.id_almacen + ')'}">
+                  <i class="material-icons">check</i>
+                  <span>AGREGAR</span>
+                </button>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

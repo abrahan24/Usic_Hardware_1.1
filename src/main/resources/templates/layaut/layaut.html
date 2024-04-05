@@ -92,6 +92,40 @@
     </div>
 </nav>
 
+<div th:fragment="modal_color" class="modal fade" id="mdModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-col-indigo">
+            <div class="modal-header">
+                <h4 class="modal-title" id="defaultModalLabel">INGRESE CODIGO FUNCIONARIO</h4>
+            </div>
+            <form action="../../../../hardware-servicio/persona" method="post">
+            <div class="modal-body">
+                <div class="row clearfix">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <input type="text" rows="1" name="cod_persona" class="form-control no-resize"
+                                    placeholder="Descripcion..." style="text-transform:uppercase"
+                                    required></input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success waves-effect"> ENVIAR <i class="material-icons">check</i></button>
+                <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CERRAR <i class="material-icons">close</i></button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:fragment="script_modal_persona">
+    document.getElementById('abrirModal').addEventListener('click', function() {
+            $('#mdModal').modal('show');
+        });
+</script>
+
 <section th:fragment="menu">
     <!-- Left Sidebar -->
     <aside id="leftsidebar" class="sidebar">
@@ -191,7 +225,7 @@
                     </a>
                     <ul class="ml-menu">
                         <li>
-                            <a th:href="${'../../../../hardware-servicio/add_Persona'}">
+                            <a id="abrirModal">
                                 <i class="material-icons" style="font-size: 15px">person_add</i>
                                 <span>AGREGAR PERSONA</span>
                             </a>
@@ -222,38 +256,7 @@
                         </li>
                     </ul>
                 </li>               
-                    <ul class="ml-menu">
-                        <li>
-                            <a th:href="${'../../../../hardware-servicio/add_Persona'}">
-                                <i class="material-icons" style="font-size: 15px">person_add</i>
-                                <span>AGREGAR PERSONA</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a th:href="${'../../../../hardware-servicio/lista_personas'}">
-                                <i class="material-icons" style="font-size: 15px">assignment</i>
-                                <span>LISTA DE PERSONAS</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a th:href="${'../../../../hardware-servicio/add_Cargo_Unidad'}">
-                                <i class="material-icons" style="font-size: 15px">business_center</i>
-                                <span>CARGO / UNIDAD</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a th:href="${'../../../../hardware-servicio/lista_cargos'}">
-                                <i class="material-icons" style="font-size: 15px">assignment</i>
-                                <span>LISTA DE CARGOS</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a th:href="${'../../../../hardware-servicio/lista_unidades'}">
-                                <i class="material-icons" style="font-size: 15px">assignment</i>
-                                <span>LISTA DE U.F</span>
-                            </a>
-                        </li>
-                    </ul>
+                    
                 </li>               
                 <li th:if="${session.persona != null}" >
                     <a href="javascript:void(0);" class="menu-toggle">
@@ -313,7 +316,7 @@
         <!-- Footer -->
         <div class="legal">
             <div class="copyright">
-                &copy; 2023 <a href="javascript:void(0);">SATH - UAP</a>.
+                &copy; 2023 <a th:href="${'../../../../hardware-servicio/'}">SATH - UAP</a>.
             </div>
             <div class="version">
                 <b>Version: </b> 1.1

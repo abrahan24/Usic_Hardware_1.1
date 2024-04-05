@@ -181,9 +181,7 @@
                                                                     </th:block>
                                                                 </div>
                                                             </td>
-                                        
                                                         </tr>
-                                        
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -191,16 +189,27 @@
                                         <div class="alert alert-danger text-center">
                                             <strong>SELECCIONE ACTIVOS: </strong>
                                         </div>
+                                        <h2 class="card-inside-title">INGRESE CODIGO UAP : </h2>
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <input type="text" rows="3" class="form-control no-resize" placeholder="Ej: UAP-123456789 o 148-05-10-12345"
+                                                            name="id_Almacen" required></input>
+                                                    </div>
+                                                    <div id="replace_div2">
+
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
                                         <div>
-                                            <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()" required>
-                                                <th:block th:each="a : ${activos}" th:if="${a.estado != 'X' && a.estado != 'B'}">
-                                            
-                                                        <optgroup th:label="${a.tipoEquipo.equipo}">
-                                                            <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
-                                                        </optgroup>
-                                                    
-                                                </th:block>
-                                            </select>
+                                            <!-- <select multiple name="id_almacen" class="form-control" id="id_Almacen" onchange="buscar_Activos()" required>
+                                                <optgroup th:each="a : ${activos}" th:if="${a.estado != 'X' && a.estado != 'B'}" th:label="${a.tipoEquipo.equipo}">
+                                                    <option th:value="${a.id_almacen}" th:text="${a.cod_equipo}">Alaska</option>
+                                                </optgroup>
+                                            </select> -->
                                             <br>
                                             <div id="replace_div">
                                 
@@ -208,10 +217,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
                                 <br><button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
-                                    
                             </form>                           
                         </div>
                     </div>
@@ -219,38 +225,95 @@
             </div>
           
         </div>
+        <div th:replace="layaut/layaut :: modal_color"></div>
+
     </section>
-    
+
     <script>
+        document.querySelector('input[name="id_Almacen"]').addEventListener('keyup', function () {
+            // Obtiene el valor del input
+            var valor = this.value;
+            // Obtiene el valor del input oculto
+           
+            // Crea la URL de la solicitud
+            var url = "../../../../hardware-servicio/obtener_activos/" + valor;
+
+            // Carga el contenido en el elemento con id 'replace_div'
+            $('#replace_div2').load(url);
+        });
+    </script>
+    
+    <!-- <script>
         function buscar_Activos() {
             // Obtener los valores seleccionados
-            var selectedValues = $('#id_Almacen').val();
+            var selectedValues = $('#id_almacen').val();
+    
+            // Convertir los valores seleccionados en un array si es necesario
+            var selectedArray = selectedValues.split('\n'); // Suponiendo que los valores están separados por saltos de línea
+    
+            // Enviar los datos al controlador mediante una solicitud AJAX POST
+            $.ajax({
+                type: "POST",
+                url: "../../../../hardware-servicio/activos",
+                data: JSON.stringify(selectedArray),
+                contentType: "application/json",
+                success: function(data) {
+                    // Manejar la respuesta del servidor si es necesario
+                    $('#replace_div').html(data);
+                },
+                error: function(xhr, status, error) {
+                    // Manejar errores si es necesario
+                    console.error(error);
+                }
+            });
+        }
+    </script> -->
 
-            // Crear una URL con los valores seleccionados como parámetros de consulta
-            var url = "../../../../hardware-servicio/activos?selectedValues=" + selectedValues.join(',');
+    <script>
+        // Definir un vector para almacenar los valores de id_almacen
+        var id_almacen_vector = [];
+    
+        function buscar_Activos(id) {
+            // Obtener el valor del input id
+            var id_almacen = id;
+    
+            // Agregar el id_almacen al vector
+            id_almacen_vector.push(id_almacen);
+    
+            // Llamar a la función getContent con el vector como parámetro
+            getContent(id_almacen_vector);
 
-            // Llamar a la función getContent con la URL construida
-            getContent(url);
+        }
 
-            function getContent(url) {
-                // Cargar el fragmento y reemplazar el contenido
-                $('#replace_div').load(url);
+        function eliminarFila(button) {
+                // Obtener la fila a la que pertenece el botón
+                var fila = button.parentNode.parentNode;
+                // Eliminar la fila de la tabla
+                fila.parentNode.removeChild(fila);
             }
+    
+        function getContent(ids) {
+            // Crear una URL con los valores del vector como parámetros de consulta
+            var url = "../../../../hardware-servicio/activos?selectedValues=" + ids.join(',');
+    
+            // Llamar a la función load con la URL construida
+            $('#replace_div').load(url);
         }
     </script>
 
-        <script>
-        $(document).ready(function() {
-            // Captura el evento de cambio en los campos de entrada
-            $('textarea').on('change', function() {
-                // Convierte el valor a mayúsculas antes de enviarlo
-                var textoEnMayusculas = $(this).val().toUpperCase();
-                $(this).val(textoEnMayusculas);
-            });
+    <script>
+    $(document).ready(function() {
+        // Captura el evento de cambio en los campos de entrada
+        $('textarea').on('change', function() {
+            // Convierte el valor a mayúsculas antes de enviarlo
+            var textoEnMayusculas = $(this).val().toUpperCase();
+            $(this).val(textoEnMayusculas);
         });
-        </script>
+    });
+    </script>
 
-    
+    <script th:replace="layaut/layaut :: script_modal_persona"></script>
+
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 
@@ -332,11 +395,7 @@
             placeholder: "Seleccione Persona...",
             allowClear: true
         });
-        $("#id_Almacen").select2({
-            placeholder: "Seleccione los Activos",
-            tags: true
-        });
-
+        
     </script>
  
 </body>

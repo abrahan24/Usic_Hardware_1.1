@@ -57,6 +57,7 @@
                             <div class="alert alert-danger text-center">
                                 <strong>DATOS PERSONA</strong>
                             </div>
+                            
                             <form action="../../../../hardware-servicio/add_persona" method="POST">
                                 <label >NOMBRES</label>
                                 <input type="hidden" name="id_persona" th:field="${persona.id_persona}">
@@ -135,9 +136,11 @@
             </div>
 
         </div>
+        <div th:replace="layaut/layaut :: modal_color"></div>
     </section>
- 
-    <script src="../../../../js/api.js"></script>
+
+    <script th:replace="layaut/layaut :: script_modal_persona"></script>
+
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 
