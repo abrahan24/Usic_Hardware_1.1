@@ -111,8 +111,28 @@ public class BajaController {
 
             List<Long> idsSeleccionados = Arrays.asList(id_almacen);
             model.addAttribute("activos_selec", almacenService.Lista_Activos_Por_Id(idsSeleccionados));
+            System.out.println(almacenService.Lista_Activos_Por_Id(idsSeleccionados).size());
         }
         return "content :: content2";
+    }
+
+    @RequestMapping(value = "/eliminarActivos")
+    public void eliminarActivos(@RequestParam(value = "selectedValues", required = false) String selectedValues, Model model, HttpServletRequest request) {
+        if (selectedValues != null) {
+            // Dividir la cadena de valores separados por comas en un array de Long
+            String[] selectedValuesArray = selectedValues.split(",");
+            Long[] id_almacen = new Long[selectedValuesArray.length];
+
+            for (int i = 0; i < selectedValuesArray.length; i++) {
+                id_almacen[i] = Long.parseLong(selectedValuesArray[i]);
+            }
+            List<Long> idsSeleccionados = Arrays.asList(id_almacen);
+
+            List<Almacen> listaCompleta = almacenService.Lista_Activos_Por_Id(idsSeleccionados);
+
+            listaCompleta.removeIf(almacen -> idsSeleccionados.contains(almacen.getId_almacen()));
+
+        }
     }
 
     // @RequestMapping(value = "/activos/{selectedValues}")

@@ -37,7 +37,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="a, cont : ${activos_selec}" th:if="${a.estado != 'X' && a.estado != 'B'}">
+          <tr th:each="a, cont : ${activos_selec}" th:if="${a.estado != 'X' && a.estado != 'B'}" th:id="${'fila_'+ a.id_almacen}">
   
             <td th:text="${cont.count}"></td>
             <td width="75px">
@@ -58,7 +58,7 @@
               </div>
             </td>
             <td width="20px" >
-              <button type="button" class="btn btn-danger waves-effect" onclick="eliminarFila(this)">
+              <button type="button" class="btn btn-danger waves-effect" th:attr="onclick=${'eliminarFila(' + a.id_almacen + ')'}">
                 <i class="material-icons">close</i>
                 <span>ELIMINAR</span>
               </button>

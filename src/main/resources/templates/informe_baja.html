@@ -282,15 +282,36 @@
     
             // Llamar a la función getContent con el vector como parámetro
             getContent(id_almacen_vector);
-
+            
         }
 
-        function eliminarFila(button) {
-                // Obtener la fila a la que pertenece el botón
-                var fila = button.parentNode.parentNode;
-                // Eliminar la fila de la tabla
-                fila.parentNode.removeChild(fila);
+        function eliminarFila(id_almacen) {
+        // Eliminar la fila de la tabla
+        var fila = document.getElementById('fila_' + id_almacen);
+        fila.parentNode.removeChild(fila);
+
+        // Realizar una solicitud al servidor para actualizar la vista
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/activos?selectedValues=' + obtenerIdsActivos(), true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Actualizar la sección 'content2' con la respuesta del servidor
+                var content2 = document.getElementById('content2');
+                content2.innerHTML = xhr.responseText;
             }
+        };
+        xhr.send();
+    }
+
+    function obtenerIdsActivos() {
+        // Obtener los ID de los activos seleccionados
+        var ids = [];
+        var filas = document.querySelectorAll('[id^="fila_"]');
+        filas.forEach(function (fila) {
+            ids.push(fila.id.split('_')[1]);
+        });
+        return ids.join(',');
+    }
     
         function getContent(ids) {
             // Crear una URL con los valores del vector como parámetros de consulta

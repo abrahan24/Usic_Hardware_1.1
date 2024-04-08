@@ -167,53 +167,7 @@ public class PersonaController {
         }
     }
 
-    // @RequestMapping("/persona")
-    // public String Api_Persona(Model model, @RequestParam("cod_persona")String cod_persona,RedirectAttributes flash,
-    // HttpServletRequest request)throws ParseException {
-
-    //     if (request.getSession().getAttribute("persona") != null) {
-    //         System.out.println(cod_persona);
-
-    //         Map<String, Object> requests = new HashMap<String, Object>();
-
-    //         requests.put("usuario", cod_persona);
-
-    //         //String url = "http://localhost:3333/api/londraPost/v1/personaLondra/obtenerDatos";
-    //         // String url = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos";
-    //         String url = "http://192.168.20.6:5555/api/londraPost/v1/personaLondra/obtenerDatos2";
-
-    //         HttpHeaders headers = new HttpHeaders();
-
-    //         headers.setContentType(MediaType.APPLICATION_JSON);
-
-    //         HttpEntity<HashMap> req = new HttpEntity(requests, headers);
-
-    //         RestTemplate restTemplate = new RestTemplate();
-    //         ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);	
-	// 		System.out.println(resp.getBody().get("status").toString());
-	// 		System.out.println(resp.getBody().get("ok").toString());
-			
-    //             if (resp.getBody().get("ok").toString() == "true") {
-    //                 Persona p = new Persona();
-    //                 p.setNombre(resp.getBody().get("per_nombres").toString());
-    //                 p.setAp_paterno(resp.getBody().get("per_ap_paterno").toString());
-    //                 p.setAp_materno(resp.getBody().get("per_ap_materno").toString());
-    //                 p.setCi(resp.getBody().get("per_num_doc").toString());
-    //                 p.setCelular(Integer.parseInt(resp.getBody().get("perd_celular").toString()));
-    //                 model.addAttribute("persona", p);
-    //                 model.addAttribute("unidades", unidadService.findAll());
-    //                 model.addAttribute("cargos", cargoService.findAll());
-    //                 return "add_Persona";
-    //             } else {
-    //                 return "redirect:/hardware-servicio/add_Persona";
-    //             }
-            
-    //         // return "redirect:/hardware-servicio/add_Persona";
-    //     } else {
-    //         return "redirect:/hardware/login";
-    //     }
-    // }
-
+   
     // @RequestMapping("/persona")
     // public String Api_Persona2(Model model, @RequestParam("cod_persona")String cod_persona,RedirectAttributes flash,
     // HttpServletRequest request)throws ParseException {
@@ -241,58 +195,63 @@ public class PersonaController {
     // }
 
     @RequestMapping(value = "/persona", method = RequestMethod.POST)
-	public String logearseCa(Model model, HttpServletRequest request,
-			@RequestParam(name = "cod_persona", required = false) String cod_persona, RedirectAttributes flash)
-			throws ParseException {
+    public String logearseCa(Model model, HttpServletRequest request,
+            @RequestParam(name = "cod_persona", required = false) String cod_persona, RedirectAttributes flash)
+            throws ParseException {
 
-		Map<String, Object> requests = new HashMap<String, Object>();
+        Map<String, Object> requests = new HashMap<String, Object>();
 
-		requests.put("usuario", cod_persona);
+        requests.put("usuario", cod_persona);
 
-		//String url = "http://localhost:3333/api/londraPost/v1/obtenerDatos";
-		String url = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos2";
+        // String url = "http://localhost:3333/api/londraPost/v1/obtenerDatos";
+        String url = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos";
 
-		HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
 
-		headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-		HttpEntity<HashMap> req = new HttpEntity(requests, headers);
+        HttpEntity<HashMap> req = new HttpEntity(requests, headers);
 
-		RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
 
-		try {
-            ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);   
-            
-            if (resp.getStatusCode() == HttpStatus.OK) { // Verificar el estado de la respuesta
+        ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, req, Map.class);
 
-                System.out.println("1");
-                Persona p = new Persona();
-                p.setNombre(resp.getBody().get("per_nombres").toString());
-                p.setAp_paterno(resp.getBody().get("per_ap_paterno").toString());
-                p.setAp_materno(resp.getBody().get("per_ap_materno").toString());
-                p.setCi(resp.getBody().get("per_num_doc").toString());
-                p.setCelular(Integer.parseInt(resp.getBody().get("perd_celular").toString()));
-                model.addAttribute("persona", p);
-                model.addAttribute("unidades", unidadService.findAll());
-                model.addAttribute("cargos", cargoService.findAll());
-                
-            } 
-            return "add_Persona";
-        } catch (HttpServerErrorException.InternalServerError e) {
-            System.out.println("4");
-            flash.addFlashAttribute("error", "Ha ocurrido un error en el servidor");
-            return "redirect:/hardware-servicio/add_Persona";
-        } 
-         catch (HttpClientErrorException e) {
-            System.out.println("5");
-            flash.addFlashAttribute("error", "Error en la solicitud al servidor");
-            return "redirect:/hardware-servicio/add_Persona";
-        } catch (Exception e) {
-            System.out.println("6");
-            flash.addFlashAttribute("error", "Error inesperado");
-            return "redirect:/hardware-servicio/add_Persona";
+        if (request.getSession().getAttribute("persona") != null) {
+            try {
+
+                if (resp.getStatusCode() == HttpStatus.OK) { // Verificar el estado de la respuesta
+
+                    System.out.println("1");
+                    Persona p = new Persona();
+                    p.setNombre(resp.getBody().get("per_nombres").toString());
+                    p.setAp_paterno(resp.getBody().get("per_ap_paterno").toString());
+                    p.setAp_materno(resp.getBody().get("per_ap_materno").toString());
+                    p.setCi(resp.getBody().get("per_num_doc").toString());
+                    p.setCelular(Integer.parseInt(resp.getBody().get("perd_celular").toString()));
+
+                    model.addAttribute("persona", p);
+                    model.addAttribute("unidades", unidadService.findAll());
+                    model.addAttribute("cargos", cargoService.findAll());
+
+                }
+                return "add_Persona";
+            } catch (HttpServerErrorException.InternalServerError e) {
+                System.out.println("4");
+                flash.addFlashAttribute("error", "Ha ocurrido un error en el servidor");
+                return "redirect:/hardware-servicio/add_Persona";
+            } catch (HttpClientErrorException e) {
+                System.out.println("5");
+                flash.addFlashAttribute("error", "Error en la solicitud al servidor");
+                return "redirect:/hardware-servicio/add_Persona";
+            } catch (Exception e) {
+                System.out.println("6");
+                flash.addFlashAttribute("validado", "Persona No Existe, Agregar de Manera Manual");
+                return "redirect:/hardware-servicio/add_Persona";
+            }
+
+        } else {
+            return "redirect:/hardware/login";
         }
-		
-	}
-    
+
+    }
 }
