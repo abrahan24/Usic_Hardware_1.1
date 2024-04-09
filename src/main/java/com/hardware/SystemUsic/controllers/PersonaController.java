@@ -204,7 +204,8 @@ public class PersonaController {
         requests.put("usuario", cod_persona);
 
         // String url = "http://localhost:3333/api/londraPost/v1/obtenerDatos";
-        String url = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos";
+        // String url = "http://virtual.uap.edu.bo:7174/api/londraPost/v1/personaLondra/obtenerDatos";
+        String url = "http://localhost:3333/api/londraPost/v1/personaLondra/obtenerDatos";
 
         HttpHeaders headers = new HttpHeaders();
 

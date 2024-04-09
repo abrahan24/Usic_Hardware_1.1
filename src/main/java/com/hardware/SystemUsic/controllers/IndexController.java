@@ -179,7 +179,7 @@ public class IndexController {
         }
         servicioService.save(servicio);
         servicio.setQr("QR_"+servicio.getId_servicio()+".png");
-        metodos.QR("http://servicios.uap.edu.bo:9999/hardware/seguimiento/"+servicio.getId_servicio(), rootAbsolutPath.toString() + "//"+"QR_"+servicio.getId_servicio()+".png");
+        metodos.QR("http://virtual.uap.edu.bo:9998/hardware/seguimiento/"+servicio.getId_servicio(), rootAbsolutPath.toString() + "//"+"QR_"+servicio.getId_servicio()+".png");
         servicioService.save(servicio);
         
        if (id_falla != null) {
