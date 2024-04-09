@@ -1,5 +1,6 @@
 package com.hardware.SystemUsic.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -100,41 +101,29 @@ public class BajaController {
 
     @RequestMapping(value = "/activos")
     public String getContent1(@RequestParam(value = "selectedValues", required = false) String selectedValues, Model model, HttpServletRequest request) {
-        if (selectedValues != null) {
-            // Dividir la cadena de valores separados por comas en un array de Long
-            String[] selectedValuesArray = selectedValues.split(",");
-            Long[] id_almacen = new Long[selectedValuesArray.length];
-
-            for (int i = 0; i < selectedValuesArray.length; i++) {
-                id_almacen[i] = Long.parseLong(selectedValuesArray[i]);
+        
+        try {
+            if (selectedValues != null) {
+                // Dividir la cadena de valores separados por comas en un array de Long
+                String[] selectedValuesArray = selectedValues.split(",");
+                Long[] id_almacen = new Long[selectedValuesArray.length];
+    
+                for (int i = 0; i < selectedValuesArray.length; i++) {
+                    id_almacen[i] = Long.parseLong(selectedValuesArray[i]);
+                }
+    
+                List<Long> idsSeleccionados = Arrays.asList(id_almacen);
+                model.addAttribute("activos_selec", almacenService.Lista_Activos_Por_Id(idsSeleccionados));
+                // System.out.println(almacenService.Lista_Activos_Por_Id(idsSeleccionados).size());
             }
-
-            List<Long> idsSeleccionados = Arrays.asList(id_almacen);
-            model.addAttribute("activos_selec", almacenService.Lista_Activos_Por_Id(idsSeleccionados));
-            System.out.println(almacenService.Lista_Activos_Por_Id(idsSeleccionados).size());
+            return "content :: content2";
+        } catch (Exception e) {
+            return "content :: content2";
         }
-        return "content :: content2";
+       
     }
 
-    @RequestMapping(value = "/eliminarActivos")
-    public void eliminarActivos(@RequestParam(value = "selectedValues", required = false) String selectedValues, Model model, HttpServletRequest request) {
-        if (selectedValues != null) {
-            // Dividir la cadena de valores separados por comas en un array de Long
-            String[] selectedValuesArray = selectedValues.split(",");
-            Long[] id_almacen = new Long[selectedValuesArray.length];
-
-            for (int i = 0; i < selectedValuesArray.length; i++) {
-                id_almacen[i] = Long.parseLong(selectedValuesArray[i]);
-            }
-            List<Long> idsSeleccionados = Arrays.asList(id_almacen);
-
-            List<Almacen> listaCompleta = almacenService.Lista_Activos_Por_Id(idsSeleccionados);
-
-            listaCompleta.removeIf(almacen -> idsSeleccionados.contains(almacen.getId_almacen()));
-
-        }
-    }
-
+    
     // @RequestMapping(value = "/activos/{selectedValues}")
     // public String getContent3(@PathVariable(value = "selectedValues", required = false)String selectedValues, Model model, HttpServletRequest request) {
     //     if (selectedValues != null) {
@@ -201,7 +190,7 @@ public class BajaController {
     public String Form_Informe_Baja(Model model, @Validated Baja baja,
             @RequestParam(name = "id_persona", required = false) Long id_persona,
             @RequestParam(name = "id_usuario",required = false)Long id_usuario,
-            @RequestParam(name = "id_almacen", required = false) Long[] id_almacen,
+            @RequestParam(name = "id_almacen", required = false) String idAlmacenJson,
             @RequestParam MultiValueMap<String, String> params, // Recibir todos los parámetros
             RedirectAttributes flash, HttpServletRequest request) {
 
@@ -213,36 +202,44 @@ public class BajaController {
             baja.setUsuario(usuarioService.findOne(id_usuario));
             bajaService.save(baja);
 
-            if (id_almacen != null) {
-                for (Long id : id_almacen) {
-                    // Obtener los valores de los checkboxes asociados a este id_almacen
-                    Long[] id_fallaBaja = params.get("id_fallaBaja_" + id)
-                            .stream()
-                            .map(Long::valueOf)
-                            .toArray(Long[]::new);
+            Long[] idAlmacenArray = null;
+            if (idAlmacenJson != null) {
+                ObjectMapper objectMapper = new ObjectMapper();
 
-                    DetalleBaja detalleBaja = new DetalleBaja();
-                    Almacen almacen = almacenService.findOne(id);
-                    almacen.setEstado("B"); // Cambia el estado del activo a B Estado de Baja
-                    almacenService.save(almacen);
-                    detalleBaja.setAlmacen(almacen);
-                    detalleBaja.setEstado_detalleBaja("A");
-                    detalleBaja.setBaja(baja);
-                    detalleBaja.setFecha_registro(new Date());
-                    detalleBajaService.save(detalleBaja);
-
-                    if (id_fallaBaja != null) {
-                        for (Long idFallaBaja : id_fallaBaja) {
-                            DetalleAlmacenFallaBaja detalleAlmacenFallaBaja = new DetalleAlmacenFallaBaja();
-                            detalleAlmacenFallaBaja.setEstado_detalleAlmacenFallaBaja("A");
-                            detalleAlmacenFallaBaja.setFecha_registroDetAlmacenBaja(new Date());
-                            detalleAlmacenFallaBaja.setDetalleBaja(detalleBaja);
-                            detalleAlmacenFallaBaja.setFallaBaja(fallaBajaService.findOne(idFallaBaja));
-                            detalleAlmacenFallaBajaService.save(detalleAlmacenFallaBaja);
+                try {
+                    idAlmacenArray = objectMapper.readValue(idAlmacenJson, Long[].class);
+                    for (Long id : idAlmacenArray) {
+                        // Obtener los valores de los checkboxes asociados a este id_almacen
+                        Long[] id_fallaBaja = params.get("id_fallaBaja_" + id)
+                                .stream()
+                                .map(Long::valueOf)
+                                .toArray(Long[]::new);
+    
+                        DetalleBaja detalleBaja = new DetalleBaja();
+                        Almacen almacen = almacenService.findOne(id);
+                        almacen.setEstado("B"); // Cambia el estado del activo a B Estado de Baja
+                        almacenService.save(almacen);
+                        detalleBaja.setAlmacen(almacen);
+                        detalleBaja.setEstado_detalleBaja("A");
+                        detalleBaja.setBaja(baja);
+                        detalleBaja.setFecha_registro(new Date());
+                        detalleBajaService.save(detalleBaja);
+    
+                        if (id_fallaBaja != null) {
+                            for (Long idFallaBaja : id_fallaBaja) {
+                                DetalleAlmacenFallaBaja detalleAlmacenFallaBaja = new DetalleAlmacenFallaBaja();
+                                detalleAlmacenFallaBaja.setEstado_detalleAlmacenFallaBaja("A");
+                                detalleAlmacenFallaBaja.setFecha_registroDetAlmacenBaja(new Date());
+                                detalleAlmacenFallaBaja.setDetalleBaja(detalleBaja);
+                                detalleAlmacenFallaBaja.setFallaBaja(fallaBajaService.findOne(idFallaBaja));
+                                detalleAlmacenFallaBajaService.save(detalleAlmacenFallaBaja);
+                            }
                         }
                     }
+                } catch (IOException e) {
+                    System.out.println("Error al Registrar Informe de Baja");
                 }
-
+                
             }
 
             if (baja.getId_baja() == null) {

@@ -38,7 +38,7 @@
         </thead>
         <tbody>
           <tr th:each="a, cont : ${activos_selec}" th:if="${a.estado != 'X' && a.estado != 'B'}" th:id="${'fila_'+ a.id_almacen}">
-  
+            
             <td th:text="${cont.count}"></td>
             <td width="75px">
               <a type="button" class="btn bg-indigo waves-effect" disable>

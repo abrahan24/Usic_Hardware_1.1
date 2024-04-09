@@ -194,8 +194,9 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <div class="form-line">
-                                                        <input type="text" rows="3" class="form-control no-resize" placeholder="Ej: UAP-123456789 o 148-05-10-12345"
+                                                        <input type="text" rows="3"   class="form-control no-resize" placeholder="Ej: UAP-123456789 o 148-05-10-12345"
                                                             name="id_Almacen" required></input>
+                                                        <input type="hidden" name="id_almacen" id="vectorInput">
                                                     </div>
                                                     <div id="replace_div2">
 
@@ -243,32 +244,6 @@
         });
     </script>
     
-    <!-- <script>
-        function buscar_Activos() {
-            // Obtener los valores seleccionados
-            var selectedValues = $('#id_almacen').val();
-    
-            // Convertir los valores seleccionados en un array si es necesario
-            var selectedArray = selectedValues.split('\n'); // Suponiendo que los valores están separados por saltos de línea
-    
-            // Enviar los datos al controlador mediante una solicitud AJAX POST
-            $.ajax({
-                type: "POST",
-                url: "../../../../hardware-servicio/activos",
-                data: JSON.stringify(selectedArray),
-                contentType: "application/json",
-                success: function(data) {
-                    // Manejar la respuesta del servidor si es necesario
-                    $('#replace_div').html(data);
-                },
-                error: function(xhr, status, error) {
-                    // Manejar errores si es necesario
-                    console.error(error);
-                }
-            });
-        }
-    </script> -->
-
     <script>
         // Definir un vector para almacenar los valores de id_almacen
         var id_almacen_vector = [];
@@ -276,50 +251,34 @@
         function buscar_Activos(id) {
             // Obtener el valor del input id
             var id_almacen = id;
-    
             // Agregar el id_almacen al vector
             id_almacen_vector.push(id_almacen);
-    
             // Llamar a la función getContent con el vector como parámetro
             getContent(id_almacen_vector);
-            
+
         }
 
-        function eliminarFila(id_almacen) {
-        // Eliminar la fila de la tabla
-        var fila = document.getElementById('fila_' + id_almacen);
-        fila.parentNode.removeChild(fila);
-
-        // Realizar una solicitud al servidor para actualizar la vista
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/activos?selectedValues=' + obtenerIdsActivos(), true);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                // Actualizar la sección 'content2' con la respuesta del servidor
-                var content2 = document.getElementById('content2');
-                content2.innerHTML = xhr.responseText;
-            }
-        };
-        xhr.send();
-    }
-
-    function obtenerIdsActivos() {
-        // Obtener los ID de los activos seleccionados
-        var ids = [];
-        var filas = document.querySelectorAll('[id^="fila_"]');
-        filas.forEach(function (fila) {
-            ids.push(fila.id.split('_')[1]);
-        });
-        return ids.join(',');
-    }
-    
         function getContent(ids) {
             // Crear una URL con los valores del vector como parámetros de consulta
             var url = "../../../../hardware-servicio/activos?selectedValues=" + ids.join(',');
     
+            $('#vectorInput').val(JSON.stringify(ids));
             // Llamar a la función load con la URL construida
             $('#replace_div').load(url);
         }
+
+        function eliminarFila(id) {
+        // Encontrar el índice del ID en el vector
+        var index = id_almacen_vector.indexOf(id);
+
+        // Verificar si el ID existe en el vector
+        if (index !== -1) {
+            // Eliminar el ID del vector
+            id_almacen_vector.splice(index, 1);
+        }
+        // Llamar a la función getContent con el vector actualizado como parámetro
+        getContent(id_almacen_vector);
+    }
     </script>
 
     <script>
