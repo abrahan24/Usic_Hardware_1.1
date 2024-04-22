@@ -110,6 +110,7 @@ public class servicioController {
 			
             Servicio servicio = servicioService.findOne(id_servicio);
             servicio.setEstado(null);
+            servicio.setEstado_servicio(null);
             servicioService.save(servicio);
             flash.addAttribute("validado", "Regisro Eliminado Con Exito!");
             
