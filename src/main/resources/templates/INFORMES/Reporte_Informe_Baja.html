@@ -110,11 +110,12 @@
                                                     data-toggle="tooltip" data-placement="top" title="Imprimir Informe">
                                                     <i class="material-icons">print</i>
                                                 </a>
-                                                <a  th:if="${b.estado_baja == 'A' && session.usuario.id_usuario == 3}"  th:href="${'../../../../hardware-servicio/validar_baja/' + b.id_baja}"
-                                                    type="button"
-                                                    class="btn bg-teal btn-circle waves-effect waves-circle waves-float"
-                                                    data-toggle="tooltip" data-placement="top" title="Autorizar">
-                                                    <i class="material-icons">done</i>
+                                                <a th:if="${b.estado_baja == 'A' && session.usuario.id_usuario == 3}" 
+                                                th:attr="onclick=${'MandarURL('+b.id_baja+')'}"
+                                                type="button"
+                                                class="btn bg-teal btn-circle waves-effect waves-circle waves-float"
+                                                data-toggle="tooltip" data-placement="top" title="Autorizar">
+                                                <i class="material-icons">done</i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -189,7 +190,21 @@
     </section>
     
     <script th:replace="layaut/layaut :: script_modal_persona"></script>
-
+    <script>
+        function MandarURL(a) {
+                swal({
+                    title: 'Desea Autorizar Baja?',
+                    type: 'info',
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    cancelButtonText: "NO",
+                    html:
+                        "<a type='button' class='swal2-styled ' style='display: inline-block; background-color: rgb(48, 133, 214); border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214); padding: 13px 35px 13px 35px;' data-original-title='' title='' href='../../../../hardware-servicio/validar_baja/" + a + "'  >" +
+                        "SI" +
+                        "</a>",
+                }).then().done();
+            }
+    </script>
     <!-- Jquery Core Js -->
     <script src="../../../../plugins/jquery/jquery.min.js"></script>
 
@@ -269,6 +284,7 @@
 
     <!-- Custom Js -->
     <script src="../../../../js/admin.js"></script>
+    <script src="../../../../js/sweetalert2.min.js"></script>
     <script src="../../../../js/pages/tables/jquery-datatable.js"></script>
     <script src="../../../../js/pages/ui/modals.js"></script>
     <script src="../../../../js/pages/forms/advanced-form-elements.js"></script>
