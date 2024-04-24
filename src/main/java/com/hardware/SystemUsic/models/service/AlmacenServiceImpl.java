@@ -63,5 +63,11 @@ public class AlmacenServiceImpl implements IAlmacenService{
         return almacenDao.Lista_Activos_Cod_Equipo(cod_equipo);
     }
 
+    @Override
+    public Almacen getActivoPorCodigo(String cod_equipo) {
+        // TODO Auto-generated method stub
+        return almacenDao.getActivoPorCodigo(cod_equipo);
+    }
+
    
 }

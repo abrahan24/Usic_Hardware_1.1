@@ -28,60 +28,7 @@ public class Cargo implements Serializable {
     private String estado;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo", fetch = FetchType.EAGER)
 	private List<Persona> personas;
-
-
-    public Long getId_cargo() {
-        return id_cargo;
-    }
-
-
-    public void setId_cargo(Long id_cargo) {
-        this.id_cargo = id_cargo;
-    }
-
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-
-
-    public List<Persona> getPersonas() {
-        return personas;
-    }
-
-
-    public void setPersonas(List<Persona> personas) {
-        this.personas = personas;
-    }
-
-
-    public String getEstado() {
-        return estado;
-    }
-
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-
-
-    public String getCargo() {
-        return cargo;
-    }
-
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
     
 }

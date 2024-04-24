@@ -29,6 +29,6 @@ public class GradoAcademico implements Serializable{
     private String sigla_gradoAcademico;
     private String estado_gradoAcademico;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gradoAcademico", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gradoAcademico", fetch = FetchType.EAGER)
 	private List<Persona> personas;
 }

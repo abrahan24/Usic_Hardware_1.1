@@ -21,5 +21,5 @@ public interface IAlmacenService {
 
 	public List<Almacen>Lista_Activos_Por_Codigo_Equipo(List<String> cod_equipo);
 
-
+	public Almacen getActivoPorCodigo(String cod_equipo);
 }

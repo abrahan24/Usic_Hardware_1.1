@@ -39,6 +39,7 @@ public class Baja implements Serializable{
     private String cite;
     private String observacion_baja;
     private Date fecha_modificacion;
+    private String QR_baja;
 
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuario")

@@ -31,7 +31,7 @@ public class Usuario implements Serializable{
     private String contrasena;
     private Character estado;
 //Tabla Persona
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_persona")    
     private Persona persona;
 

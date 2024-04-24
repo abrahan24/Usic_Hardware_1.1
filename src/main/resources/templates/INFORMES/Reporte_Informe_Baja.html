@@ -61,7 +61,8 @@
                                         <tr>
                                             <th>N°</th>
                                             <th>Numero de Informe</th>
-                                            <th>Dirigido a</th>-
+                                            <th>Dirigido a</th>
+                                            <th>Fecha Registro</th>
                                             <th>Referencia</th>
                                             <th>Cite</th>
                                             <th>Observacion</th>
@@ -73,7 +74,7 @@
                                     <tbody style="text-transform:uppercase">
                                         <tr th:each="b, num : ${bajas}" th:if="${b.estado_baja != 'X'}">
                                             <td
-                                                th:text="${num.count}">
+                                                th:text="${num.index+1}">
                                             </td>
                                             <td
                                                 th:text="${'INF.DHS.-USIC-N°'+b.id_baja+'/'+#dates.format(b.fecha_baja, 'yyyy')}">
@@ -82,6 +83,9 @@
                                                 th:text="${b.persona.nombre + ' ' + b.persona.ap_paterno}"></td>
                                             <td th:if="${b.persona.ap_materno != null}"
                                                 th:text="${b.persona.nombre + ' ' + b.persona.ap_paterno + ' ' + b.persona.ap_materno}">
+                                            </td>
+                                            <td
+                                                th:text="${#dates.format(b.fecha_baja, 'dd-MM-yyyy')}">
                                             </td>
                                             <td th:text="${b.ref_baja}"></td>
                                             <td th:text="${b.cite}"></td>
@@ -106,6 +110,12 @@
                                                     data-toggle="tooltip" data-placement="top" title="Imprimir Informe">
                                                     <i class="material-icons">print</i>
                                                 </a>
+                                                <a  th:if="${b.estado_baja == 'A' && session.usuario.id_usuario == 3}"  th:href="${'../../../../hardware-servicio/validar_baja/' + b.id_baja}"
+                                                    type="button"
+                                                    class="btn bg-teal btn-circle waves-effect waves-circle waves-float"
+                                                    data-toggle="tooltip" data-placement="top" title="Autorizar">
+                                                    <i class="material-icons">done</i>
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -114,7 +124,8 @@
                                         <tr>
                                             <th>N°</th>
                                             <th>Numero de Informe</th>
-                                            <th>Dirigido a</th>-
+                                            <th>Dirigido a</th>
+                                            <th>Fecha Registro</th>
                                             <th>Referencia</th>
                                             <th>Cite</th>
                                             <th>Observacion</th>

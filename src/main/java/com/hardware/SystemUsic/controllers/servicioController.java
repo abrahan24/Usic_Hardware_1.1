@@ -199,11 +199,17 @@ public class servicioController {
 
         if (request.getSession().getAttribute("persona") != null) {
             
-            almacen.setEstado("A");
-            almacen.setTipoEquipo(tipoEquipoService.findOne(id_tipoequipo));
-            almacenService.save(almacen);
-            flash.addAttribute("validado", "Equipo Agregado Con Exito!!");
-            return "redirect:/hardware-servicio/add_equipo";
+            if (almacenService.getActivoPorCodigo(almacen.getCod_equipo()) == null) {
+                almacen.setEstado("A");
+                almacen.setTipoEquipo(tipoEquipoService.findOne(id_tipoequipo));
+                almacenService.save(almacen);
+                flash.addAttribute("validado", "Equipo Agregado Con Exito!!");
+                return "redirect:/hardware-servicio/add_equipo";
+            }else{
+                flash.addAttribute("validado", "El Equipo Con Codigo: "+almacen.getCod_equipo() +" Ya Se Encuentra Registrado !!");
+                return "redirect:/hardware-servicio/add_equipo";
+            }   
+
 		} else {
 			return "redirect:/hardware/login";
 		}

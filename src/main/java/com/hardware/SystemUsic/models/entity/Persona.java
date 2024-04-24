@@ -36,11 +36,11 @@ public class Persona implements Serializable{
     private String cod_funcionario;
 
 //Tabla Cargo
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_cargo")
     private Cargo cargo;
 //Tabla Cargo
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_gradoAcademico")
     private GradoAcademico gradoAcademico;
 //Tabla Unidad
@@ -51,7 +51,7 @@ public class Persona implements Serializable{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)
 	private List<Colaborador> colaboradors;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.EAGER)
 	private List<Usuario> usuarios;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)

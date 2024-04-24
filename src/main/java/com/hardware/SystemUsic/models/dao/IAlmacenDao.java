@@ -19,4 +19,7 @@ public interface IAlmacenDao extends CrudRepository<Almacen, Long>{
 
     @Query(value = "SELECT * FROM almacen a WHERE a.cod_equipo LIKE %?1% LIMIT 5",nativeQuery = true)
     public List<Almacen>Lista_Activos_Cod_Equipo(String cod_equipo);
+
+    @Query(value = "SELECT a FROM Almacen a where a.cod_equipo =?1")
+    public Almacen getActivoPorCodigo(String cod_equipo);
 }

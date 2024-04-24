@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,7 +78,7 @@ public class IndexController {
             session.setAttribute("persona", u.getPersona());
             session.setAttribute("usuario", u);
             session.setAttribute("unidad", u.getPersona().getUnidad().getUnidad());
-            
+            Hibernate.initialize(u.getPersona().getCargo());
             return "redirect:/hardware-servicio/";
         } else {
             return "login";
