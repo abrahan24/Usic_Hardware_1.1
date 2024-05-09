@@ -262,16 +262,19 @@
                                 </tr>
                                 <tr>
                                     <th class="text-center" width="33%">
-                                        <th:block th:text="${servicio.persona.nombre +' '+ servicio.persona.ap_paterno +' '+ servicio.persona.ap_materno}"></th:block><br>
+                                        <th:block th:if="${servicio.persona.gradoAcademico == null}" th:text="${servicio.persona.nombre +' '+ servicio.persona.ap_paterno +' '+ servicio.persona.ap_materno}"></th:block>
+                                        <th:block th:if="${servicio.persona.gradoAcademico != null}" th:text="${servicio.persona.gradoAcademico.sigla_gradoAcademico+' '+servicio.persona.nombre +' '+ servicio.persona.ap_paterno +' '+ servicio.persona.ap_materno}"></th:block><br>
                                         <th:block>SOLICITANTE</th:block>   
                                     </th>
                                     <th   class="text-center" width="33%">
-                                        <th:block th:text="${'ING.LUIS ENRIQUE VILLCA MAMANI'}"></th:block><br>
+                                        <th:block th:text="${'ING. LUIS ENRIQUE VILLCA MAMANI'}"></th:block><br>
                                         <th:block>JEFE DE LA USIC</th:block>
                                     </th>
                                    
                                     <th  class="text-center" width="33%">
-                                        <th:block th:text="${servicio.colaboradores.get(0).persona.nombre +' '+servicio.colaboradores.get(0).persona.ap_paterno +' '+servicio.colaboradores.get(0).persona.ap_materno}"></th:block><br>
+                                        <th:block
+                                            th:text="${servicio.colaboradores.get(0).persona.gradoAcademico.sigla_gradoAcademico+' '+servicio.colaboradores.get(0).persona.nombre +' '+servicio.colaboradores.get(0).persona.ap_paterno +' '+servicio.colaboradores.get(0).persona.ap_materno}">
+                                        </th:block><br>
                                         <th:block>TECNICO COLABORADOR</th:block>
                                     </th>
                                 </tr>
