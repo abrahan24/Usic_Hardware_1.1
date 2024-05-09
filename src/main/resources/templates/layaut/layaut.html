@@ -78,6 +78,11 @@
     <th:block th:text="${validado_}"></th:block>
 </div>
 
+<div th:if="${succes2 != null}" th:fragment="alert4" class="alert bg-green alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <th:block th:text="${succes2}"></th:block>
+</div>
+
 <div th:if="${succes!=null}" th:fragment="alert2" class="alert bg-red alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <th:block th:text="${succes}"></th:block>
@@ -107,7 +112,7 @@
                             <div class="form-line">
                                 <input type="text" rows="1" name="cod_persona" class="form-control no-resize"
                                     placeholder="Descripcion..." style="text-transform:uppercase"
-                                    required></input>
+                                    ></input>
                             </div>
                         </div>
                     </div>

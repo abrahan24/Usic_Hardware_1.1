@@ -196,7 +196,7 @@
                         </table>
                     </div>
                     <div class="row" >
-                        <table class="table table-bordered border-dark table-sm" id="tabla3" th:if="${servicio.estado_servicio == 'T'}">
+                        <table class="table table-bordered border-dark table-sm" id="tabla3" th:if="${servicio.estado_servicio == 'T' || servicio.estado_servicio == 'TT'}">
                             <tbody>
                                 <tr th:if="${servicio.tiposervicio == null || (servicio.observacion != null || servicio.observacion == null)}">
                                     <th colspan="4" class="text-center"
@@ -244,15 +244,18 @@
                         </table>
                     </div>
                     <div class="row" >
-                        <table th:if="${servicio.estado_servicio == 'T' }" class="table table-bordered border-dark table-sm" id="tabla4" >
+                        <table th:if="${servicio.estado_servicio == 'T' || servicio.estado_servicio == 'TT' }" class="table table-bordered border-dark table-sm" id="tabla4" >
                             <tbody>
                                 <tr height="70">
                                     <th class="text-center" width="33%">
                                         <th:block>RECIBI CONFORME</th:block>        
                                     </th>
-                                    <th class="text-center" width="33%">
-        
+                                    <th th:if="${servicio.qr_servicio != null}" class="text-center" width="33%">
+                                        <img  th:src="@{'/uploads_servicio/'+${servicio.qr_servicio}+'.png'}" width="60" height="65">
                                     </th>
+                                    <th th:if="${servicio.qr_servicio == null}" class="text-center" width="33%">
+                                    </th>
+                                    
                                     <th class="text-center" width="33%">
                                         <th:block>ENTREGUE CONFORME</th:block> 
                                     </th>
@@ -263,7 +266,7 @@
                                         <th:block>SOLICITANTE</th:block>   
                                     </th>
                                     <th   class="text-center" width="33%">
-                                        <th:block th:text="${'LUIS ENRIQUE VILLCA MAMANI'}"></th:block><br>
+                                        <th:block th:text="${'ING.LUIS ENRIQUE VILLCA MAMANI'}"></th:block><br>
                                         <th:block>JEFE DE LA USIC</th:block>
                                     </th>
                                    

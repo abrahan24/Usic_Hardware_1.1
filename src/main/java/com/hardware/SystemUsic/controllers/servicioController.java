@@ -1,5 +1,11 @@
 package com.hardware.SystemUsic.controllers;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.hardware.SystemUsic.Metodos;
 import com.hardware.SystemUsic.models.entity.Almacen;
+import com.hardware.SystemUsic.models.entity.Baja;
 import com.hardware.SystemUsic.models.entity.Cargo;
 import com.hardware.SystemUsic.models.entity.Colaborador;
 import com.hardware.SystemUsic.models.entity.DetalleFalla;
@@ -77,7 +85,8 @@ public class servicioController {
     private IDetalleFallaService detalleFallaService;
 
     @RequestMapping("/")
-    public String servicios(Model model,RedirectAttributes flash, HttpServletRequest request , @RequestParam(name = "validado",required = false)String validado){
+    public String servicios(Model model,RedirectAttributes flash, HttpServletRequest request , @RequestParam(name = "validado",required = false)String validado,
+    @RequestParam(name = "succes2",required = false)String succes2){
 
         if (request.getSession().getAttribute("persona") != null) {
 			Persona persona = (Persona) request.getSession().getAttribute("persona");
@@ -86,8 +95,9 @@ public class servicioController {
             persona = personaService.findOne(persona.getId_persona()); 
             usuario = usuarioService.findOne(usuario.getId_usuario());
 
-            if (validado != null ) {
+            if (validado != null || succes2 != null) {
                 model.addAttribute("validado", validado);
+                model.addAttribute("succes2", succes2);
             }
         
             // for (Previo previo : usuario.getPrevios()) {
@@ -806,6 +816,51 @@ public class servicioController {
 		} else {
 			return "redirect:/hardware/login";
 		} 
+    }
+
+    @RequestMapping("/validar_servicio/{id_servicio}")
+    public String Verificar_Servicio(Model model,@PathVariable("id_servicio")long id_servicio,RedirectAttributes flash, HttpServletRequest request) throws FileNotFoundException, IOException{
+            
+        if (request.getSession().getAttribute("persona") != null) {
+            Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+            Date date = new Date();
+        
+            Cargo cargo = cargoService.findOne(usuario.getPersona().getCargo().getId_cargo());
+            // Define el formato deseado
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            
+            // Formatea la fecha y hora
+            String formattedDate = formatter.format(date);
+            Metodos metodos = new Metodos();
+            Servicio servicio = servicioService.findOne(id_servicio);
+            servicio.setEstado("TT");
+            servicio.setEstado_servicio("TT");
+            Path rootPath = Paths.get("uploads_servicio");
+            Path rootAbsolutPath = rootPath.toAbsolutePath();
+            String rutaDirectorio = rootAbsolutPath.toString() + "//" +"QR_Servicio_"+ servicio.getId_servicio()+".png";
+            try {
+                if (!Files.exists(rootPath)) {
+                    Files.createDirectories(rootPath);
+                    System.out.println("Directorio creado: " + rutaDirectorio);
+                } else {
+                    System.out.println("El directorio ya existe: " + rutaDirectorio);
+                }
+            } catch (IOException e) {
+                System.err.println("Error al crear el directorio: " + e.getMessage());
+            }
+            String sigla = usuario.getPersona().getGradoAcademico().getSigla_gradoAcademico();
+           
+            metodos.QR2(
+                    "Autorizado por: "+sigla+usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno() + " "+ usuario.getPersona().getAp_materno() + "\n" +
+                            "Cargo:"+cargo.getCargo() +"\n" + "Fecha: " + formattedDate,
+                    rutaDirectorio);
+            servicio.setQr_servicio("QR_Servicio_"+servicio.getId_servicio());
+            servicioService.save(servicio);
+            flash.addAttribute("succes2", "Servicio N°:"+servicio.getId_servicio()+" Autorizado!");
+            return "redirect:/hardware-servicio/";
+		} else {
+			return "redirect:/hardware/login";
+		}
     }
 
     @RequestMapping("/cerrar_sesion")

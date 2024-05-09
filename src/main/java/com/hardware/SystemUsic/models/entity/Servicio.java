@@ -35,6 +35,7 @@ public class Servicio implements Serializable{
     private String recomendacion;
     private String conclucion;
     private String qr;
+    private String qr_servicio;
     private Date fecha_entrega;
 
 //Tabla Persona   
