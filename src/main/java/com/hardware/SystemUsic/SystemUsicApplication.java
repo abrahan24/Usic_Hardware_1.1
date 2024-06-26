@@ -11,6 +11,7 @@ public class SystemUsicApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SystemUsicApplication.class, args);
+		
 	}
 
 

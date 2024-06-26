@@ -66,19 +66,19 @@ public class IndexController {
         return "login";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String userLogin(Model model, @RequestParam("usuario")String usuario,@RequestParam("contrasena")String contrasena, RedirectAttributes flash, HttpServletRequest request){
-        Usuario u=usuarioService.getUsuario(usuario, contrasena);
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String userLogin(Model model, @RequestParam("usuario") String usuario,
+            @RequestParam("contrasena") String contrasena, RedirectAttributes flash, HttpServletRequest request) {
+        Usuario u = usuarioService.getUsuario(usuario, contrasena);
 
-        model.addAttribute("usuario", u);
-        if (u!=null && u.getEstado() != 'X') {
-            HttpSession session = request.getSession(false);
-    
-            session = request.getSession(true);
+        // model.addAttribute("usuario", u);
+        if (u != null && !u.getEstado().equals("X")) {
+            HttpSession session = request.getSession(true);
+
             session.setAttribute("persona", u.getPersona());
             session.setAttribute("usuario", u);
             session.setAttribute("unidad", u.getPersona().getUnidad().getUnidad());
-            Hibernate.initialize(u.getPersona().getCargo());
+            // Hibernate.initialize(u.getPersona().getCargo());
             return "redirect:/hardware-servicio/";
         } else {
             return "login";
