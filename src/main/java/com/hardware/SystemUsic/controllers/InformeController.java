@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,7 +35,7 @@ public class InformeController {
     private IDetalleSolucionService detalleSolucionService;
     
     @RequestMapping("/informe_soporte_tec/{id_servicio}")
-    public String informe_Soporte_Tec(Model model, @PathVariable("id_servicio") Long id_servicio,
+    public String informe_Soporte_Tec(Model model, @PathVariable Long id_servicio,
             RedirectAttributes flash, HttpServletRequest request) {
         if (request.getSession().getAttribute("persona") != null) {
 
@@ -51,7 +51,7 @@ public class InformeController {
     }
     
     @RequestMapping("/informe_preventivo/{id_servicio}")
-    public String informe_Preventivo(Model model, @PathVariable("id_servicio") Long id_servicio,
+    public String informe_Preventivo(Model model, @PathVariable Long id_servicio,
             RedirectAttributes flash, HttpServletRequest request) {
         if (request.getSession().getAttribute("persona") != null) {
 
@@ -67,7 +67,7 @@ public class InformeController {
     }
 
     @RequestMapping("/informe_tecnico/{id_servicio}")
-    public String informeTecnico(Model model, @PathVariable("id_servicio") Long id_servicio, RedirectAttributes flash,
+    public String informeTecnico(Model model, @PathVariable Long id_servicio, RedirectAttributes flash,
             HttpServletRequest request) {
         if (request.getSession().getAttribute("persona") != null) {
 
@@ -84,7 +84,7 @@ public class InformeController {
 
     
     @RequestMapping("/editar-informe_tecnico/{id_servicio}")
-    public String Editar_informe_Tecnico(Model model, @PathVariable("id_servicio") Long id_servicio,
+    public String Editar_informe_Tecnico(Model model, @PathVariable Long id_servicio,
             RedirectAttributes flash, HttpServletRequest request) {
         if (request.getSession().getAttribute("persona") != null) {
 
@@ -109,11 +109,11 @@ public class InformeController {
     }
 
 
-    @RequestMapping(value = "/add_informe_soporte_tec", method = RequestMethod.POST)
+    @PostMapping("/add_informe_soporte_tec")
     public String informeTecnico_Soporte_Tec(Model model,
-            @RequestParam(name = "observacion", required = false) String observacion,
-            @RequestParam(name = "id_servicio", required = false) Long id_servicio,
-            @RequestParam(name = "id_solucion", required = false) Long[] id_solucion,
+            @RequestParam(required = false) String observacion,
+            @RequestParam(required = false) Long id_servicio,
+            @RequestParam(required = false) Long[] id_solucion,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -157,16 +157,16 @@ public class InformeController {
 
             flash.addAttribute("validado", "Informe de Soporte Técnico N°"+servicio.getId_servicio()+" Realizado Con Exito!");
 
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
         } else {
             return "redirect:/hardware/login";
         }
     }
 
-    @RequestMapping(value = "/add_informe_preventivo", method = RequestMethod.POST)
-    public String informeTecnico_Preventivo(Model model, @RequestParam("observacion") String observacion,
-            @RequestParam(name = "id_servicio", required = false) Long id_servicio,
-            @RequestParam(name = "id_solucion", required = false) Long[] id_solucion,
+    @PostMapping("/add_informe_preventivo")
+    public String informeTecnico_Preventivo(Model model, @RequestParam String observacion,
+            @RequestParam(required = false) Long id_servicio,
+            @RequestParam(required = false) Long[] id_solucion,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -210,18 +210,18 @@ public class InformeController {
 
             flash.addAttribute("validado", "Informe De Mantenimiento Preventivo N°"+servicio.getId_servicio()+" Realizado Con Exito!");
 
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
         } else {
             return "redirect:/hardware/login";
         }
     }
 
-    @RequestMapping(value = "/add_informe", method = RequestMethod.POST)
-    public String informeTecnicoServicio(Model model, @RequestParam("conclucion") String conclucion,
-            @RequestParam("recomendacion") String recomendacion, @RequestParam("observacion") String observacion,
-            @RequestParam(name = "id_servicio", required = false) Long id_servicio,
-            @RequestParam(name = "id_solucion", required = false) Long[] id_solucion,
-            @RequestParam(name = "id_detalleSolucion", required = false) Long id_detalleSolucion,
+    @PostMapping("/add_informe")
+    public String informeTecnicoServicio(Model model, @RequestParam String conclucion,
+            @RequestParam String recomendacion, @RequestParam String observacion,
+            @RequestParam(required = false) Long id_servicio,
+            @RequestParam(required = false) Long[] id_solucion,
+            @RequestParam(required = false) Long id_detalleSolucion,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -260,7 +260,7 @@ public class InformeController {
                 flash.addAttribute("validado", "Informe de Mantenimiento Correctivo N°"+servicio.getId_servicio()+" Realizado Con Exito!");
             }
 
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
         } else {
             return "redirect:/hardware/login";
         }

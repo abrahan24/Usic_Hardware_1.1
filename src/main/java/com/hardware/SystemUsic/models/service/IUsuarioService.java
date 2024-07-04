@@ -14,5 +14,7 @@ public interface IUsuarioService {
 	public void delete(Long id);
 
 	public Usuario getUsuario(String usuario,String contrasena);
+
+	public List<Usuario> obtenerUsuariosConEstado_A();
     
 }

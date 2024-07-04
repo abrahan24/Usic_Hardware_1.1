@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hardware.SystemUsic.Metodos;
@@ -61,14 +58,14 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    @GetMapping("/login")
     public String login (){
         return "login";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String userLogin(Model model, @RequestParam("usuario") String usuario,
-            @RequestParam("contrasena") String contrasena, RedirectAttributes flash, HttpServletRequest request) {
+    @PostMapping("/login")
+    public String userLogin(Model model, @RequestParam String usuario,
+            @RequestParam String contrasena, RedirectAttributes flash, HttpServletRequest request) {
         Usuario u = usuarioService.getUsuario(usuario, contrasena);
 
         // model.addAttribute("usuario", u);
@@ -79,14 +76,14 @@ public class IndexController {
             session.setAttribute("usuario", u);
             session.setAttribute("unidad", u.getPersona().getUnidad().getUnidad());
             // Hibernate.initialize(u.getPersona().getCargo());
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
         } else {
             return "login";
         }
     }
 
     @RequestMapping(value = "/")
-    public String inicio(Model model,  @RequestParam(name = "validado", required = false) String validado){
+    public String inicio(Model model,  @RequestParam(required = false) String validado){
         
         if (validado != null) {
             model.addAttribute("validado", validado);
@@ -103,7 +100,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/verificar/{id}")
-    public String verificar_id(Model model , @PathVariable("id")Long id,RedirectAttributes flash,@RequestParam(name = "succes",required = false) String succes){
+    public String verificar_id(Model model , @PathVariable Long id,RedirectAttributes flash,@RequestParam(required = false) String succes){
 
         if (succes != null) {
             model.addAttribute("succes", succes);
@@ -112,8 +109,8 @@ public class IndexController {
         return "verificar";
     }
     
-    @RequestMapping(value = "/verificar", method = RequestMethod.POST)
-    public String verificar(Model model, @RequestParam("id_persona")Long id_persona, @RequestParam("id_tipoequipo")Long id_tipoequipo,RedirectAttributes flash){
+    @PostMapping("/verificar")
+    public String verificar(Model model, @RequestParam Long id_persona, @RequestParam Long id_tipoequipo,RedirectAttributes flash){
         Persona persona= personaService.findOne(id_persona);
 
         // Map<String, Object> requests = new HashMap<String, Object>();
@@ -145,8 +142,8 @@ public class IndexController {
         return "formCliente";
     }
 
-  @RequestMapping(value = "/servicio", method = RequestMethod.POST)
-    public String registrarServicio(Model model,@RequestParam(name = "id_servicio",required = false)Long id_servicio, @Validated Persona persona,@RequestParam(name = "accesorio", required = false)String accesorio, @RequestParam("id_almacen")Long id_almacen , @RequestParam(name = "id_falla",required = false)Long [] id_falla, @RequestParam("id_procedencia")Long id_procedencia ,RedirectAttributes flash) throws FileNotFoundException, IOException{
+  @PostMapping("/servicio")
+    public String registrarServicio(Model model,@RequestParam(required = false)Long id_servicio, @Validated Persona persona,@RequestParam(required = false)String accesorio, @RequestParam Long id_almacen , @RequestParam(required = false)Long [] id_falla, @RequestParam Long id_procedencia ,RedirectAttributes flash) throws FileNotFoundException, IOException{
 
         if (persona.getId_persona()!=null) {
             persona=personaService.findOne(persona.getId_persona());
@@ -201,7 +198,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/almacen/{id_almacen}")
-	public String getContent1(@PathVariable(value = "id_almacen")Long id_almacen, Model model, HttpServletRequest request){
+	public String getContent1(@PathVariable Long id_almacen, Model model, HttpServletRequest request){
 	
 		model.addAttribute("almacen", almacenService.findOne(id_almacen));
        
@@ -209,7 +206,7 @@ public class IndexController {
 	}
 
     @RequestMapping(value = "/personas/{dato}/{id_tipoequipo}")
-	public String getContent3(@PathVariable(value = "dato")String dato,@PathVariable("id_tipoequipo")Long id_tipoequipo, Model model, HttpServletRequest request){
+	public String getContent3(@PathVariable String dato,@PathVariable Long id_tipoequipo, Model model, HttpServletRequest request){
 	
         TipoEquipo tipoEquipo = tipoEquipoService.findOne(id_tipoequipo);
 
@@ -220,7 +217,7 @@ public class IndexController {
 	}
 
     @RequestMapping(value = "/seguimiento/{id_servicio}")
-	public String seguimiento(@PathVariable(value = "id_servicio")Long id_servicio, Model model, HttpServletRequest request){
+	public String seguimiento(@PathVariable Long id_servicio, Model model, HttpServletRequest request){
 	
 		model.addAttribute("servicio", servicioService.findOne(id_servicio));
        

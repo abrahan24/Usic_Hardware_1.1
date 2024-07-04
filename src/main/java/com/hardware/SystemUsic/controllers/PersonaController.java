@@ -17,8 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -48,7 +48,7 @@ public class PersonaController {
     private IGradoAcademicoService gradoAcademicoService;
 
     @RequestMapping("/add_Persona")
-    public String add_Persona_Service(Model model, @RequestParam(name = "validado", required = false) String validado,
+    public String add_Persona_Service(Model model, @RequestParam(required = false) String validado,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -67,10 +67,10 @@ public class PersonaController {
         }
     }
 
-    @RequestMapping(value = "/add_persona", method = RequestMethod.POST)
+    @PostMapping("/add_persona")
     public String add_Persona(Model model, @Validated Persona persona,
-            @RequestParam(name = "id_unidad", required = false) Long id_unidad,
-            @RequestParam(name = "id_cargo", required = false) Long id_cargo, RedirectAttributes flash,
+            @RequestParam(required = false) Long id_unidad,
+            @RequestParam(required = false) Long id_cargo, RedirectAttributes flash,
             HttpServletRequest request) {
         
         if (request.getSession().getAttribute("persona") != null) {
@@ -91,11 +91,11 @@ public class PersonaController {
         }
     }
 
-    @RequestMapping(value = "/add_Persona", method = RequestMethod.POST)
+    @PostMapping("/add_Persona")
     public String add_Persona_edit(Model model, @Validated Persona persona,
-            @RequestParam(name = "id_unidad", required = false) Long id_unidad,
-            @RequestParam(name = "id_cargo", required = false) Long id_cargo,
-            @RequestParam("id_gradoAcademico")Long id_gradoAcademico, RedirectAttributes flash,
+            @RequestParam(required = false) Long id_unidad,
+            @RequestParam(required = false) Long id_cargo,
+            @RequestParam Long id_gradoAcademico, RedirectAttributes flash,
             HttpServletRequest request) {
         
         if (request.getSession().getAttribute("persona") != null) {
@@ -115,8 +115,8 @@ public class PersonaController {
     }
 
     @RequestMapping("/lista_personas")
-    public String lista_Personas(Model model, @RequestParam(name = "validado", required = false) String validado,
-        @RequestParam(name = "succes", required = false) String succes,
+    public String lista_Personas(Model model, @RequestParam(required = false) String validado,
+        @RequestParam(required = false) String succes,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -135,7 +135,7 @@ public class PersonaController {
     }
 
     @RequestMapping("/editar-persona/{ip_persona}")
-    public String editar_Persona(Model model, @PathVariable("ip_persona") Long ip_persona, RedirectAttributes flash,
+    public String editar_Persona(Model model, @PathVariable Long ip_persona, RedirectAttributes flash,
             HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -152,7 +152,7 @@ public class PersonaController {
     }
 
     @RequestMapping("/eliminar-persona/{ip_persona}")
-    public String eliminar_Persona(Model model, @PathVariable("ip_persona") Long ip_persona, RedirectAttributes flash,
+    public String eliminar_Persona(Model model, @PathVariable Long ip_persona, RedirectAttributes flash,
             HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -194,9 +194,9 @@ public class PersonaController {
     //     }
     // }
 
-    @RequestMapping(value = "/persona", method = RequestMethod.POST)
+    @PostMapping("/persona")
     public String logearseCa(Model model, HttpServletRequest request,
-            @RequestParam(name = "cod_persona", required = false) String cod_persona, RedirectAttributes flash)
+            @RequestParam(required = false) String cod_persona, RedirectAttributes flash)
             throws ParseException {
 
         Map<String, Object> requests = new HashMap<String, Object>();

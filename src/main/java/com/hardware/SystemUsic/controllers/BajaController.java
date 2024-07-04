@@ -20,13 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -79,7 +73,7 @@ public class BajaController {
     private ICargoService cargoService;
 
 
-    @RequestMapping(value = "/informe_baja",method = RequestMethod.GET)
+    @GetMapping("/informe_baja")
     public String Informe_Baja(Model model, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -94,8 +88,8 @@ public class BajaController {
 		}
     }
 
-    @RequestMapping(value = "/lista_informes_bajas",method = RequestMethod.GET)
-    public String Lista_Informe_Baja(Model model,@RequestParam(name = "validado",required = false)String validado, RedirectAttributes flash, HttpServletRequest request ){
+    @GetMapping("/lista_informes_bajas")
+    public String Lista_Informe_Baja(Model model,@RequestParam(required = false)String validado, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -113,7 +107,7 @@ public class BajaController {
     
 
     @RequestMapping(value = "/activos")
-    public String getContent1(@RequestParam(value = "selectedValues", required = false) String selectedValues, Model model, HttpServletRequest request) {
+    public String getContent1(@RequestParam(required = false) String selectedValues, Model model, HttpServletRequest request) {
         
         try {
             if (selectedValues != null) {
@@ -148,8 +142,8 @@ public class BajaController {
     //     return "content :: content2";
     // }
 
-    @RequestMapping(value = "/obtener_activos/{cod_equipo}", method = RequestMethod.GET)
-    public String getContent4(@PathVariable("cod_equipo") String cod_equipo, Model model) {
+    @GetMapping("/obtener_activos/{cod_equipo}")
+    public String getContent4(@PathVariable String cod_equipo, Model model) {
         if (cod_equipo != null) {
             model.addAttribute("Activos_S", almacenService.Lista_Activos_Cod_Equipo(cod_equipo));
 
@@ -199,10 +193,10 @@ public class BajaController {
     // }
 
 
-    @RequestMapping(value = "/add_informe_baja", method = RequestMethod.POST)
+    @PostMapping("/add_informe_baja")
 public String Form_Informe_Baja(Model model, @Validated Baja baja,
-                                @RequestParam(name = "id_persona", required = false) Long id_persona,
-                                @RequestParam(name = "id_usuario", required = false) Long id_usuario,
+                                @RequestParam(required = false) Long id_persona,
+                                @RequestParam(required = false) Long id_usuario,
                                 @RequestParam(name = "id_almacen", required = false) String idAlmacenJson,
                                 @RequestParam MultiValueMap<String, String> params, // Recibir todos los parámetros
                                 RedirectAttributes flash, HttpServletRequest request) {
@@ -266,7 +260,7 @@ public String Form_Informe_Baja(Model model, @Validated Baja baja,
     }
 }
     @RequestMapping("/ficha_tecnica_baja/{id_baja}")
-    public String Imprimir_Informe_Baja(Model model,@PathVariable("id_baja")Long id_baja,RedirectAttributes flash, HttpServletRequest request){
+    public String Imprimir_Informe_Baja(Model model,@PathVariable Long id_baja,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -318,7 +312,7 @@ public String Form_Informe_Baja(Model model, @Validated Baja baja,
     }
     
     @RequestMapping("/eliminar_ficha_tecnica_baja/{id_baja}")
-    public String Eliminar_Informe_Baja(Model model,@PathVariable("id_baja")long id_baja,RedirectAttributes flash, HttpServletRequest request){
+    public String Eliminar_Informe_Baja(Model model,@PathVariable long id_baja,RedirectAttributes flash, HttpServletRequest request){
 
          if (request.getSession().getAttribute("persona") != null) {
             
@@ -337,7 +331,7 @@ public String Form_Informe_Baja(Model model, @Validated Baja baja,
     }
 
     @RequestMapping("/editar_ficha_tecnica_baja/{id_baja}")
-    public String Editar_Informe_Baja(Model model,@PathVariable("id_baja")long id_baja,RedirectAttributes flash, HttpServletRequest request){
+    public String Editar_Informe_Baja(Model model,@PathVariable long id_baja,RedirectAttributes flash, HttpServletRequest request){
 
          if (request.getSession().getAttribute("persona") != null) {
             
@@ -367,7 +361,7 @@ public String Form_Informe_Baja(Model model, @Validated Baja baja,
     }
 
     @RequestMapping("/validar_baja/{id_baja}")
-    public String Verificar_Informe_Baja(Model model,@PathVariable("id_baja")long id_baja,RedirectAttributes flash, HttpServletRequest request) throws FileNotFoundException, IOException{
+    public String Verificar_Informe_Baja(Model model,@PathVariable long id_baja,RedirectAttributes flash, HttpServletRequest request) throws FileNotFoundException, IOException{
             
         if (request.getSession().getAttribute("persona") != null) {
             Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");

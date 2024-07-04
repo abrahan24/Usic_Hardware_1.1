@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hardware.SystemUsic.models.entity.FallaEquipoBaja;
@@ -33,8 +30,8 @@ public class FallaBajaController {
     @Autowired
     private ITipoEquipoService tipoEquipoService;
     
-    @RequestMapping(value = "/add_fallas_baja", method = RequestMethod.GET)
-    public String Vista_Agregar_Fallas_Bajas(Model model,@RequestParam(name = "validado",required = false)String validado ,RedirectAttributes flash, HttpServletRequest request ){
+    @GetMapping("/add_fallas_baja")
+    public String Vista_Agregar_Fallas_Bajas(Model model,@RequestParam(required = false)String validado ,RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
 
@@ -52,9 +49,9 @@ public class FallaBajaController {
 		}
     }
 
-    @RequestMapping(value = "/add_falla_equipo_baja", method = RequestMethod.POST)
+    @PostMapping("/add_falla_equipo_baja")
     public String Form_Agregar_Fallas_Bajas(Model model,@Validated FallaEquipoBaja fallaEquipoBaja ,
-    @Validated FallasBaja fallasBaja,@RequestParam(name = "id_tipoequipo",required = false)Long id_tipoequipo,RedirectAttributes flash, HttpServletRequest request ){
+    @Validated FallasBaja fallasBaja,@RequestParam(required = false)Long id_tipoequipo,RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -80,7 +77,7 @@ public class FallaBajaController {
     }
 
     @RequestMapping("/lista-fallas-bajas")
-    public String lista_Fallas_Bajas(Model model,@RequestParam(name = "validado",required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
+    public String lista_Fallas_Bajas(Model model,@RequestParam(required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
         
@@ -96,7 +93,7 @@ public class FallaBajaController {
     }
 
     @RequestMapping("/editar-falla-baja/{id_fallaEquipoBaja}")
-    public String editar_Fallas_Baja(Model model,@PathVariable("id_fallaEquipoBaja")Long id_fallaEquipoBaja,RedirectAttributes flash, HttpServletRequest request){
+    public String editar_Fallas_Baja(Model model,@PathVariable Long id_fallaEquipoBaja,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -113,7 +110,7 @@ public class FallaBajaController {
     }
 
     @RequestMapping("/eliminar-falla-baja/{id_fallaEquipoBaja}")
-    public String eliminar_Fallas_Bajas(Model model,@PathVariable("id_fallaEquipoBaja")Long id_fallaEquipoBaja,RedirectAttributes flash, HttpServletRequest request){
+    public String eliminar_Fallas_Bajas(Model model,@PathVariable Long id_fallaEquipoBaja,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             

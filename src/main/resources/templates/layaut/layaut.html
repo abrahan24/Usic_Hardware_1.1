@@ -93,7 +93,7 @@
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" th:href="${'../../../../hardware-servicio/'}">SATH - UAP</a>
+            <a class="navbar-brand" th:href="${'../../../../hardware-servicio/inicio'}">SATH - UAP</a>
         </div>
     </div>
 </nav>
@@ -159,7 +159,7 @@
             <ul class="list">
                 <li class="header">MENU DE NAVEGACION</li>
                 <li th:if="${session.persona != null}">
-                    <a th:href="${'../../../../hardware-servicio/'}">
+                    <a th:href="${'../../../../hardware-servicio/inicio'}">
                         <i class="material-icons">home</i>
                         <span>INICIO</span>
                     </a>
@@ -316,19 +316,42 @@
                         </li>
                     </ul>
                 </li>               
+                <li th:if="${session.persona != null}" >
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">content_copy</i>
+                        <span>REPORTES</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li>
+                            <a th:href="${'../../../../hardware-servicio/add_fallas'}">
+                                <i class="material-icons" style="font-size: 15px">assignment</i>
+                                <span>REPORTE GENERAL</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="${'../../../../hardware-servicio/lista-fallas-equipos'}">
+                                <i class="material-icons" style="font-size: 15px">assignment</i>
+                                <span>REPORTE PERZONALIZADO</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>               
             </ul>
         </div>
         <!-- #Menu -->
         <!-- Footer -->
         <div class="legal">
             <div class="copyright">
-                &copy; 2023 <a th:href="${'../../../../hardware-servicio/'}">SATH - UAP</a>.
+                &copy;<span id="year"></span> <a th:href="${'../../../../hardware-servicio/inicio'}">SATH - UAP</a>.
             </div>
             <div class="version">
                 <b>Version: </b> 1.1
             </div>
         </div>
         <!-- #Footer -->
+         <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+         </script>
     </aside>
 </section>
 

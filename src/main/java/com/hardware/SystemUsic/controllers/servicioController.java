@@ -16,8 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -84,9 +84,9 @@ public class servicioController {
     @Autowired
     private IDetalleFallaService detalleFallaService;
 
-    @RequestMapping("/")
-    public String servicios(Model model,RedirectAttributes flash, HttpServletRequest request , @RequestParam(name = "validado",required = false)String validado,
-    @RequestParam(name = "succes2",required = false)String succes2){
+    @RequestMapping("/inicio")
+    public String servicios(Model model,RedirectAttributes flash, HttpServletRequest request , @RequestParam(required = false)String validado,
+    @RequestParam(required = false)String succes2){
 
         if (request.getSession().getAttribute("persona") != null) {
 			Persona persona = (Persona) request.getSession().getAttribute("persona");
@@ -105,7 +105,7 @@ public class servicioController {
             //     System.out.println(servicioService.getAllServicioUsuario(previo.getId_previo()));
             // }
             model.addAttribute("previos", usuario.getPrevios());
-            model.addAttribute("usuarios", usuarioService.findAll());
+            model.addAttribute("usuarios", usuarioService.obtenerUsuariosConEstado_A());
             model.addAttribute("tipoServicios", tipoServicioService.findAll());
             return "panel";
 		} else {
@@ -114,7 +114,7 @@ public class servicioController {
 	}
 
     @RequestMapping("/eliminar_servicio/{id_servicio}")
-    public String eliminarServicios(Model model, @PathVariable("id_servicio")Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
+    public String eliminarServicios(Model model, @PathVariable Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
 			
@@ -124,14 +124,14 @@ public class servicioController {
             servicioService.save(servicio);
             flash.addAttribute("validado", "Regisro Eliminado Con Exito!");
             
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
 		} else {
 			return "redirect:/hardware/login";
 		}
     }
 
     @RequestMapping("/terminar_servicio/{id_servicio}")
-    public String terminarServicios(Model model, @PathVariable("id_servicio")Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
+    public String terminarServicios(Model model, @PathVariable Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
 			
@@ -142,14 +142,14 @@ public class servicioController {
             servicioService.save(servicio);
             flash.addAttribute("validado", "Servicio N°"+servicio.getId_servicio() +" Terminado Con Exito!");
             
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
 		} else {
 			return "redirect:/hardware/login";
 		}
     }
 
     @RequestMapping("/aceptar_servicio/{id_servicio}")
-    public String aceptarServicio(Model model,  @PathVariable("id_servicio")Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
+    public String aceptarServicio(Model model,  @PathVariable Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
 			Persona persona = (Persona) request.getSession().getAttribute("persona");
@@ -168,27 +168,27 @@ public class servicioController {
 
             flash.addAttribute("validado", "Recepcion Realizada Con Exito!");
             
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
 		} else {
 			return "redirect:/hardware/login";
 		}
     }
 
-    @RequestMapping("/ficha_tecnica/{id_servicio}")
-    public String fichaTecnicaServicio(Model model, @PathVariable("id_servicio")Long id_servicio, RedirectAttributes flash, HttpServletRequest request){
+    // @RequestMapping("/ficha_tecnica/{id_servicio}")
+    // public String fichaTecnicaServicio(Model model, @PathVariable("id_servicio")Long id_servicio, RedirectAttributes flash, HttpServletRequest request){
 
-        if (request.getSession().getAttribute("persona") != null) {
+    //     if (request.getSession().getAttribute("persona") != null) {
 			
-            flash.addAttribute("validado", "Recepcion Realizada Con Exito!");
+    //         flash.addAttribute("validado", "Recepcion Realizada Con Exito!");
             
-            return "redirect:/hardware-servicio/";
-		} else {
-			return "redirect:/hardware/login";
-		}
-    }
+    //         return "redirect:/hardware-servicio/inicio";
+	// 	} else {
+	// 		return "redirect:/hardware/login";
+	// 	}
+    // }
 
     @RequestMapping("/add_equipo")
-    public String add_Equipo(Model model,@RequestParam(name = "validado",required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
+    public String add_Equipo(Model model,@RequestParam(required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
         
@@ -204,8 +204,8 @@ public class servicioController {
 		}
     }
 
-    @RequestMapping(value = "/add_Equipo",method = RequestMethod.POST)
-    public String add_Equipo_Almacen(Model model,@Validated Almacen almacen,@RequestParam("id_tipoequipo")Long id_tipoequipo,RedirectAttributes flash, HttpServletRequest request){
+    @PostMapping("/add_Equipo")
+    public String add_Equipo_Almacen(Model model,@Validated Almacen almacen,@RequestParam Long id_tipoequipo,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -226,7 +226,7 @@ public class servicioController {
     }
 
     @RequestMapping("/lista_almacen")
-    public String lista_Equipo(Model model,@RequestParam(name = "validado",required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
+    public String lista_Equipo(Model model,@RequestParam(required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
 
@@ -242,7 +242,7 @@ public class servicioController {
     }
 
     @RequestMapping("/editar-almacen/{id_almacen}")
-    public String editar_Almacen_Equipo(Model model,@PathVariable("id_almacen")Long id_almacen, RedirectAttributes flash, HttpServletRequest request){
+    public String editar_Almacen_Equipo(Model model,@PathVariable Long id_almacen, RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             Almacen almacen = almacenService.findOne(id_almacen);
@@ -256,7 +256,7 @@ public class servicioController {
     }
 
     @RequestMapping("/eliminar-almacen/{id_almacen}")
-    public String eliminar_Almacen_Equipo(Model model,@PathVariable("id_almacen")Long id_almacen, RedirectAttributes flash, HttpServletRequest request){
+    public String eliminar_Almacen_Equipo(Model model,@PathVariable Long id_almacen, RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             Almacen almacen = almacenService.findOne(id_almacen);
@@ -272,7 +272,7 @@ public class servicioController {
     }
 
     @RequestMapping("/add_Cargo_Unidad")
-    public String add_Cargo_Unidad_Service(Model model,@RequestParam(name = "validado",required = false)String validado,@RequestParam(name = "validado_",required = false)String validado_, RedirectAttributes flash, HttpServletRequest request){
+    public String add_Cargo_Unidad_Service(Model model,@RequestParam(required = false)String validado,@RequestParam(required = false)String validado_, RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
         
@@ -290,7 +290,7 @@ public class servicioController {
     }
 
     @RequestMapping("/add_soluciones")
-    public String add_Soluciones(Model model,@RequestParam(name = "validado",required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
+    public String add_Soluciones(Model model,@RequestParam(required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
         
@@ -307,8 +307,8 @@ public class servicioController {
 		}
     }
 
-    @RequestMapping(value = "/add_solucion_equipo",method = RequestMethod.POST)
-    public String add_Solucion(Model model,@RequestParam(name = "id_solucionEquipo",required = false)Long id_solucionEquipo,@RequestParam(name = "id_solucion",required = false)Long id_solucion,@RequestParam(name = "id_tipoequipo",required = false)Long id_tipoequipo,@RequestParam(name = "solucion",required = false)String solucion_nom,RedirectAttributes flash, HttpServletRequest request){
+    @PostMapping("/add_solucion_equipo")
+    public String add_Solucion(Model model,@RequestParam(required = false)Long id_solucionEquipo,@RequestParam(required = false)Long id_solucion,@RequestParam(required = false)Long id_tipoequipo,@RequestParam(name = "solucion",required = false)String solucion_nom,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             Solucion solucion = new Solucion();
@@ -334,7 +334,7 @@ public class servicioController {
     }
 
     @RequestMapping("/editar-solucion/{id_solucionEquipo}")
-    public String editar_Soluciones(Model model,@PathVariable("id_solucionEquipo")Long id_solucionEquipo,RedirectAttributes flash, HttpServletRequest request){
+    public String editar_Soluciones(Model model,@PathVariable Long id_solucionEquipo,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -350,7 +350,7 @@ public class servicioController {
     }
 
     @RequestMapping("/eliminar-solucion/{id_solucionEquipo}")
-    public String eliminar_Soluciones(Model model,@PathVariable("id_solucionEquipo")Long id_solucionEquipo,RedirectAttributes flash, HttpServletRequest request){
+    public String eliminar_Soluciones(Model model,@PathVariable Long id_solucionEquipo,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -365,7 +365,7 @@ public class servicioController {
     }
 
     @RequestMapping("/lista-soluciones-equipos")
-    public String lista_Soluciones(Model model,@RequestParam(name = "validado",required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
+    public String lista_Soluciones(Model model,@RequestParam(required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
         
@@ -381,7 +381,7 @@ public class servicioController {
     }
 
     @RequestMapping("/add_fallas")
-    public String add_Fallas(Model model,@RequestParam(name = "validado",required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
+    public String add_Fallas(Model model,@RequestParam(required = false)String validado,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
         
@@ -399,7 +399,7 @@ public class servicioController {
     }
 
     @RequestMapping("/editar-falla/{id_fallaequipo}")
-    public String editar_Fallas(Model model, @PathVariable("id_fallaequipo") Long id_fallaequipo,
+    public String editar_Fallas(Model model, @PathVariable Long id_fallaequipo,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -416,7 +416,7 @@ public class servicioController {
     }
 
     @RequestMapping("/eliminar-falla/{id_fallaequipo}")
-    public String eliminar_Fallas(Model model, @PathVariable("id_fallaequipo") Long id_fallaequipo,
+    public String eliminar_Fallas(Model model, @PathVariable Long id_fallaequipo,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -432,8 +432,8 @@ public class servicioController {
         }
     }
 
-    @RequestMapping(value = "/add_falla_equipo",method = RequestMethod.POST)
-    public String add_Falla(Model model,@RequestParam(name = "id_falla",required = false)Long id_falla,@RequestParam("falla")String falla_nom,@RequestParam("id_tipoequipo")Long id_tipoequipo,@RequestParam(name = "id_fallaequipo",required = false)Long id_fallaequipo,RedirectAttributes flash, HttpServletRequest request){
+    @PostMapping("/add_falla_equipo")
+    public String add_Falla(Model model,@RequestParam(required = false)Long id_falla,@RequestParam("falla")String falla_nom,@RequestParam Long id_tipoequipo,@RequestParam(required = false)Long id_fallaequipo,RedirectAttributes flash, HttpServletRequest request){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -461,7 +461,7 @@ public class servicioController {
     }
 
     @RequestMapping("/lista-fallas-equipos")
-    public String lista_Fallas(Model model, @RequestParam(name = "validado", required = false) String validado,
+    public String lista_Fallas(Model model, @RequestParam(required = false) String validado,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -478,7 +478,7 @@ public class servicioController {
     }
 
     @RequestMapping("/lista_cargos")
-    public String lista_Cargo(Model model, @RequestParam(name = "validado", required = false) String validado,
+    public String lista_Cargo(Model model, @RequestParam(required = false) String validado,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -494,7 +494,7 @@ public class servicioController {
     }
 
     @RequestMapping("/lista_unidades")
-    public String lista_Unidades(Model model, @RequestParam(name = "validado", required = false) String validado,
+    public String lista_Unidades(Model model, @RequestParam(required = false) String validado,
             RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -512,7 +512,7 @@ public class servicioController {
     
 
     @RequestMapping("/editar-unidad/{id_unidad}")
-    public String editar_Unidad(Model model, @PathVariable("id_unidad") Long id_unidad, RedirectAttributes flash,
+    public String editar_Unidad(Model model, @PathVariable Long id_unidad, RedirectAttributes flash,
             HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -527,7 +527,7 @@ public class servicioController {
     }
 
     @RequestMapping("/eliminar-unidad/{id_unidad}")
-    public String eliminar_Unidad(Model model, @PathVariable("id_unidad") Long id_unidad, RedirectAttributes flash,
+    public String eliminar_Unidad(Model model, @PathVariable Long id_unidad, RedirectAttributes flash,
             HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -542,7 +542,7 @@ public class servicioController {
     }
 
     @RequestMapping("/editar-cargo/{id_cargo}")
-    public String editar_Cargo(Model model, @PathVariable("id_cargo") Long id_cargo, RedirectAttributes flash,
+    public String editar_Cargo(Model model, @PathVariable Long id_cargo, RedirectAttributes flash,
             HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -557,7 +557,7 @@ public class servicioController {
     }
 
     @RequestMapping("/eliminar-cargo/{id_cargo}")
-    public String eliminar_Cargo(Model model, @PathVariable("id_cargo") Long id_cargo, RedirectAttributes flash,
+    public String eliminar_Cargo(Model model, @PathVariable Long id_cargo, RedirectAttributes flash,
             HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -572,8 +572,8 @@ public class servicioController {
         }
     }
 
-    @RequestMapping(value = "/add_cargo", method = RequestMethod.POST)
-    public String add_Cargo(Model model, @RequestParam(name = "id_cargo", required = false) Long id_cargo,
+    @PostMapping("/add_cargo")
+    public String add_Cargo(Model model, @RequestParam(required = false) Long id_cargo,
             @RequestParam("cargo") String cargo_nom, RedirectAttributes flash, HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -592,9 +592,9 @@ public class servicioController {
         }
     }
 
-    @RequestMapping(value = "/add_unidad", method = RequestMethod.POST)
+    @PostMapping("/add_unidad")
     public String add_Unidad(Model model, @RequestParam(name = "unidad", required = false) String unidad_,
-            @RequestParam(name = "id_unidad", required = false) Long id_unidad, RedirectAttributes flash,
+            @RequestParam(required = false) Long id_unidad, RedirectAttributes flash,
             HttpServletRequest request) {
 
         if (request.getSession().getAttribute("persona") != null) {
@@ -614,9 +614,9 @@ public class servicioController {
 
     
 
-    @RequestMapping(value = "/add_colaborador", method = RequestMethod.POST)
-    public String addColaborador(RedirectAttributes flash, HttpServletRequest request, @RequestParam("aux") Integer aux,
-            @RequestParam("id_persona") Long id_persona) {
+    @PostMapping("/add_colaborador")
+    public String addColaborador(RedirectAttributes flash, HttpServletRequest request, @RequestParam Integer aux,
+            @RequestParam Long id_persona) {
 
         if (request.getSession().getAttribute("persona") != null) {
             Long id_servicio = 0L;
@@ -636,14 +636,14 @@ public class servicioController {
 
             flash.addAttribute("validado", "Colaborador Añadido Con Exito!");
 
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
         } else {
             return "redirect:/hardware/login";
         }
     }
 
     @RequestMapping("/ficha-tecnica/{id_servicio}")
-    public String fichatecnica(Model model , @PathVariable("id_servicio")Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
+    public String fichatecnica(Model model , @PathVariable Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
         
          if (request.getSession().getAttribute("persona") != null) {
 			model.addAttribute("servicio", servicioService.findOne(id_servicio));
@@ -655,7 +655,7 @@ public class servicioController {
     }
 
     @RequestMapping("/editar-servicio/{id_servicio}")
-    public String editarServicio(Model model,@PathVariable("id_servicio")Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
+    public String editarServicio(Model model,@PathVariable Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             Servicio servicio = servicioService.findOne(id_servicio);
@@ -670,9 +670,9 @@ public class servicioController {
 		}
     }
 
-    @RequestMapping(value = "/edit_servicio",method = RequestMethod.POST)
-    public String editar_Servicio(Model model,@RequestParam(name = "id_servicio",required = false)Long id_servicio ,
-    @RequestParam(name = "id_falla",required = false)Long [] id_falla, RedirectAttributes flash, HttpServletRequest request ){
+    @PostMapping("/edit_servicio")
+    public String editar_Servicio(Model model,@RequestParam(required = false)Long id_servicio ,
+    @RequestParam(required = false)Long [] id_falla, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             
@@ -699,14 +699,14 @@ public class servicioController {
 			
             flash.addAttribute("validado", "Se ah Editado Con Exito el Servicio N°"+servicio.getId_servicio());
            
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
 		} else {
 			return "redirect:/hardware/login";
 		}
     }
 
     @RequestMapping("/editar-perfil-usuario")
-    public String editar_perfil_usuario(Model model,@RequestParam(name = "validado",required = false)String validado, RedirectAttributes flash, HttpServletRequest request ){
+    public String editar_perfil_usuario(Model model,@RequestParam(required = false)String validado, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
 
@@ -720,8 +720,8 @@ public class servicioController {
 		}
     }
 
-    @RequestMapping(value = "/editar_perfil",method = RequestMethod.POST)
-    public String editar_perfil(Model model,@RequestParam("id_persona")Long id_persona,@RequestParam("nombre")String nombre,@RequestParam("ap_paterno")String ap_paterno,@RequestParam("ap_materno")String ap_materno,@RequestParam("ci")String ci,@RequestParam("celular")Integer celular, RedirectAttributes flash, HttpServletRequest request ){
+    @PostMapping("/editar_perfil")
+    public String editar_perfil(Model model,@RequestParam Long id_persona,@RequestParam String nombre,@RequestParam String ap_paterno,@RequestParam String ap_materno,@RequestParam String ci,@RequestParam Integer celular, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             Persona persona = personaService.findOne(id_persona);
@@ -739,8 +739,8 @@ public class servicioController {
 		}
     }
 
-    @RequestMapping(value = "/editar_usuario",method = RequestMethod.POST)
-    public String editar_usuario(Model model,@RequestParam("id_usuario")Long id_usuario,@RequestParam("usuario")String usuario,@RequestParam("contrasena")String contrasena, RedirectAttributes flash, HttpServletRequest request ){
+    @PostMapping("/editar_usuario")
+    public String editar_usuario(Model model,@RequestParam Long id_usuario,@RequestParam String usuario,@RequestParam String contrasena, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             Usuario usuario2 = usuarioService.findOne(id_usuario);
@@ -759,7 +759,7 @@ public class servicioController {
     }
 
     @RequestMapping("/historial_servicio/{id_almacen}")
-    public String historialServicio(Model model,@PathVariable("id_almacen")Long id_almacen, RedirectAttributes flash, HttpServletRequest request ){
+    public String historialServicio(Model model,@PathVariable Long id_almacen, RedirectAttributes flash, HttpServletRequest request ){
 
         if (request.getSession().getAttribute("persona") != null) {
             Almacen almacen = almacenService.findOne(id_almacen);
@@ -773,8 +773,8 @@ public class servicioController {
 		}
     }
 
-    @RequestMapping(value = "/add_TipoServicio",method = RequestMethod.POST)
-    public String Seleccion_TipoServicio(RedirectAttributes flash, HttpServletRequest request, @RequestParam("aux")Integer aux, @RequestParam(name = "id_TipoServicio",required = false)Long id_TipoServicio){
+    @PostMapping("/add_TipoServicio")
+    public String Seleccion_TipoServicio(RedirectAttributes flash, HttpServletRequest request, @RequestParam Integer aux, @RequestParam(required = false)Long id_TipoServicio){
 
         if (request.getSession().getAttribute("persona") != null) {
 			Long id_servicio = 0L;
@@ -812,14 +812,14 @@ public class servicioController {
 
             flash.addAttribute("validado", "Solicitud de Tipo: "+ tipoServicio.getNom_TipoServicio() + " Aceptado Con Exito!");
             
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
 		} else {
 			return "redirect:/hardware/login";
 		} 
     }
 
     @RequestMapping("/validar_servicio/{id_servicio}")
-    public String Verificar_Servicio(Model model,@PathVariable("id_servicio")long id_servicio,RedirectAttributes flash, HttpServletRequest request) throws FileNotFoundException, IOException{
+    public String Verificar_Servicio(Model model,@PathVariable long id_servicio,RedirectAttributes flash, HttpServletRequest request) throws FileNotFoundException, IOException{
             
         if (request.getSession().getAttribute("persona") != null) {
             Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
@@ -857,7 +857,7 @@ public class servicioController {
             servicio.setQr_servicio("QR_Servicio_"+servicio.getId_servicio());
             servicioService.save(servicio);
             flash.addAttribute("succes2", "Servicio N°:"+servicio.getId_servicio()+" Autorizado!");
-            return "redirect:/hardware-servicio/";
+            return "redirect:/hardware-servicio/inicio";
 		} else {
 			return "redirect:/hardware/login";
 		}

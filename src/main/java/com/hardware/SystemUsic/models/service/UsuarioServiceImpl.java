@@ -41,5 +41,11 @@ public class UsuarioServiceImpl implements IUsuarioService{
     public Usuario getUsuario(String usuario, String contrasena) {
         return usuarioDao.getUsuario(usuario, contrasena);
     }
+
+    @Override
+    public List<Usuario> obtenerUsuariosConEstado_A() {
+        // TODO Auto-generated method stub
+        return usuarioDao.obtenerUsuariosConEstado_A();
+    }
     
 }
