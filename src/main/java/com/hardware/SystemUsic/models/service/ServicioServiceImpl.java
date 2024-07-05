@@ -1,5 +1,6 @@
 package com.hardware.SystemUsic.models.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,12 @@ public class ServicioServiceImpl implements IServicioService{
     public List<Servicio> getAllServicioUsuario(Long id_procedencia) {
         
         return servicioDao.getAllServicioUsuario(id_procedencia);
+    }
+
+    @Override
+    public List<Servicio> obtenerServiciosPorFechas(Date fecha_inicial, Date fecha_fin) {
+        // TODO Auto-generated method stub
+        return servicioDao.obtenerServiciosPorFechas(fecha_inicial, fecha_fin);
     }
     
 }
