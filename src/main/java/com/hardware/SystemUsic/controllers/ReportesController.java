@@ -81,7 +81,8 @@ public class ReportesController {
 
     @PostMapping(value ="/report_general")
     public ResponseEntity<ByteArrayResource> report_fechas(@RequestParam(name = "fecha_inicio")@DateTimeFormat(pattern = "yyyy-MM-dd")Date fecha_inicio,
-    @RequestParam(name = "fecha_final")@DateTimeFormat(pattern = "yyyy-MM-dd")Date fecha_final,HttpServletRequest request) throws IOException, JRException, SQLException {
+    @RequestParam(name = "fecha_final")@DateTimeFormat(pattern = "yyyy-MM-dd")Date fecha_final,
+    @RequestParam(name = "id_usuario" ,required = false)Long id_usuario,HttpServletRequest request) throws IOException, JRException, SQLException {
        
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
        

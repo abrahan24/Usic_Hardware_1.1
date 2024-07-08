@@ -56,11 +56,10 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="body">
-                            <form th:action="@{/report_general}" id="form1" method="POST">
+                            <form th:action="@{/hardware-servicio/report_general}" target="_blank" id="form1" method="POST">
                                 
                                 <div class="body">
                                     <input type="hidden" th:name="${'id_usuario'}" th:value="${session.usuario.id_usuario}">
-                                    <input type="hidden">
                                     <div class="alert alert-danger text-center">
                                         <strong>SELECIONE PARAMETROS: </strong>
                                     </div>
@@ -73,12 +72,6 @@
                                                 <div class="form-line">
                                                     <input type="Date" rows="1" name="fecha_inicio" class="form-control no-resize" style="text-transform:uppercase" required>
                                                 </div>
-                                            <!-- <div class="form-line">
-                                                <select class="js-example-basic-single" style="width: 100%;" name="state">
-                                                    <option value=""></option>
-                                                    <option th:each="a: ${anos}" th:value="${a}" th:text="${a}">Wyoming</option>
-                                                </select>
-                                            </div> -->
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -192,12 +185,6 @@
         
     </script>
 
-    <script>
-        function imprimirReporte(){
-
-        }
-    </script>
- 
 </body>
 
 </html>

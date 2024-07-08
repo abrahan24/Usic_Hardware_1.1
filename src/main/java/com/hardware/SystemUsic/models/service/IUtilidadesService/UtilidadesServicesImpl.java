@@ -70,7 +70,7 @@ public class UtilidadesServicesImpl implements IUtilidadesServices{
 
         Path rootPath = Paths.get("");
         Path rootAbsolutPath = rootPath.toAbsolutePath();
-        String ruta = rootAbsolutPath.toString() + "/Reportes/" + nombreArchivo;
+        String ruta = rootAbsolutPath.toString() + "/JaspertReport/" + nombreArchivo;
 
         try (FileInputStream reportStream = new FileInputStream(ruta)) {
             con = dataSource.getConnection();

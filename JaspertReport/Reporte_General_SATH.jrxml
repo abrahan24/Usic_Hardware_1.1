@@ -12,6 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="java.text.SimpleDateFormat"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -115,8 +116,7 @@ LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico
 LEFT JOIN tiposervicio t2 ON t2.id_tipo_servicio = s.id_tipo_servicio
 WHERE s.estado_servicio = 'T' 
   AND s.fecha_recepcion BETWEEN CAST($P{fecha_inicial} AS TIMESTAMP) AND CAST($P{fecha_final} AS TIMESTAMP)
-ORDER BY s.fecha_recepcion
-]]>
+ORDER BY s.fecha_recepcion]]>
 		</queryString>
 		<field name="numero_servicio" class="java.lang.Long">
 			<property name="com.jaspersoft.studio.field.name" value="numero_servicio"/>
@@ -263,7 +263,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE]]></text>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[DATEFORMAT(new java.util.Date(),"dd-MM-yyyy hh:mm")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy hh:mm").format(new java.util.Date())]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="14" y="64" width="56" height="10" uuid="4fe13481-7a5e-405f-a842-482dc0ea499b"/>
@@ -532,7 +532,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE]]></text>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="6"/>
 									</textElement>
-									<textFieldExpression><![CDATA[DATEFORMAT($F{fecha_recepcion},"dd-MM-yyyy")]]></textFieldExpression>
+									<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($F{fecha_recepcion})]]></textFieldExpression>
 								</textField>
 							</frame>
 						</jr:detailCell>
@@ -557,7 +557,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE]]></text>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="6"/>
 									</textElement>
-									<textFieldExpression><![CDATA[DATEFORMAT($F{fecha_entrega},"dd-MM-yyyy")]]></textFieldExpression>
+									<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($F{fecha_entrega})]]></textFieldExpression>
 								</textField>
 							</frame>
 						</jr:detailCell>
