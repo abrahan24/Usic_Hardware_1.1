@@ -99,24 +99,26 @@
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SATH.jrdax"/>
 		<parameter name="fecha_inicial" class="java.util.Date"/>
 		<parameter name="fecha_final" class="java.util.Date"/>
+		<parameter name="id_tipo_servicio" class="java.lang.Long"/>
+		<parameter name="id_tipoequipo" class="java.lang.Long"/>
+		<parameter name="id_unidad" class="java.lang.Long"/>
 		<queryString language="plsql">
-			<![CDATA[SELECT s.id_servicio AS numero_servicio, 
-       concat(p.nombre, ' ', p.ap_paterno, ' ', p.ap_materno) AS nombre_completo,
-       u.unidad, c.cargo, a.cod_equipo, t.equipo, a.descripcion,
-       COALESCE(t2.nom_tipo_servicio, 'MANTENIMIENTO CORRECTIVO') AS nom_tipo_servicio,
-       s.fecha_recepcion, s.fecha_entrega
+			<![CDATA[SELECT s.id_servicio AS numero_servicio , concat(p.nombre,' ',p.ap_paterno,' ', p.ap_materno) AS nombre_completo,
+u.unidad,c.cargo,a.cod_equipo,t.equipo,a.descripcion ,
+COALESCE(t2.nom_tipo_servicio, 'MANTENIMIENTO CORRECTIVO') AS nom_tipo_servicio ,
+s.fecha_recepcion ,s.fecha_entrega 
 FROM servicio s
-LEFT JOIN persona p ON p.id_persona = s.id_persona
-LEFT JOIN tipoequipo t ON t.id_tipoequipo = s.id_tipoequipo
-LEFT JOIN almacen a ON a.id_almacen = s.id_almacen
-LEFT JOIN procedencia p2 ON p2.id_procedencia = s.id_procedencia
-LEFT JOIN unidad u ON u.id_unidad = p.id_unidad
-LEFT JOIN cargo c ON c.id_cargo = p.id_cargo
-LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico
-LEFT JOIN tiposervicio t2 ON t2.id_tipo_servicio = s.id_tipo_servicio
-WHERE s.estado_servicio = 'T' 
-  AND s.fecha_recepcion BETWEEN CAST($P{fecha_inicial} AS TIMESTAMP) AND CAST($P{fecha_final} AS TIMESTAMP)
-ORDER BY s.fecha_recepcion]]>
+LEFT JOIN persona p ON p.id_persona = s.id_persona 
+LEFT JOIN tipoequipo t ON t.id_tipoequipo = s.id_tipoequipo 
+LEFT JOIN almacen a ON a.id_almacen = s.id_almacen 
+LEFT JOIN procedencia p2 ON p2.id_procedencia = s.id_procedencia 
+LEFT JOIN unidad u ON u.id_unidad = p.id_unidad 
+LEFT JOIN cargo c ON c.id_cargo = p.id_cargo 
+LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico 
+LEFT JOIN tiposervicio t2 ON t2.id_tipo_servicio = s.id_tipo_servicio 
+WHERE s.estado_servicio ='T' AND s.id_tipoequipo = $P{id_tipoequipo} AND (s.id_tipo_servicio IS NULL OR s.id_tipo_servicio = $P{id_tipo_servicio}) AND u.id_unidad = $P{id_unidad} AND 
+s.fecha_recepcion BETWEEN $P{fecha_inicial} AND $P{fecha_final}
+ORDER BY s.fecha_recepcion ]]>
 		</queryString>
 		<field name="numero_servicio" class="java.lang.Long">
 			<property name="com.jaspersoft.studio.field.name" value="numero_servicio"/>
@@ -203,6 +205,9 @@ ORDER BY s.fecha_recepcion]]>
 	<parameter name="fecha_inicial" class="java.util.Date"/>
 	<parameter name="fecha_final" class="java.util.Date"/>
 	<parameter name="id_usuario" class="java.lang.Long"/>
+	<parameter name="id_tipo_servicio" class="java.lang.Long"/>
+	<parameter name="id_tipoequipo" class="java.lang.Long"/>
+	<parameter name="id_unidad" class="java.lang.Long"/>
 	<queryString language="plsql">
 		<![CDATA[SELECT u.id_usuario , concat(ga.sigla_grado_academico,'',p.nombre,' ', p.ap_paterno,' ',p.ap_materno) AS nom_completo, c.cargo,u2.unidad FROM usuario u 
 LEFT JOIN persona p ON p.id_persona = u.id_persona 
@@ -255,7 +260,7 @@ WHERE u.id_usuario = $P{id_usuario} AND  u.estado = 'A']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[REPORTE GENERAL
+				<text><![CDATA[REPORTE PERSONALIZADO
 SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 			</staticText>
 			<textField pattern="HH:mm">
@@ -289,7 +294,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="114" splitType="Stretch">
+		<band height="91" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<componentElement>
 				<reportElement x="15" y="0" width="723" height="80" uuid="c4c98115-8086-44ab-bf49-324991749ea6">
@@ -299,12 +304,21 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="fd29e04e-9c23-47ef-ac8d-72d4cf1ce6eb">
+					<datasetRun subDataset="Dataset1" uuid="70d1b4b2-4daf-4c1d-b27c-1e6c5fc861cd">
 						<datasetParameter name="fecha_inicial">
 							<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
 						</datasetParameter>
 						<datasetParameter name="fecha_final">
 							<datasetParameterExpression><![CDATA[$P{fecha_final}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="id_tipo_servicio">
+							<datasetParameterExpression><![CDATA[$P{id_tipo_servicio}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="id_tipoequipo">
+							<datasetParameterExpression><![CDATA[$P{id_tipoequipo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="id_unidad">
+							<datasetParameterExpression><![CDATA[$P{id_unidad}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
