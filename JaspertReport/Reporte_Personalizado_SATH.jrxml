@@ -118,7 +118,7 @@ LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico
 LEFT JOIN tiposervicio t2 ON t2.id_tipo_servicio = s.id_tipo_servicio 
 WHERE s.estado_servicio ='T' AND s.id_tipoequipo = $P{id_tipoequipo} AND (s.id_tipo_servicio IS NULL OR s.id_tipo_servicio = $P{id_tipo_servicio}) AND u.id_unidad = $P{id_unidad} AND 
 s.fecha_recepcion BETWEEN $P{fecha_inicial} AND $P{fecha_final}
-ORDER BY s.fecha_recepcion ]]>
+ORDER BY s.fecha_recepcion]]>
 		</queryString>
 		<field name="numero_servicio" class="java.lang.Long">
 			<property name="com.jaspersoft.studio.field.name" value="numero_servicio"/>
