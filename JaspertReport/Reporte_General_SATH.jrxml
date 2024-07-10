@@ -648,16 +648,14 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 		<band height="234">
 			<barChart>
 				<chart evaluationTime="Report">
-					<reportElement x="14" y="10" width="724" height="200" uuid="0e519349-bd7e-4e5b-9b41-3c60c4f958d0"/>
-					<chartTitle>
-						<titleExpression><![CDATA["Cantidad de Servicios por Tipo de Servicios"]]></titleExpression>
-					</chartTitle>
+					<reportElement x="14" y="10" width="724" height="200" uuid="87b4d518-e95a-4481-ad32-561f85cff9bb"/>
+					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
 					<dataset>
-						<datasetRun subDataset="dsTipoServicios" uuid="9abb7ee3-9fbd-4e59-9498-363b90f8ba05">
+						<datasetRun subDataset="dsTipoServicios" uuid="fbb709f9-967a-48ac-ba6d-ef10c243576e">
 							<datasetParameter name="fecha_inicial">
 								<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
 							</datasetParameter>
@@ -668,7 +666,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 						</datasetRun>
 					</dataset>
 					<categorySeries>
-						<seriesExpression><![CDATA[$F{nom_tipo_servicio}]]></seriesExpression>
+						<seriesExpression><![CDATA[$F{nom_tipo_servicio}+" : "+$F{cantidad_servicios}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{nom_tipo_servicio}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{cantidad_servicios}]]></valueExpression>
 						<labelExpression><![CDATA[$F{nom_tipo_servicio}]]></labelExpression>
