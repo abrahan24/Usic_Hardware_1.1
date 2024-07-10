@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -142,57 +143,62 @@ public class IndexController {
         return "formCliente";
     }
 
-  @PostMapping("/servicio")
-    public String registrarServicio(Model model,@RequestParam(required = false)Long id_servicio, @Validated Persona persona,@RequestParam(required = false)String accesorio, @RequestParam Long id_almacen , @RequestParam(required = false)Long [] id_falla, @RequestParam Long id_procedencia ,RedirectAttributes flash) throws FileNotFoundException, IOException{
+    @PostMapping("/servicio")
+    public String registrarServicio(Model model, @RequestParam(required = false) Long id_servicio,
+            @Validated Persona persona, @RequestParam(required = false) String accesorio, @RequestParam Long id_almacen,
+            @RequestParam(required = false) Long[] id_falla, @RequestParam Long id_procedencia,
+            @RequestParam(name = "fecha_servicio",required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha_servicio,
+            RedirectAttributes flash) throws FileNotFoundException, IOException {
 
-        if (persona.getId_persona()!=null) {
-            persona=personaService.findOne(persona.getId_persona());
+        if (persona.getId_persona() != null) {
+            persona = personaService.findOne(persona.getId_persona());
         } else {
             personaService.save(persona);
         }
         Metodos metodos = new Metodos();
 
         Path rootPath = Paths.get("uploads/");
-		Path rootAbsolutPath = rootPath.toAbsolutePath();
-
+        Path rootAbsolutPath = rootPath.toAbsolutePath();
 
         Servicio servicio;
         if (id_servicio != null) {
             servicio = servicioService.findOne(id_servicio);
-        }else{
+        } else {
             servicio = new Servicio();
         }
         servicio.setPersona(persona);
-        servicio.setFecha_recepcion(new Date());
+        servicio.setFecha_recepcion(fecha_servicio);
         servicio.setEstado_servicio("P");
         servicio.setProcedencia(procedenciaService.findOne(id_procedencia));
         servicio.setAlmacen(almacenService.findOne(id_almacen));
         servicio.setTipoEquipo(almacenService.findOne(id_almacen).getTipoEquipo());
         servicio.setTiposervicio(null);
-  
+
         if (accesorio != null) {
             servicio.setAccesorio("1");
-        }else{
+        } else {
             servicio.setAccesorio("0");
         }
         servicioService.save(servicio);
-        servicio.setQr("QR_"+servicio.getId_servicio()+".png");
-        metodos.QR("http://virtual.uap.edu.bo:9998/hardware/seguimiento/"+servicio.getId_servicio(), rootAbsolutPath.toString() + "//"+"QR_"+servicio.getId_servicio()+".png");
+        servicio.setQr("QR_" + servicio.getId_servicio() + ".png");
+        metodos.QR("http://virtual.uap.edu.bo:9998/hardware/seguimiento/" + servicio.getId_servicio(),
+                rootAbsolutPath.toString() + "//" + "QR_" + servicio.getId_servicio() + ".png");
         servicioService.save(servicio);
-        
-       if (id_falla != null) {
-        for (int i = 0; i < id_falla.length; i++) {
-            DetalleFalla detalleFalla = new DetalleFalla();
-            detalleFalla.setFalla(fallaService.findOne(id_falla[i]));
-            detalleFalla.setFecha_registro(new Date());
-            detalleFalla.setServicio(servicio);
-            detalleFallaService.save(detalleFalla);
+
+        if (id_falla != null) {
+            for (int i = 0; i < id_falla.length; i++) {
+                DetalleFalla detalleFalla = new DetalleFalla();
+                detalleFalla.setFalla(fallaService.findOne(id_falla[i]));
+                detalleFalla.setFecha_registro(new Date());
+                detalleFalla.setServicio(servicio);
+                detalleFallaService.save(detalleFalla);
+            }
         }
-       }
-        flash.addAttribute("validado", "Registro Enviado Con Exito!, Puede proceder a dejar el Equipo al Campus Universitario en la oficina USIC");
+        flash.addAttribute("validado",
+                "Registro Enviado Con Exito!, Puede proceder a dejar el Equipo al Campus Universitario en la oficina USIC");
         if (id_servicio != null) {
             return "redirect:/hardware-servicio/";
-        }else{
+        } else {
             return "redirect:/hardware/";
         }
     }
