@@ -99,24 +99,26 @@
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SATH.jrdax"/>
 		<parameter name="fecha_inicial" class="java.util.Date"/>
 		<parameter name="fecha_final" class="java.util.Date"/>
+		<parameter name="id_tipo_servicio" class="java.lang.Long"/>
+		<parameter name="id_tipoequipo" class="java.lang.Long"/>
+		<parameter name="id_unidad" class="java.lang.Long"/>
 		<queryString language="plsql">
-			<![CDATA[SELECT s.id_servicio AS numero_servicio, 
-       concat(p.nombre, ' ', p.ap_paterno, ' ', p.ap_materno) AS nombre_completo,
-       u.unidad, c.cargo, a.cod_equipo, t.equipo, a.descripcion,
-       COALESCE(t2.nom_tipo_servicio, 'MANTENIMIENTO CORRECTIVO') AS nom_tipo_servicio,
-       s.fecha_recepcion, s.fecha_entrega
+			<![CDATA[SELECT s.id_servicio AS numero_servicio , concat(p.nombre,' ',p.ap_paterno,' ', p.ap_materno) AS nombre_completo,
+u.unidad,c.cargo,a.cod_equipo,t.equipo,a.descripcion ,
+COALESCE(t2.nom_tipo_servicio, 'MANTENIMIENTO CORRECTIVO') AS nom_tipo_servicio ,
+s.fecha_recepcion ,s.fecha_entrega 
 FROM servicio s
-LEFT JOIN persona p ON p.id_persona = s.id_persona
-LEFT JOIN tipoequipo t ON t.id_tipoequipo = s.id_tipoequipo
-LEFT JOIN almacen a ON a.id_almacen = s.id_almacen
-LEFT JOIN procedencia p2 ON p2.id_procedencia = s.id_procedencia
-LEFT JOIN unidad u ON u.id_unidad = p.id_unidad
-LEFT JOIN cargo c ON c.id_cargo = p.id_cargo
-LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico
-LEFT JOIN tiposervicio t2 ON t2.id_tipo_servicio = s.id_tipo_servicio
-WHERE s.estado_servicio = 'T' 
-  AND s.fecha_recepcion BETWEEN CAST($P{fecha_inicial} AS TIMESTAMP) AND CAST($P{fecha_final} AS TIMESTAMP)
-ORDER BY s.fecha_recepcion]]>
+LEFT JOIN persona p ON p.id_persona = s.id_persona 
+LEFT JOIN tipoequipo t ON t.id_tipoequipo = s.id_tipoequipo 
+LEFT JOIN almacen a ON a.id_almacen = s.id_almacen 
+LEFT JOIN procedencia p2 ON p2.id_procedencia = s.id_procedencia 
+LEFT JOIN unidad u ON u.id_unidad = p.id_unidad 
+LEFT JOIN cargo c ON c.id_cargo = p.id_cargo 
+LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico 
+LEFT JOIN tiposervicio t2 ON t2.id_tipo_servicio = s.id_tipo_servicio 
+WHERE s.estado_servicio ='T' AND (s.id_tipo_servicio IS NULL OR s.id_tipo_servicio = $P{id_tipo_servicio}) AND 
+s.fecha_recepcion BETWEEN $P{fecha_inicial} AND $P{fecha_final}
+ORDER BY s.fecha_recepcion ]]>
 		</queryString>
 		<field name="numero_servicio" class="java.lang.Long">
 			<property name="com.jaspersoft.studio.field.name" value="numero_servicio"/>
@@ -200,69 +202,10 @@ ORDER BY s.fecha_recepcion]]>
 			<groupExpression><![CDATA[$F{fecha_entrega}]]></groupExpression>
 		</group>
 	</subDataset>
-	<subDataset name="dsTipoServicios" uuid="70e77f45-ebf4-48b1-90c8-5993ae012df5">
-		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SATH.jrdax"/>
-		<parameter name="fecha_inicial" class="java.util.Date"/>
-		<parameter name="fecha_final" class="java.util.Date"/>
-		<queryString language="plsql">
-			<![CDATA[SELECT 
-    s.id_tipo_servicio, 
-    COALESCE(t2.nom_tipo_servicio, 'MANTENIMIENTO CORRECTIVO') AS nom_tipo_servicio,
-    COUNT(*) AS cantidad_servicios
-FROM 
-    servicio s
-LEFT JOIN 
-    persona p ON p.id_persona = s.id_persona 
-LEFT JOIN 
-    tipoequipo t ON t.id_tipoequipo = s.id_tipoequipo 
-LEFT JOIN 
-    almacen a ON a.id_almacen = s.id_almacen 
-LEFT JOIN 
-    procedencia p2 ON p2.id_procedencia = s.id_procedencia 
-LEFT JOIN 
-    unidad u ON u.id_unidad = p.id_unidad 
-LEFT JOIN 
-    cargo c ON c.id_cargo = p.id_cargo 
-LEFT JOIN 
-    grado_academico ga ON ga.id_grado_academico = p.id_grado_academico 
-LEFT JOIN 
-    tiposervicio t2 ON t2.id_tipo_servicio = s.id_tipo_servicio 
-WHERE 
-    s.estado_servicio = 'T' 
-    AND s.fecha_recepcion BETWEEN $P{fecha_inicial}  AND $P{fecha_final}
-GROUP BY 
-    s.id_tipo_servicio, 
-    t2.nom_tipo_servicio 
-ORDER BY 
-    s.id_tipo_servicio;]]>
-		</queryString>
-		<field name="id_tipo_servicio" class="java.lang.Long">
-			<property name="com.jaspersoft.studio.field.name" value="id_tipo_servicio"/>
-			<property name="com.jaspersoft.studio.field.label" value="id_tipo_servicio"/>
-			<property name="com.jaspersoft.studio.field.tree.path" value="servicio"/>
-		</field>
-		<field name="nom_tipo_servicio" class="java.lang.String">
-			<property name="com.jaspersoft.studio.field.name" value="nom_tipo_servicio"/>
-			<property name="com.jaspersoft.studio.field.label" value="nom_tipo_servicio"/>
-		</field>
-		<field name="cantidad_servicios" class="java.lang.Long">
-			<property name="com.jaspersoft.studio.field.name" value="cantidad_servicios"/>
-			<property name="com.jaspersoft.studio.field.label" value="cantidad_servicios"/>
-		</field>
-		<group name="id_tipo_servicio">
-			<groupExpression><![CDATA[$F{id_tipo_servicio}]]></groupExpression>
-		</group>
-		<group name="nom_tipo_servicio">
-			<groupExpression><![CDATA[$F{nom_tipo_servicio}]]></groupExpression>
-		</group>
-		<group name="cantidad_servicios">
-			<groupExpression><![CDATA[$F{cantidad_servicios}]]></groupExpression>
-		</group>
-	</subDataset>
 	<parameter name="fecha_inicial" class="java.util.Date"/>
 	<parameter name="fecha_final" class="java.util.Date"/>
 	<parameter name="id_usuario" class="java.lang.Long"/>
+	<parameter name="id_tipo_servicio" class="java.lang.Long"/>
 	<queryString language="plsql">
 		<![CDATA[SELECT u.id_usuario , concat(ga.sigla_grado_academico,'',p.nombre,' ', p.ap_paterno,' ',p.ap_materno) AS nom_completo, c.cargo,u2.unidad FROM usuario u 
 LEFT JOIN persona p ON p.id_persona = u.id_persona 
@@ -315,7 +258,7 @@ WHERE u.id_usuario = $P{id_usuario} AND  u.estado = 'A']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[REPORTE GENERAL
+				<text><![CDATA[REPORTE PERSONALIZADO
 SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 			</staticText>
 			<textField pattern="HH:mm">
@@ -349,7 +292,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="93" splitType="Stretch">
+		<band height="91" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<componentElement>
 				<reportElement x="15" y="0" width="723" height="80" uuid="c4c98115-8086-44ab-bf49-324991749ea6">
@@ -359,12 +302,15 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="fd29e04e-9c23-47ef-ac8d-72d4cf1ce6eb">
+					<datasetRun subDataset="Dataset1" uuid="bdd3b2a6-af0a-40a8-a81f-92c0e2d89e08">
 						<datasetParameter name="fecha_inicial">
 							<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
 						</datasetParameter>
 						<datasetParameter name="fecha_final">
 							<datasetParameterExpression><![CDATA[$P{fecha_final}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="id_tipo_servicio">
+							<datasetParameterExpression><![CDATA[$P{id_tipo_servicio}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -644,47 +590,4 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 			</textField>
 		</band>
 	</columnFooter>
-	<lastPageFooter>
-		<band height="234">
-			<barChart>
-				<chart evaluationTime="Report">
-					<reportElement x="14" y="10" width="724" height="200" uuid="0e519349-bd7e-4e5b-9b41-3c60c4f958d0"/>
-					<chartTitle>
-						<titleExpression><![CDATA["Cantidad de Servicios por Tipo de Servicios"]]></titleExpression>
-					</chartTitle>
-					<chartSubtitle/>
-					<chartLegend/>
-				</chart>
-				<categoryDataset>
-					<dataset>
-						<datasetRun subDataset="dsTipoServicios" uuid="9abb7ee3-9fbd-4e59-9498-363b90f8ba05">
-							<datasetParameter name="fecha_inicial">
-								<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
-							</datasetParameter>
-							<datasetParameter name="fecha_final">
-								<datasetParameterExpression><![CDATA[$P{fecha_final}]]></datasetParameterExpression>
-							</datasetParameter>
-							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-						</datasetRun>
-					</dataset>
-					<categorySeries>
-						<seriesExpression><![CDATA[$F{nom_tipo_servicio}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{nom_tipo_servicio}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{cantidad_servicios}]]></valueExpression>
-						<labelExpression><![CDATA[$F{nom_tipo_servicio}]]></labelExpression>
-					</categorySeries>
-				</categoryDataset>
-				<barPlot>
-					<plot/>
-					<itemLabel/>
-					<categoryAxisFormat>
-						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
-					</categoryAxisFormat>
-					<valueAxisFormat>
-						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
-					</valueAxisFormat>
-				</barPlot>
-			</barChart>
-		</band>
-	</lastPageFooter>
 </jasperReport>

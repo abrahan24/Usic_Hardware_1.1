@@ -61,7 +61,7 @@
                                 <div class="body">
                                     <input type="hidden" th:name="${'id_usuario'}" th:value="${session.usuario.id_usuario}">
                                     <div class="alert alert-danger text-center">
-                                        <strong>SELECIONE PARAMETROS: </strong>
+                                        <strong>REPORTE POR UNIDAD FUNCIONAL , TIPO DE SERVICIO , TIPO DE EQUIPO: </strong>
                                     </div>
                                 
                                     <div class="row clearfix">
@@ -123,7 +123,7 @@
                                         </div>
                                         
                                     </div>
-                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect" style="width: 100%;">GENERAR REPORTE</button>
                                 </div>
                             </form>                           
                         </div>
@@ -135,12 +135,12 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="body">
-                            <form th:action="@{/hardware-servicio/report_personalizado}" target="_blank" id="form1" method="POST">
+                            <form th:action="@{/hardware-servicio/report_personalizado_2}" target="_blank" id="form1" method="POST">
                                 
                                 <div class="body">
                                     <input type="hidden" th:name="${'id_usuario'}" th:value="${session.usuario.id_usuario}">
                                     <div class="alert alert-danger text-center">
-                                        <strong>SELECIONE PARAMETROS: </strong>
+                                        <strong>REPORTE POR TIPO DE SERVICIO Y TIPO DE EQUIPO: </strong>
                                     </div>
                                 
                                     <div class="row clearfix">
@@ -190,7 +190,116 @@
                                         </div>
                                         
                                     </div>
-                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect">ENVIAR</button>
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect" style="width: 100%;">GENERAR REPORTE</button>
+                                </div>
+                            </form>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <form th:action="@{/hardware-servicio/report_personalizado_3}" target="_blank" id="form1" method="POST">
+                                
+                                <div class="body">
+                                    <input type="hidden" th:name="${'id_usuario'}" th:value="${session.usuario.id_usuario}">
+                                    <div class="alert alert-danger text-center">
+                                        <strong>REPORTE POR TIPO DE SERVICIO: </strong>
+                                    </div>
+                                
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <h2 class="card-inside-title">FECHA INICIO : </h2>
+                                    
+                                                <div class="form-line">
+                                                    <input type="Date" rows="1" name="fecha_inicio" class="form-control no-resize" style="text-transform:uppercase" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <h2 class="card-inside-title">FECHA FIN : </h2>
+                                    
+                                                <div class="form-line">
+                                                    <input type="Date" rows="1" name="fecha_final" class="form-control no-resize" style="text-transform:uppercase" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row clearfix">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <h2 class="card-inside-title">TIPO SERVICIO : </h2>
+                                    
+                                                <div class="form-line">
+                                                    <select class="js-example-basic-single" style="width: 100%;" name="id_tipo_servicio">
+                                                        <option value=""></option>
+                                                        <option th:each="ts : ${tipoServicios}" th:if="${ts.estado_TipoServicio != 'X'}" th:value="${ts.id_TipoServicio}" th:text="${ts.nom_TipoServicio}"></option>
+                                                      </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect" style="width: 100%;">GENERAR REPORTE</button>
+                                </div>
+                            </form>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <form th:action="@{/hardware-servicio/report_personalizado_4}" target="_blank" id="form1" method="POST">
+                                
+                                <div class="body">
+                                    <input type="hidden" th:name="${'id_usuario'}" th:value="${session.usuario.id_usuario}">
+                                    <div class="alert alert-danger text-center">
+                                        <strong>REPORTE POR TIPO DE EQUIPO: </strong>
+                                    </div>
+                                
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <h2 class="card-inside-title">FECHA INICIO : </h2>
+                                    
+                                                <div class="form-line">
+                                                    <input type="Date" rows="1" name="fecha_inicio" class="form-control no-resize" style="text-transform:uppercase" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <h2 class="card-inside-title">FECHA FIN : </h2>
+                                    
+                                                <div class="form-line">
+                                                    <input type="Date" rows="1" name="fecha_final" class="form-control no-resize" style="text-transform:uppercase" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row clearfix">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <h2 class="card-inside-title">TIPO EQUIPO : </h2>
+                                    
+                                                <div class="form-line">
+                                                    <select class="js-example-basic-single" style="width: 100%;" name="id_tipoequipo">
+                                                        <option value=""></option>
+                                                        <option th:each="te : ${tipoEquipos}" th:value="${te.id_tipoequipo}" th:text="${te.equipo}"></option>
+                                                      </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect" style="width: 100%;">GENERAR REPORTE</button>
                                 </div>
                             </form>                           
                         </div>

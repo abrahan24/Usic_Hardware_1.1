@@ -174,7 +174,7 @@ public class ReportesController {
        
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
        
-        String nombreArchivo = "Reporte_Personalizado_SATH.jrxml";
+        String nombreArchivo = "Reporte_Personalizado_SATH_2.jrxml";
 
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("id_usuario", usuario.getId_usuario());
@@ -207,11 +207,43 @@ public class ReportesController {
        
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
        
-        String nombreArchivo = "Reporte_Personalizado_SATH.jrxml";
+        String nombreArchivo = "Reporte_Personalizado_SATH_3.jrxml";
 
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("id_usuario", usuario.getId_usuario());
         parametros.put("id_tipo_servicio", id_tipo_servicio);
+        parametros.put("fecha_inicial", fecha_inicio);
+        parametros.put("fecha_final", fecha_final);
+
+        ByteArrayOutputStream stream = utilidadesServices.compilarAndExportarReporte(nombreArchivo,parametros);
+
+        byte[] bytes = stream.toByteArray();
+
+        ByteArrayResource resource = new ByteArrayResource(bytes);
+        
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "inline;filename=" + "Reporte Personalizado (SATH)"
+                                + ".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(bytes.length)
+                .body(resource);
+    }
+
+    @PostMapping(value ="/report_personalizado_4")
+    public ResponseEntity<ByteArrayResource> report_personalizado_4(@RequestParam(name = "fecha_inicio")@DateTimeFormat(pattern = "yyyy-MM-dd")Date fecha_inicio,
+    @RequestParam(name = "fecha_final")@DateTimeFormat(pattern = "yyyy-MM-dd")Date fecha_final,
+    @RequestParam(name = "id_usuario" ,required = false)Long id_usuario,
+    @RequestParam(name = "id_tipoequipo",required = false)Long id_tipoequipo,
+    HttpServletRequest request) throws IOException, JRException, SQLException {
+       
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+       
+        String nombreArchivo = "Reporte_Personalizado_SATH_4.jrxml";
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("id_usuario", usuario.getId_usuario());
+        parametros.put("id_tipoequipo", id_tipoequipo);
         parametros.put("fecha_inicial", fecha_inicio);
         parametros.put("fecha_final", fecha_final);
 
