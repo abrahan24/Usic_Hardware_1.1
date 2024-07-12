@@ -245,11 +245,11 @@ WHERE u.id_usuario = $P{id_usuario} AND  u.estado = 'A']]>
 			</rectangle>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="10" y="3" width="60" height="51" uuid="0d263b31-cdcd-4464-84ed-7e12d8c338ce"/>
-				<imageExpression><![CDATA["/home/usic02/Documentos/Spring/Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
+				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot/Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="664" y="-6" width="82" height="74" uuid="d94765a8-f0ae-4aa0-847d-a72bcc604e22"/>
-				<imageExpression><![CDATA["/home/usic02/Documentos/Spring/Usic_Hardware_1.1/src/main/resources/static/images/usic2.png"]]></imageExpression>
+				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot//Usic_Hardware_1.1/src/main/resources/static/images/usic2.png"]]></imageExpression>
 			</image>
 			<rectangle>
 				<reportElement x="81" y="0" width="569" height="58" uuid="1be6cea1-5e20-4e65-9c68-d3b2efa0e589"/>
