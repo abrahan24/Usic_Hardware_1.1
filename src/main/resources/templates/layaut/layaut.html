@@ -316,7 +316,7 @@
                         </li>
                     </ul>
                 </li>               
-                <li th:if="${session.persona != null}" >
+                <li th:if="${session.usuario.estado.toString() == 'S'}" >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">content_copy</i>
                         <span>REPORTES</span>

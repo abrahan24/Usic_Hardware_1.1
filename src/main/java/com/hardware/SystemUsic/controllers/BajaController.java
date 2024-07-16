@@ -194,71 +194,71 @@ public class BajaController {
 
 
     @PostMapping("/add_informe_baja")
-public String Form_Informe_Baja(Model model, @Validated Baja baja,
-                                @RequestParam(required = false) Long id_persona,
-                                @RequestParam(required = false) Long id_usuario,
-                                @RequestParam(name = "id_almacen", required = false) String idAlmacenJson,
-                                @RequestParam MultiValueMap<String, String> params, // Recibir todos los parámetros
-                                RedirectAttributes flash, HttpServletRequest request) {
+    public String Form_Informe_Baja(Model model, @Validated Baja baja,
+            @RequestParam(required = false) Long id_persona,
+            @RequestParam(required = false) Long id_usuario,
+            @RequestParam(name = "id_almacen", required = false) String idAlmacenJson,
+            @RequestParam MultiValueMap<String, String> params, // Recibir todos los parámetros
+            RedirectAttributes flash, HttpServletRequest request) {
 
-    if (request.getSession().getAttribute("persona") != null) {
-        baja.setEstado_baja("A");
-        baja.setPersona(personaService.findOne(id_persona));
-        baja.setUsuario(usuarioService.findOne(id_usuario));
-        bajaService.save(baja);
-        Long[] idAlmacenArray = null;
-        if (idAlmacenJson != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                idAlmacenArray = objectMapper.readValue(idAlmacenJson, Long[].class);
-                for (Long id : idAlmacenArray) {
-                    // Obtener los valores de los checkboxes asociados a este id_almacen
-                    Long[] id_fallaBaja = params.get("id_fallaBaja_" + id)
-                            .stream()
-                            .map(Long::valueOf)
-                            .toArray(Long[]::new);
+        if (request.getSession().getAttribute("persona") != null) {
+            baja.setEstado_baja("A");
+            baja.setPersona(personaService.findOne(id_persona));
+            baja.setUsuario(usuarioService.findOne(id_usuario));
+            bajaService.save(baja);
+            Long[] idAlmacenArray = null;
+            if (idAlmacenJson != null) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    idAlmacenArray = objectMapper.readValue(idAlmacenJson, Long[].class);
+                    for (Long id : idAlmacenArray) {
+                        // Obtener los valores de los checkboxes asociados a este id_almacen
+                        Long[] id_fallaBaja = params.get("id_fallaBaja_" + id)
+                                .stream()
+                                .map(Long::valueOf)
+                                .toArray(Long[]::new);
 
-                    DetalleBaja detalleBaja = new DetalleBaja();
-                    Almacen almacen = almacenService.findOne(id);
-                    almacen.setEstado("B"); // Cambia el estado del activo a B Estado de Baja
-                    almacenService.save(almacen);
-                    detalleBaja.setAlmacen(almacen);
-                    detalleBaja.setEstado_detalleBaja("A");
-                    detalleBaja.setBaja(bajaService.findOne(baja.getId_baja())); // Aquí es donde surge el error
-                    detalleBaja.setFecha_registro(new Date());
-                    detalleBajaService.save(detalleBaja);
+                        DetalleBaja detalleBaja = new DetalleBaja();
+                        Almacen almacen = almacenService.findOne(id);
+                        almacen.setEstado("B"); // Cambia el estado del activo a B Estado de Baja
+                        almacenService.save(almacen);
+                        detalleBaja.setAlmacen(almacen);
+                        detalleBaja.setEstado_detalleBaja("A");
+                        detalleBaja.setBaja(bajaService.findOne(baja.getId_baja())); // Aquí es donde surge el error
+                        detalleBaja.setFecha_registro(new Date());
+                        detalleBajaService.save(detalleBaja);
 
-                    if (id_fallaBaja != null) {
-                        for (Long idFallaBaja : id_fallaBaja) {
-                            DetalleAlmacenFallaBaja detalleAlmacenFallaBaja = new DetalleAlmacenFallaBaja();
-                            detalleAlmacenFallaBaja.setEstado_detalleAlmacenFallaBaja("A");
-                            detalleAlmacenFallaBaja.setFecha_registroDetAlmacenBaja(new Date());
-                            detalleAlmacenFallaBaja.setDetalleBaja(detalleBaja);
-                            detalleAlmacenFallaBaja.setFallaBaja(fallaBajaService.findOne(idFallaBaja));
-                            detalleAlmacenFallaBajaService.save(detalleAlmacenFallaBaja);
+                        if (id_fallaBaja != null) {
+                            for (Long idFallaBaja : id_fallaBaja) {
+                                DetalleAlmacenFallaBaja detalleAlmacenFallaBaja = new DetalleAlmacenFallaBaja();
+                                detalleAlmacenFallaBaja.setEstado_detalleAlmacenFallaBaja("A");
+                                detalleAlmacenFallaBaja.setFecha_registroDetAlmacenBaja(new Date());
+                                detalleAlmacenFallaBaja.setDetalleBaja(detalleBaja);
+                                detalleAlmacenFallaBaja.setFallaBaja(fallaBajaService.findOne(idFallaBaja));
+                                detalleAlmacenFallaBajaService.save(detalleAlmacenFallaBaja);
+                            }
                         }
                     }
+                } catch (IOException e) {
+                    System.out.println("Error al Registrar Informe de Baja");
                 }
-            } catch (IOException e) {
-                System.out.println("Error al Registrar Informe de Baja");
             }
-        }
 
-        if (baja.getId_baja() != null) {
-            baja.setFecha_baja(new Date());
-            bajaService.save(baja);
-            flash.addAttribute("validado", "Se ha Realizado el Informe N°" + baja.getId_baja() + " Con Éxito!");
+            if (baja.getId_baja() != null) {
+                baja.setFecha_baja(new Date());
+                bajaService.save(baja);
+                flash.addAttribute("validado", "Se ha Realizado el Informe N°" + baja.getId_baja() + " Con Éxito!");
+            } else {
+                baja.setFecha_modificacion(new Date());
+                bajaService.save(baja);
+                flash.addAttribute("validado", "Se ha Editado el Informe N°" + baja.getId_baja() + " Con Éxito!");
+            }
+
+            return "redirect:/hardware-servicio/lista_informes_bajas";
         } else {
-            baja.setFecha_modificacion(new Date());
-            bajaService.save(baja);
-            flash.addAttribute("validado", "Se ha Editado el Informe N°" + baja.getId_baja() + " Con Éxito!");
+            return "redirect:/hardware/login";
         }
-
-        return "redirect:/hardware-servicio/lista_informes_bajas";
-    } else {
-        return "redirect:/hardware/login";
     }
-}
     @RequestMapping("/ficha_tecnica_baja/{id_baja}")
     public String Imprimir_Informe_Baja(Model model,@PathVariable Long id_baja,RedirectAttributes flash, HttpServletRequest request){
 

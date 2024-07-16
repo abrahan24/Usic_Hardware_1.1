@@ -110,7 +110,7 @@
                                                     data-toggle="tooltip" data-placement="top" title="Imprimir Informe">
                                                     <i class="material-icons">print</i>
                                                 </a>
-                                                <a th:if="${b.estado_baja == 'A' && session.usuario.id_usuario == 3}" 
+                                                <a th:if="${b.estado_baja == 'A' && session.usuario.estado.equals('S')}" 
                                                 th:attr="onclick=${'MandarURL('+b.id_baja+')'}"
                                                 type="button"
                                                 class="btn bg-teal btn-circle waves-effect waves-circle waves-float"

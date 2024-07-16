@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +56,8 @@ import com.hardware.SystemUsic.models.service.IUsuarioService;
 @Controller
 @RequestMapping("/hardware-servicio")
 public class servicioController {
+
+    private static final Logger logger = LoggerFactory.getLogger(servicioController.class);
 
     @Autowired
     private IUnidadService unidadService;
@@ -107,6 +111,9 @@ public class servicioController {
             model.addAttribute("previos", usuario.getPrevios());
             model.addAttribute("usuarios", usuarioService.obtenerUsuariosConEstado_A());
             model.addAttribute("tipoServicios", tipoServicioService.findAll());
+            // Ejemplo en tu controlador o servicio
+            logger.info("Usuario en sesión: {}", usuario.getEstado());
+
             return "panel";
 		} else {
 			return "redirect:/hardware/login";
