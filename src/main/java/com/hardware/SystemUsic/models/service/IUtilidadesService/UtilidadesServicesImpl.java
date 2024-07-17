@@ -65,28 +65,28 @@ public class UtilidadesServicesImpl implements IUtilidadesServices{
     @Override
     public ByteArrayOutputStream compilarAndExportarReporte(String nombreArchivo, Map<String, Object> params)
             throws IOException, JRException, SQLException {
-        Path rootPath = Paths.get("");
-        Path rootAbsolutePath = rootPath.toAbsolutePath();
-        String ruta = rootAbsolutePath.toString() + "/JaspertReport/" + nombreArchivo;
+        Connection con = null;
 
-        File reportFile = new File(ruta);
-        if (!reportFile.exists()) {
-            throw new FileNotFoundException("Archivo JRXML no encontrado en la ruta: " + ruta);
-        }
-
+        // return stream;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        try (Connection con = dataSource.getConnection();
-                FileInputStream reportStream = new FileInputStream(reportFile)) {
+
+        Path rootPath = Paths.get("");
+        Path rootAbsolutPath = rootPath.toAbsolutePath();
+        String ruta = rootAbsolutPath.toString() + "/JaspertReport/" + nombreArchivo;
+
+        try (FileInputStream reportStream = new FileInputStream(ruta)) {
+            con = dataSource.getConnection();
 
             JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
             JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-            return stream;
-        } catch (Exception e) {
-            System.err.println("Error procesando el reporte: " + e.getMessage());
+        } catch (IOException | JRException | SQLException e) {
             e.printStackTrace();
-            throw e;
         }
+        con.close();
+        return stream;
+
     }
 
     @Override
