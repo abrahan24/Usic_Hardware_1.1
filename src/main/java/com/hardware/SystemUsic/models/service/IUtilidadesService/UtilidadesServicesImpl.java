@@ -1,6 +1,7 @@
 package com.hardware.SystemUsic.models.service.IUtilidadesService;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,37 +65,26 @@ public class UtilidadesServicesImpl implements IUtilidadesServices{
     @Override
     public ByteArrayOutputStream compilarAndExportarReporte(String nombreArchivo, Map<String, Object> params)
             throws IOException, JRException, SQLException {
-        // Definir la ruta completa al archivo del reporte.
         Path rootPath = Paths.get("");
         Path rootAbsolutePath = rootPath.toAbsolutePath();
         String ruta = rootAbsolutePath.toString() + "/JaspertReport/" + nombreArchivo;
 
-        // Crear el stream de salida que contendrá el reporte en formato PDF.
+        File reportFile = new File(ruta);
+        if (!reportFile.exists()) {
+            throw new FileNotFoundException("Archivo JRXML no encontrado en la ruta: " + ruta);
+        }
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        // Usar try-with-resources para asegurar el cierre automático de recursos.
         try (Connection con = dataSource.getConnection();
-                FileInputStream reportStream = new FileInputStream(ruta)) {
+                FileInputStream reportStream = new FileInputStream(reportFile)) {
 
-            // Compilar el archivo JRXML para obtener el objeto JasperReport.
             JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
-
-            // Llenar el reporte compilado con datos de la base de datos y parámetros
-            // proporcionados.
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
-
-            // Exportar el reporte lleno a un stream en formato PDF.
             JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-
             return stream;
-        } catch (FileNotFoundException e) {
-            System.err.println("Archivo no encontrado en la ruta: " + ruta);
-            throw e;
-        } catch (JRException e) {
-            System.err.println("Error al compilar o llenar el reporte: " + e.getMessage());
-            throw e;
-        } catch (SQLException e) {
-            System.err.println("Error al obtener la conexión de la base de datos: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error procesando el reporte: " + e.getMessage());
+            e.printStackTrace();
             throw e;
         }
     }
