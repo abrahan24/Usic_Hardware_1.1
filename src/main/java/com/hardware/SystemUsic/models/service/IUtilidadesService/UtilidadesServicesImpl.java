@@ -64,26 +64,37 @@ public class UtilidadesServicesImpl implements IUtilidadesServices{
     @Override
     public ByteArrayOutputStream compilarAndExportarReporte(String nombreArchivo, Map<String, Object> params)
             throws IOException, JRException, SQLException {
-        try (Connection con = dataSource.getConnection()) {
-            Path rootPath = Paths.get("");
-            Path rootAbsolutePath = rootPath.toAbsolutePath();
-            String ruta = rootAbsolutePath.toString() + "/JaspertReport/" + nombreArchivo;
+        // Definir la ruta completa al archivo del reporte.
+        Path rootPath = Paths.get("");
+        Path rootAbsolutePath = rootPath.toAbsolutePath();
+        String ruta = rootAbsolutePath.toString() + "/JaspertReport/" + nombreArchivo;
 
-            try (FileInputStream reportStream = new FileInputStream(ruta)) {
-                JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-                return stream;
-            } catch (FileNotFoundException e) {
-                System.err.println("Archivo no encontrado: " + ruta);
-                throw e;
-            } catch (JRException e) {
-                System.err.println("Error al compilar o llenar el reporte: " + e.getMessage());
-                throw e;
-            }
+        // Crear el stream de salida que contendrá el reporte en formato PDF.
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        // Usar try-with-resources para asegurar el cierre automático de recursos.
+        try (Connection con = dataSource.getConnection();
+                FileInputStream reportStream = new FileInputStream(ruta)) {
+
+            // Compilar el archivo JRXML para obtener el objeto JasperReport.
+            JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
+
+            // Llenar el reporte compilado con datos de la base de datos y parámetros
+            // proporcionados.
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
+
+            // Exportar el reporte lleno a un stream en formato PDF.
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+
+            return stream;
+        } catch (FileNotFoundException e) {
+            System.err.println("Archivo no encontrado en la ruta: " + ruta);
+            throw e;
+        } catch (JRException e) {
+            System.err.println("Error al compilar o llenar el reporte: " + e.getMessage());
+            throw e;
         } catch (SQLException e) {
-            System.err.println("Error al obtener la conexión de la base de datos");
+            System.err.println("Error al obtener la conexión de la base de datos: " + e.getMessage());
             throw e;
         }
     }
