@@ -2,6 +2,7 @@ package com.hardware.SystemUsic.models.service.IUtilidadesService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,28 +64,28 @@ public class UtilidadesServicesImpl implements IUtilidadesServices{
     @Override
     public ByteArrayOutputStream compilarAndExportarReporte(String nombreArchivo, Map<String, Object> params)
             throws IOException, JRException, SQLException {
-        Connection con = null;
+        try (Connection con = dataSource.getConnection()) {
+            Path rootPath = Paths.get("");
+            Path rootAbsolutePath = rootPath.toAbsolutePath();
+            String ruta = rootAbsolutePath.toString() + "/JaspertReport/" + nombreArchivo;
 
-        // return stream;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-        Path rootPath = Paths.get("");
-        Path rootAbsolutPath = rootPath.toAbsolutePath();
-        String ruta = rootAbsolutPath.toString() + "/JaspertReport/" + nombreArchivo;
-
-        try (FileInputStream reportStream = new FileInputStream(ruta)) {
-            con = dataSource.getConnection();
-
-            JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
-            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-        } catch (IOException | JRException | SQLException e) {
-            e.printStackTrace();
+            try (FileInputStream reportStream = new FileInputStream(ruta)) {
+                JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+                return stream;
+            } catch (FileNotFoundException e) {
+                System.err.println("Archivo no encontrado: " + ruta);
+                throw e;
+            } catch (JRException e) {
+                System.err.println("Error al compilar o llenar el reporte: " + e.getMessage());
+                throw e;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener la conexión de la base de datos");
+            throw e;
         }
-        con.close();
-        return stream;
-
     }
 
     @Override
