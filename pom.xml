@@ -86,7 +86,7 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId> <!-- Asegúrate de usar la versión más reciente -->
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>32.1.2-jre</version>
@@ -101,7 +101,7 @@
 			<artifactId>logback-classic</artifactId>
 			<version>1.4.14</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 
 
 	</dependencies>
