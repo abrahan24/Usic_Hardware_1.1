@@ -112,7 +112,7 @@ public class servicioController {
             model.addAttribute("usuarios", usuarioService.obtenerUsuariosConEstado_A());
             model.addAttribute("tipoServicios", tipoServicioService.findAll());
             // Ejemplo en tu controlador o servicio
-            logger.info("Usuario en sesión: {}", usuario.getEstado());
+            logger.info("Usuario en sesión: {}", usuario.getPersona().getNombre());
 
             return "panel";
 		} else {
