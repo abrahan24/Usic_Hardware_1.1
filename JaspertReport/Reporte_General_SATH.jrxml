@@ -12,7 +12,6 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<import value="java.text.SimpleDateFormat"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -359,7 +358,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table 2_TD"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="fd29e04e-9c23-47ef-ac8d-72d4cf1ce6eb">
+					<datasetRun subDataset="Dataset1" uuid="c61f1918-b396-4b5b-8754-6c6f09d22852">
 						<datasetParameter name="fecha_inicial">
 							<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -655,7 +654,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 				</chart>
 				<categoryDataset>
 					<dataset>
-						<datasetRun subDataset="dsTipoServicios" uuid="fbb709f9-967a-48ac-ba6d-ef10c243576e">
+						<datasetRun subDataset="dsTipoServicios" uuid="0e4bbb7e-c611-4b18-b888-465515dbfb0b">
 							<datasetParameter name="fecha_inicial">
 								<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
 							</datasetParameter>
