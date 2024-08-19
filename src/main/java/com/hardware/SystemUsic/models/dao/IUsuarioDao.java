@@ -14,6 +14,6 @@ public interface IUsuarioDao extends CrudRepository<Usuario, Long>{
     
 
     @Query(value = "SELECT u.* FROM usuario u \n" + //
-                "WHERE u.estado = 'A'",nativeQuery = true)
+                "WHERE u.estado = 'A' OR u.estado = 'S' ",nativeQuery = true)
     public List<Usuario> obtenerUsuariosConEstado_A();
 }
