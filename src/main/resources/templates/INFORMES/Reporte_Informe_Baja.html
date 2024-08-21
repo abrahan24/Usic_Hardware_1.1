@@ -77,7 +77,7 @@
                                                 th:text="${num.index+1}">
                                             </td>
                                             <td
-                                                th:text="${'INF.DHS.-USIC-N°'+b.id_baja+'/'+#dates.format(b.fecha_baja, 'yyyy')}">
+                                                th:text="${'N°'+b.id_baja+'/'+#dates.format(b.fecha_baja, 'yyyy')}">
                                             </td>
                                             <td th:if="${b.persona.ap_materno == null}"
                                                 th:text="${b.persona.nombre + ' ' + b.persona.ap_paterno}"></td>
@@ -110,7 +110,7 @@
                                                     data-toggle="tooltip" data-placement="top" title="Imprimir Informe">
                                                     <i class="material-icons">print</i>
                                                 </a>
-                                                <a th:if="${b.estado_baja == 'A' && session.usuario.estado.equals('S')}" 
+                                                <a th:if="${b.estado_baja == 'A' && session.usuario.estado.toString() == 'S'}" 
                                                 th:attr="onclick=${'MandarURL('+b.id_baja+')'}"
                                                 type="button"
                                                 class="btn bg-teal btn-circle waves-effect waves-circle waves-float"
