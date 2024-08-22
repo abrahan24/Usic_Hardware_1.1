@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_General_SATH" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d56cdfdf-82f6-4ba2-afc0-fc8019bd71b8">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SATH.jrdax"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_SATH"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -214,7 +214,7 @@ LEFT JOIN persona p ON p.id_persona = u.id_persona
 LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico 
 LEFT JOIN cargo c ON c.id_cargo = p.id_cargo 
 LEFT JOIN unidad u2 ON u2.id_unidad = p.id_unidad 
-WHERE u.id_usuario = $P{id_usuario} AND  u.estado = 'A']]>
+WHERE u.id_usuario = $P{id_usuario} AND  u.estado = 'A' OR u.estado = 'S']]>
 	</queryString>
 	<field name="id_usuario" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.name" value="id_usuario"/>
