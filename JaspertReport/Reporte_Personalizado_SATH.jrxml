@@ -214,7 +214,7 @@ LEFT JOIN persona p ON p.id_persona = u.id_persona
 LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico 
 LEFT JOIN cargo c ON c.id_cargo = p.id_cargo 
 LEFT JOIN unidad u2 ON u2.id_unidad = p.id_unidad 
-WHERE u.id_usuario = $P{id_usuario} AND  u.estado = 'A' OR u.estado = 'S']]>
+WHERE u.id_usuario = $P{id_usuario} AND  (u.estado = 'A' OR u.estado = 'S')]]>
 	</queryString>
 	<field name="id_usuario" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.name" value="id_usuario"/>
