@@ -781,12 +781,7 @@ public class servicioController {
     }
 
     @PostMapping("/add_TipoServicio")
-<<<<<<< HEAD
-    public String seleccionTipoServicio(RedirectAttributes flash, HttpServletRequest request, @RequestParam Integer aux,
-            @RequestParam(required = false) Long id_TipoServicio) {
-=======
     public String Seleccion_TipoServicio(RedirectAttributes flash, HttpServletRequest request, @RequestParam Integer aux, @RequestParam(name = "id_TipoServicio" ,required = false)Long id_TipoServicio){
->>>>>>> 5788722 (UPDATE)
 
         Persona persona = (Persona) request.getSession().getAttribute("persona");
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");

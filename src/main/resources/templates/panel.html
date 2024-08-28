@@ -570,9 +570,9 @@
                                         <table class="table table-condensed text-center">
                                             <thead class="text-center">
                                                 <tr>
-                                                    <th class="text-center">SOPORTE TÉCNICO</th>
-                                                    <th class="text-center">MANTENIMIENTO PREVENTIVO</th>
-                                                    <th class="text-center">MANTENIMIENTO CORRECTIVO</th>
+                                                    <th class="text-center" th:each="i : ${#numbers.sequence(0, tipoServicios.size()-1)}" th:text="${tipoServicios.get(i).nom_TipoServicio}">
+                                                        
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
