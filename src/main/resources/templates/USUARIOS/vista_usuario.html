@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layaut/layaut :: head"></head>
+
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Por Favor Espera...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input type="text" placeholder="START TYPING...">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav th:replace="layaut/layaut :: nav">  </nav>
+    <!-- #Top Bar -->
+    <section th:replace="layaut/layaut :: menu"></section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>
+                    Lista de Usuarios
+                </h2>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div id="listaUsuarios" class="body">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div th:replace="layaut/layaut :: modal_color"></div>
+
+    </section>
+    <div class="modal fade" id="add_Usuario" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div id="contenModal" >
+                
+            </div>
+        </div>
+    </div>
+
+    <script th:replace="layaut/layaut :: script_modal_persona"></script>
+
+    <!-- Jquery Core Js -->
+    <script src="../../../../plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../../../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../../../../plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../../../plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Bootstrap Notify Plugin Js -->
+    <script src="../../../../plugins/bootstrap-notify/bootstrap-notify.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../../../plugins/node-waves/waves.js"></script>
+
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="../../../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="../../../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="../../../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../../../js/admin.js"></script>
+    <script src="../../../../js/pages/tables/jquery-datatable.js"></script>
+    <script src="../../../../js/pages/ui/modals.js"></script>
+    <script src="../../../../js/sweetalert2.min.js"></script>
+
+     
+    <!-- Demo Js -->
+    <script src="../../../../js/demo.js"></script>
+
+    <!-- Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        cargarTabla();
+
+        function cargarTabla() {
+            $.ajax({
+                type: 'POST',
+                url: "/hardware-servicio/listaUsuarios",  // Ruta del metodo del controlador en Spring Boot
+                success: function (response) {
+                    $("#listaUsuarios").html(response);  // Actualiza el contenido del div con la respuesta del servidor
+                }
+            });
+        }
+
+        function agregarUsuarioNuevo(){
+
+            $.ajax({
+                type: 'POST',
+                url: "/hardware-servicio/add_usuario",  // Ruta del metodo del controlador en Spring Boot
+                success: function (response) {
+                    $("#add_Usuario").modal("show");
+                    
+                    $("#contenModal").html(response);  
+                }
+            });
+        }
+
+        function validarPersona(ci) {
+            $.ajax({
+                type: 'GET', // Cambiar a GET
+                url: '/hardware-servicio/validarCI/' + ci,  // Ruta del metodo del controlador en Spring Boot
+                success: function(response) {
+                    if (response === 'ok') {
+                        $('#responseSpan').html(`<div class="alert alert-success">
+                                                    <strong>Persona Existe en la BD!</strong>
+                                                </div>`);
+                    } else {
+                        $('#responseSpan').html(`<div class="alert alert-danger">
+                                                    <strong>Persona no Registrada en la BD!</strong> 
+                                                </div>`);
+                    }
+                },
+                error: function() {
+                    $('#responseSpan').html(`<div class="alert alert-danger">
+                                                    <strong>Error!</strong> 
+                                                </div>`);
+                }
+            });
+        }
+
+        function eliminarUsuario(id_usuario,nombre){
+            swal({
+                title: "Alerta!",
+                text: "Esta Seguro de Eliminar el Usuario "+nombre +" ? <br>",
+                type: "info",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar",
+                showConfirmButton: true,
+                showCancelButton: true,
+            }) .then((resultado) => {
+                if (resultado) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/hardware-servicio/eliminarUsuario/"+id_usuario,  
+                        success: function (response) {
+                            cargarTabla();
+                        }
+                    });
+                } else {
+                    // Dijeron que no
+                    console.log("Error");
+                }
+            });
+        }
+
+        function cargarFormulario(id_usuario){
+            $.ajax({
+                type: 'POST',
+                url: "/hardware-servicio/editarUsuario/" + id_usuario,  
+                success: function (response) {
+                    $("#add_Usuario").modal("show");
+                    
+                    $("#contenModal").html(response); 
+                }
+              });
+
+        }
+    </script>
+</body>
+</html>

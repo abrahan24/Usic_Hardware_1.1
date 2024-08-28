@@ -1,0 +1,151 @@
+<div class="modal-content modal-col-indigo">
+    <div class="modal-header">
+        <h4 class="modal-title" id="defaultModalLabel" th:if="${usuario.id_usuario == null}">AGREGAR USUARIO</h4>
+        <h4 class="modal-title" id="defaultModalLabel" th:if="${usuario.id_usuario != null}">EDITAR USUARIO</h4>
+    </div>
+    <form th:action="${edit}? @{/hardware-servicio/edit_usuario_form} : @{/hardware-servicio/usuario_form}" id="formularioUsuario" method="post">
+        <div class="modal-body">
+            <div class="row clearfix">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label for="">Usuario</label>
+                            <input type="hidden" th:field="*{usuario.id_usuario}">
+                            <input type="text" class="form-control" th:field="*{usuario.usuario}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label for="">Contraseña</label>
+                            <input type="text" class="form-control" th:field="*{usuario.contrasena}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label for="">CI</label>
+                            <input type="text" class="form-control" th:field="*{persona.ci}" required>
+                        </div>
+                        <div id="responseSpan" >
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="" th:if="${usuario.id_usuario ==  null}">Asignar Predios</label>
+                        <label for="" th:if="${usuario.id_usuario !=  null}">Predios Asignados</label>
+                        <select class="js-example-basic-multiple" name="previos" id="previos" style="width: 100%;" multiple="multiple" required>
+                            <option th:each="p : ${procedencias}" th:text="${p.procedencia}" th:value="${p.id_procedencia}" ></option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="" th:if="${usuario.id_usuario ==  null}">Asignar Rol</label>
+                        <label for="" th:if="${usuario.id_usuario !=  null}">Rol Asignado</label>
+                        <select class="js-example-basic" th:field="*{usuario.estado}" style="width: 100%;" required>
+                            <option value="" ></option>
+                            <option value="S" >Super Admin</option>
+                            <option value="A" >Usuario</option>
+                            <option value="B" >Becario</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success waves-effect" th:if="${usuario.id_usuario == null}">ENVIAR</button>
+            <button type="submit" class="btn btn-success waves-effect" th:if="${usuario.id_usuario != null}">ACTUALIZAR</button>
+            <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CERRAR</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2({
+            placeholder: "Seleccione..."
+        }).on('select2:select', function() {
+            $('.select2-selection__choice').css({
+                'background-color': '#676767',
+            });
+        });
+        $('.js-example-basic').select2({
+            placeholder: "Seleccione..."
+        })
+        $('#ci').on('blur', function() {
+            // Captura el valor del input cuando el campo pierde el foco
+            var ciValue = $(this).val();
+            validarPersona(ciValue);
+        });
+
+        $('#formularioUsuario').on('submit', function (event) {
+            event.preventDefault(); // Previene el envío del formulario
+        
+            var form = $(this)[0];
+            var formData = new FormData(form);
+        
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: formData,
+                contentType: false,  // No establecer el tipo de contenido aquí
+                processData: false,  // No procesar los datos
+                success: function (response) {
+                    if (response === "1" ) {
+                        swal({
+                            title: "Usuario Registrado con Éxito!",
+                            type: "success",
+                            showConfirmButton: true,
+                        }).then(function() {
+                            cargarTabla();
+                            $("#add_Usuario").modal("hide");
+                        });
+                        
+                    }else if(response === "2"){
+                        swal({
+                            title: "Alerta!",
+                            text: "La Persona Ingresada No esta Registrado",
+                            type: "info",
+                            showConfirmButton: true
+                        }).then(function(){
+                            $("#add_Usuario").modal("hide");
+                        });
+                    }else if(response === "3"){
+                        swal({
+                            title: "Usuario Editado con Éxito!",
+                            type: "success",
+                            showConfirmButton: true,
+                        }).then(function() {
+                            cargarTabla();
+                            $("#add_Usuario").modal("hide");
+                        });
+                    } else {
+                        swal({
+                            title: "Alerta!",
+                            text: "La Persona Ingresada ya Cuenta con un Usuario Activo.",
+                            type: "info",
+                            showConfirmButton: true
+                        }).then(function(){
+                            $("#add_Usuario").modal("hide");
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        title: "Error",
+                        text: "Ocurrió un error al procesar la solicitud.",
+                        type: "error",
+                        showConfirmButton: true
+                    }).then(function(){
+                        $("#add_Usuario").modal("hide");
+                    });
+                }
+            });
+        });
+    });
+</script>

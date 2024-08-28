@@ -781,50 +781,84 @@ public class servicioController {
     }
 
     @PostMapping("/add_TipoServicio")
-    public String Seleccion_TipoServicio(RedirectAttributes flash, HttpServletRequest request, @RequestParam Integer aux, @RequestParam(required = false)Long id_TipoServicio){
+    public String seleccionTipoServicio(RedirectAttributes flash, HttpServletRequest request, @RequestParam Integer aux,
+            @RequestParam(required = false) Long id_TipoServicio) {
 
-        if (request.getSession().getAttribute("persona") != null) {
-			Long id_servicio = 0L;
+        Persona persona = (Persona) request.getSession().getAttribute("persona");
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+
+        if (persona != null && usuario != null) {
+            Long id_servicio = null;
             for (int i = 0; i < aux; i++) {
-                if (request.getParameter("id_ser" + i) != null) {
-                    id_servicio=Long.parseLong(request.getParameter("id_ser" + i));
-                    System.out.println(id_servicio);
+                String idSerParam = request.getParameter("id_ser" + i);
+                if (idSerParam != null) {
+                    id_servicio = Long.parseLong(idSerParam);
+                    break; // Break after the first match to avoid unnecessary iterations
                 }
             }
-            
-            Persona persona = (Persona) request.getSession().getAttribute("persona");
-            persona = personaService.findOne(persona.getId_persona());
-            Servicio servicio = servicioService.findOne(id_servicio);
 
+            if (id_servicio != null) {
+                persona = personaService.findOne(persona.getId_persona());
+                Servicio servicio = servicioService.findOne(id_servicio);
 
-             if (id_TipoServicio.intValue() == 1) {
-                servicio.setEstado_servicio("AS"); // AS = Activo Soporte Tecnico
-            }if (id_TipoServicio.intValue() == 2) {
-                servicio.setEstado_servicio("AP"); // AP = Activo Mantenimiento Preventivo
-            }if (id_TipoServicio.intValue() == 3) {
-                servicio.setEstado_servicio("A"); 
+                switch (id_TipoServicio.intValue()) {
+                    case 1:
+                        servicio.setEstado_servicio("AS"); // AS = Activo Soporte Tecnico
+                        break;
+                    case 2:
+                        servicio.setEstado_servicio("AP"); // AP = Activo Mantenimiento Preventivo
+                        break;
+                    case 3:
+                        servicio.setEstado_servicio("A");
+                        break;
+                    default:
+                        // Handle invalid id_TipoServicio value if necessary
+                        break;
+                }
+
+                TipoServicio tipoServicio = tipoServicioService.findOne(id_TipoServicio);
+                servicio.setTiposervicio(tipoServicio);
+                servicioService.save(servicio);
+
+                Colaborador colaborador = new Colaborador();
+                Date fechaRecepcion = new Date();
+
+                if (usuario.getEstado() == 'B') {
+                    // First collaborator
+                    Colaborador colaborador1 = new Colaborador();
+                    colaborador1.setPersona(personaService.findOne(23L));
+                    colaborador1.setServicio(servicio);
+                    colaborador1.setEstado("A");
+                    colaborador1.setFecha_recepcion(fechaRecepcion);
+                    colaboradorService.save(colaborador1);
+
+                    // Second collaborator
+                    Colaborador colaborador2 = new Colaborador();
+                    colaborador2.setPersona(persona);
+                    colaborador2.setServicio(servicio);
+                    colaborador2.setEstado("B");
+                    colaborador2.setFecha_recepcion(fechaRecepcion);
+                    colaboradorService.save(colaborador2);
+                }else{
+                    colaborador.setPersona(persona);
+                    colaborador.setServicio(servicio);
+                    colaborador.setEstado("A");
+                    colaborador.setFecha_recepcion(fechaRecepcion);
+                    colaboradorService.save(colaborador);
+                }
+
+                flash.addFlashAttribute("validado",
+                        "Solicitud de Tipo: " + tipoServicio.getNom_TipoServicio() + " Aceptado Con Exito!");
+
+                return "redirect:/hardware-servicio/inicio";
+            } else {
+                flash.addFlashAttribute("error", "No se pudo encontrar un servicio válido.");
+                return "redirect:/hardware-servicio/inicio";
             }
-            
-            System.out.println(id_TipoServicio);
-
-            servicio.setTiposervicio(tipoServicioService.findOne(id_TipoServicio));
-            TipoServicio tipoServicio = tipoServicioService.findOne(id_TipoServicio);
-            servicioService.save(servicio);
-            Colaborador colaborador = new Colaborador();
-            colaborador.setPersona(persona);
-            colaborador.setServicio(servicio);
-            colaborador.setEstado("A");
-            colaborador.setFecha_recepcion(new Date());
-            colaboradorService.save(colaborador);
-
-            flash.addAttribute("validado", "Solicitud de Tipo: "+ tipoServicio.getNom_TipoServicio() + " Aceptado Con Exito!");
-            
-            return "redirect:/hardware-servicio/inicio";
-		} else {
-			return "redirect:/hardware/login";
-		} 
+        } else {
+            return "redirect:/hardware/login";
+        }
     }
-
     @RequestMapping("/validar_servicio/{id_servicio}")
     public String Verificar_Servicio(Model model,@PathVariable long id_servicio,RedirectAttributes flash, HttpServletRequest request) throws FileNotFoundException, IOException{
             

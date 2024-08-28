@@ -47,5 +47,11 @@ public class UsuarioServiceImpl implements IUsuarioService{
         // TODO Auto-generated method stub
         return usuarioDao.obtenerUsuariosConEstado_A();
     }
+
+    @Override
+    public Usuario validarExisteUsuarioPorCI(String ci) {
+        // TODO Auto-generated method stub
+        return usuarioDao.validarExisteUsuarioPorCI(ci);
+    }
     
 }

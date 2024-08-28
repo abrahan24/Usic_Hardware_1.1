@@ -769,15 +769,25 @@
         // Convierte las filas en una matriz (Array)
         var rows = Array.prototype.slice.call(tbody.rows);
     
-        // Invierte el orden de las filas
-        rows.reverse();
+        // Función para extraer el número de servicio de la celda correspondiente
+        function getNumeroServicio(row) {
+            var cell = row.cells[1]; // Columna 2 (índice 1) corresponde a "Codigo Servicio"
+            var codigo = cell.textContent || cell.innerText;
+            // Extraer el número después de "N°"
+            return parseInt(codigo.replace("N°", "").trim());
+        }
+    
+        // Ordenar las filas en función del número de servicio en orden descendente
+        rows.sort(function(a, b) {
+            return getNumeroServicio(b) - getNumeroServicio(a);
+        });
     
         // Elimina todas las filas existentes del <tbody>
         while (tbody.firstChild) {
             tbody.removeChild(tbody.firstChild);
         }
     
-        // Agrega las filas en el orden invertido al <tbody>
+        // Agrega las filas en el orden ordenado al <tbody>
         rows.forEach(function(row) {
             tbody.appendChild(row);
         });

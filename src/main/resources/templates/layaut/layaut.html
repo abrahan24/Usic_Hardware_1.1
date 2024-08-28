@@ -60,7 +60,6 @@
 
    <!-- Sweetalert Css -->
    <link href="../../../../plugins/sweetalert/sweetalert.css" rel="stylesheet" />
-
     <!-- Select2 CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css" rel="stylesheet"/>
@@ -191,7 +190,7 @@
                         
                     </ul>
                 </li> -->
-                <li th:if="${session.persona != null}" >
+                <li th:if="${session.persona != null && (session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A')}" >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">archive</i>
                         <span>INFORMES</span>
@@ -230,6 +229,12 @@
                         <span>PERSONA</span>
                     </a>
                     <ul class="ml-menu">
+                        <li th:if="${session.usuario.estado.toString() == 'S'}">
+                            <a th:href="${'../../../../hardware-servicio/usuario'}">
+                                <i class="material-icons" style="font-size: 15px">person_add</i>
+                                <span>GESTIONAR USUARIOS</span>
+                            </a>
+                        </li>
                         <li>
                             <a id="abrirModal">
                                 <i class="material-icons" style="font-size: 15px">person_add</i>
@@ -284,7 +289,7 @@
                         </li>
                     </ul>
                 </li>               
-                <li th:if="${session.persona != null}" >
+                <li th:if="${session.persona != null && (session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A')}" >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">devices</i>
                         <span>EQUIPO</span>
@@ -316,22 +321,28 @@
                         </li>
                     </ul>
                 </li>               
-                <li th:if="${session.persona != null && session.usuario.estado.toString() == 'S'}" >
+                <li th:if="${session.persona != null && (session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A')}" >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">content_copy</i>
                         <span>REPORTES</span>
                     </a>
                     <ul class="ml-menu">
-                        <li>
+                        <li th:if="${session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A'}">
                             <a th:href="${'../../../../hardware-servicio/reporte'}">
                                 <i class="material-icons" style="font-size: 15px">assignment</i>
                                 <span>REPORTE GENERAL DE SERVICIOS</span>
                             </a>
                         </li>
-                        <li>
+                        <li th:if="${session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A'}">
                             <a th:href="${'../../../../hardware-servicio/reporte_personalizado'}">
                                 <i class="material-icons" style="font-size: 15px">assignment</i>
                                 <span>REPORTE PERZONALIZADO DE SERVICIO</span>
+                            </a>
+                        </li>
+                        <li th:if="${session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A' || session.usuario.estado.toString() == 'B'}">
+                            <a th:href="${'../../../../hardware-servicio/reporte_personalizado'}">
+                                <i class="material-icons" style="font-size: 15px">assignment</i>
+                                <span>REPORTE ESTADISTICO USUARIO</span>
                             </a>
                         </li>
                         <!-- <li>

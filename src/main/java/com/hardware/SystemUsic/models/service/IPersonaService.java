@@ -17,5 +17,8 @@ public interface IPersonaService {
 	public Persona getCIpersona(String ci);
 
 	public List<Persona>getPersonas_Nombre_Or_Ci(String dato);
+
+	public List<Persona> validarPersonaPorCI(String ci);
+
 }
 

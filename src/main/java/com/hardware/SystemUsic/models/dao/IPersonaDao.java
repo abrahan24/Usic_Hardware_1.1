@@ -14,4 +14,7 @@ public interface IPersonaDao extends CrudRepository<Persona, Long>{
 
     @Query("SELECT p FROM Persona p WHERE p.nombre LIKE %?1% OR p.ci LIKE %?1% OR p.ap_paterno LIKE %?1% OR p.ap_materno LIKE %?1%")
     public List<Persona>getPersonas_Nombre_Or_Ci(String dato);
+
+    @Query("SELECT p FROM Persona p WHERE p.ci LIKE CONCAT(:ci, '%')")
+    public List<Persona> validarPersonaPorCI(String ci);
 }

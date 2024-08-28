@@ -16,4 +16,9 @@ public interface IUsuarioDao extends CrudRepository<Usuario, Long>{
     @Query(value = "SELECT u.* FROM usuario u \n" + //
                 "WHERE u.estado = 'A' OR u.estado = 'S' ",nativeQuery = true)
     public List<Usuario> obtenerUsuariosConEstado_A();
+
+    @Query(value = "SELECT u.* FROM persona p \n" + //
+                "LEFT JOIN usuario u ON u.id_persona = p.id_persona \n" + //
+                "WHERE p.ci = ?1",nativeQuery = true)
+    public Usuario validarExisteUsuarioPorCI(String ci);
 }

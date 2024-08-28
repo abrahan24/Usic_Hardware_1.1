@@ -16,5 +16,8 @@ public interface IUsuarioService {
 	public Usuario getUsuario(String usuario,String contrasena);
 
 	public List<Usuario> obtenerUsuariosConEstado_A();
+
+	public Usuario validarExisteUsuarioPorCI(String ci);
+
     
 }

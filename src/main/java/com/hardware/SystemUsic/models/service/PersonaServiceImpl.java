@@ -48,5 +48,11 @@ public class PersonaServiceImpl implements IPersonaService{
         // TODO Auto-generated method stub
         return personaDao.getPersonas_Nombre_Or_Ci(dato);
     }
+
+    @Override
+    public List<Persona> validarPersonaPorCI(String ci) {
+        // TODO Auto-generated method stub
+        return personaDao.validarPersonaPorCI(ci);
+    }
     
 }

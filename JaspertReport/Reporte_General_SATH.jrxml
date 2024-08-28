@@ -647,14 +647,14 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 		<band height="234">
 			<barChart>
 				<chart evaluationTime="Report">
-					<reportElement x="14" y="10" width="724" height="200" uuid="87b4d518-e95a-4481-ad32-561f85cff9bb"/>
+					<reportElement x="14" y="10" width="724" height="200" uuid="55c5d16f-ebf2-4da7-856d-7fdedb6dcd30"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
-					<dataset>
-						<datasetRun subDataset="dsTipoServicios" uuid="0e4bbb7e-c611-4b18-b888-465515dbfb0b">
+					<dataset incrementType="Report">
+						<datasetRun subDataset="dsTipoServicios" uuid="18d92a89-17b4-40b6-8ba2-359e5771c20f">
 							<datasetParameter name="fecha_inicial">
 								<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
 							</datasetParameter>

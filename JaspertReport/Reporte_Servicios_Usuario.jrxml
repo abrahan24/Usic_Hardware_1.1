@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Servicios_Usuario" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8538e32a-1ac8-490a-8d50-02835d71f243">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_SATH"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="b04025df-80c6-47b1-8fb7-f44bd21e3023">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_SATH"/>
+		<parameter name="fecha_inicial" class="java.util.Date"/>
+		<parameter name="fecha_final" class="java.util.Date"/>
+		<parameter name="id_usuario" class="java.lang.Long"/>
+		<queryString language="plsql">
+			<![CDATA[SELECT  s.id_tipo_servicio, 
+    COALESCE(t.nom_tipo_servicio, 'MANTENIMIENTO CORRECTIVO') AS nom_tipo_servicio,
+    COUNT(*) AS cantidad_servicios 
+FROM servicio s 
+LEFT JOIN colaborador c ON c.id_servicio = s.id_servicio 
+LEFT JOIN persona p ON p.id_persona = c.id_persona 
+LEFT JOIN usuario u ON u.id_persona = p.id_persona 
+LEFT JOIN tiposervicio t ON t.id_tipo_servicio = s.id_tipo_servicio 
+WHERE (c.estado = 'A' OR c.estado = 'B') AND s.estado_servicio = 'T' AND u.id_usuario = $P{id_usuario} AND s.fecha_recepcion BETWEEN $P{fecha_inicial}  AND $P{fecha_final}
+GROUP BY s.id_tipo_servicio , t.nom_tipo_servicio]]>
+		</queryString>
+		<field name="id_tipo_servicio" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="id_tipo_servicio"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_tipo_servicio"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="servicio"/>
+		</field>
+		<field name="nom_tipo_servicio" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nom_tipo_servicio"/>
+			<property name="com.jaspersoft.studio.field.label" value="nom_tipo_servicio"/>
+		</field>
+		<field name="cantidad_servicios" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="cantidad_servicios"/>
+			<property name="com.jaspersoft.studio.field.label" value="cantidad_servicios"/>
+		</field>
+		<group name="id_tipo_servicio">
+			<groupExpression><![CDATA[$F{id_tipo_servicio}]]></groupExpression>
+		</group>
+		<group name="nom_tipo_servicio">
+			<groupExpression><![CDATA[$F{nom_tipo_servicio}]]></groupExpression>
+		</group>
+		<group name="cantidad_servicios">
+			<groupExpression><![CDATA[$F{cantidad_servicios}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="Dataset2" uuid="fd07e188-3642-4691-a995-930f312ae436">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_SATH"/>
+		<parameter name="fecha_inicial" class="java.util.Date"/>
+		<parameter name="fecha_final" class="java.util.Date"/>
+		<parameter name="id_usuario" class="java.lang.Long"/>
+		<queryString language="plsql">
+			<![CDATA[SELECT  
+  s.id_servicio,
+    COALESCE(t.nom_tipo_servicio, 'MANTENIMIENTO CORRECTIVO') AS nom_tipo_servicio,
+    (SELECT u2.unidad FROM unidad u2 LEFT JOIN persona p2 ON p2.id_persona = s.id_persona WHERE u2.id_unidad = p2.id_unidad) AS unidad_funcionario ,
+     (SELECT upper( concat( p2.nombre,' ',p2.ap_paterno,' ',p2.ap_materno)) AS funcionario FROM persona p2 WHERE p2.id_persona = s.id_persona),
+     t2.equipo AS tipo_equipo,
+     a.cod_equipo ,
+    s.fecha_recepcion,
+    s.fecha_entrega 
+FROM servicio s 
+LEFT JOIN colaborador c ON c.id_servicio = s.id_servicio 
+LEFT JOIN persona p ON p.id_persona = c.id_persona 
+LEFT JOIN usuario u ON u.id_persona = p.id_persona 
+LEFT JOIN tiposervicio t ON t.id_tipo_servicio = s.id_tipo_servicio
+LEFT JOIN tipoequipo t2 ON t2.id_tipoequipo = s.id_tipoequipo 
+LEFT JOIN almacen a ON a.id_almacen = s.id_almacen 
+WHERE (c.estado = 'A' OR c.estado = 'B') 
+    AND s.estado_servicio = 'T' 
+    AND u.id_usuario = $P{id_usuario}
+    AND s.fecha_recepcion BETWEEN $P{fecha_inicial} AND $P{fecha_final}
+ORDER BY nom_tipo_servicio;]]>
+		</queryString>
+		<field name="id_servicio" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="id_servicio"/>
+			<property name="com.jaspersoft.studio.field.label" value="id_servicio"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="servicio"/>
+		</field>
+		<field name="nom_tipo_servicio" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nom_tipo_servicio"/>
+			<property name="com.jaspersoft.studio.field.label" value="nom_tipo_servicio"/>
+		</field>
+		<field name="unidad_funcionario" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="unidad_funcionario"/>
+			<property name="com.jaspersoft.studio.field.label" value="unidad_funcionario"/>
+		</field>
+		<field name="funcionario" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="funcionario"/>
+			<property name="com.jaspersoft.studio.field.label" value="funcionario"/>
+		</field>
+		<field name="tipo_equipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="tipo_equipo"/>
+			<property name="com.jaspersoft.studio.field.label" value="tipo_equipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="tipoequipo"/>
+		</field>
+		<field name="cod_equipo" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="cod_equipo"/>
+			<property name="com.jaspersoft.studio.field.label" value="cod_equipo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="almacen"/>
+		</field>
+		<field name="fecha_recepcion" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="fecha_recepcion"/>
+			<property name="com.jaspersoft.studio.field.label" value="fecha_recepcion"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="servicio"/>
+		</field>
+		<field name="fecha_entrega" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="fecha_entrega"/>
+			<property name="com.jaspersoft.studio.field.label" value="fecha_entrega"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="servicio"/>
+		</field>
+		<variable name="Contador" class="java.lang.Integer" calculation="Count">
+			<variableExpression><![CDATA[new Integer(1)]]></variableExpression>
+		</variable>
+		<group name="id_servicio">
+			<groupExpression><![CDATA[$F{id_servicio}]]></groupExpression>
+		</group>
+		<group name="nom_tipo_servicio">
+			<groupExpression><![CDATA[$F{nom_tipo_servicio}]]></groupExpression>
+		</group>
+		<group name="unidad_funcionario">
+			<groupExpression><![CDATA[$F{unidad_funcionario}]]></groupExpression>
+		</group>
+		<group name="funcionario">
+			<groupExpression><![CDATA[$F{funcionario}]]></groupExpression>
+		</group>
+		<group name="fecha_recepcion">
+			<groupExpression><![CDATA[$F{fecha_recepcion}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="id_usuario" class="java.lang.Long"/>
+	<parameter name="fecha_inicial" class="java.util.Date"/>
+	<parameter name="fecha_final" class="java.util.Date"/>
+	<queryString language="plsql">
+		<![CDATA[SELECT u.id_usuario , concat(ga.sigla_grado_academico,'',p.nombre,' ', p.ap_paterno,' ',p.ap_materno) AS nom_completo, c.cargo,u2.unidad FROM usuario u 
+LEFT JOIN persona p ON p.id_persona = u.id_persona 
+LEFT JOIN grado_academico ga ON ga.id_grado_academico = p.id_grado_academico 
+LEFT JOIN cargo c ON c.id_cargo = p.id_cargo 
+LEFT JOIN unidad u2 ON u2.id_unidad = p.id_unidad 
+WHERE u.id_usuario = $P{id_usuario} AND  (u.estado = 'A' OR u.estado = 'S')]]>
+	</queryString>
+	<field name="id_usuario" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id_usuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_usuario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="nom_completo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nom_completo"/>
+		<property name="com.jaspersoft.studio.field.label" value="nom_completo"/>
+	</field>
+	<field name="cargo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cargo"/>
+		<property name="com.jaspersoft.studio.field.label" value="cargo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cargo"/>
+	</field>
+	<field name="unidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="unidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="unidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="unidad"/>
+	</field>
+	<columnHeader>
+		<band height="108" splitType="Stretch">
+			<rectangle>
+				<reportElement x="10" y="5" width="549" height="58" uuid="11b5625e-44cd-4fa2-8770-dec24fdc7e1b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="80" y="5" width="400" height="58" uuid="5715f429-5671-4909-ab9a-ae994711f67c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="157" y="13" width="247" height="42" uuid="69a1afc2-1be3-4c40-a61f-7594bdfd0589"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[REPORTE ESTADISTICO DE SERVICIOS REALIZADOS
+SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
+			</staticText>
+			<textField pattern="HH:mm">
+				<reportElement x="70" y="70" width="109" height="10" uuid="5aa4eb1c-1ba3-4782-8aca-358b750d9a97"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy hh:mm a").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="81" width="169" height="10" uuid="73905347-764e-4bf8-bfce-6fde0a14ec22"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="81" width="46" height="10" uuid="177d40f2-b611-44ad-a238-b54a938e205a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="70" width="56" height="10" uuid="4eea5510-9435-4684-ad25-53ac6f489d69"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Reporte: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="92" width="46" height="10" uuid="c2ede33c-0ac4-454d-89df-aacd3ed870bc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cargo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="92" width="489" height="10" uuid="b0e69a20-abd8-4bb1-adbe-584e427805b8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargo}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="13" y="9" width="65" height="51" uuid="73d8c735-1df0-4fa3-b8e5-9de7f716e580"/>
+				<imageExpression><![CDATA["/home/usic02/Documentos/Spring/Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="483" y="5" width="79" height="58" uuid="f67e9045-06a1-4374-89dd-ca7b382f7c47"/>
+				<imageExpression><![CDATA["/home/usic02/Documentos/Spring/Usic_Hardware_1.1/src/main/resources/static/images/usic2.png"]]></imageExpression>
+			</image>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="332" splitType="Stretch">
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="10" width="570" height="240" uuid="14032e83-d217-4307-8816-a078ba5678bf"/>
+					<chartTitle>
+						<font isBold="true"/>
+						<titleExpression><![CDATA["CANTIDAD DE SERVICIOS REALIZADOS POR TIPO DE SERVICIO"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset incrementType="Group" incrementGroup="nom_tipo_servicio">
+						<datasetRun subDataset="Dataset1" uuid="5300b088-b332-44b2-ac70-9ee30c87dc96">
+							<datasetParameter name="id_usuario">
+								<datasetParameterExpression><![CDATA[$P{id_usuario}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="fecha_inicial">
+								<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="fecha_final">
+								<datasetParameterExpression><![CDATA[$P{fecha_final}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{nom_tipo_servicio}]]></keyExpression>
+					<valueExpression><![CDATA[$F{cantidad_servicios}]]></valueExpression>
+					<labelExpression><![CDATA[$F{nom_tipo_servicio}+": "+$F{cantidad_servicios}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<componentElement>
+				<reportElement x="3" y="260" width="566" height="60" uuid="80353cd1-f417-4f51-9c7b-4bac391b703f">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset2" uuid="5a7238b9-8de5-41e1-bf04-a3a39cee1aad">
+						<datasetParameter name="id_usuario">
+							<datasetParameterExpression><![CDATA[$P{id_usuario}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fecha_inicial">
+							<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fecha_final">
+							<datasetParameterExpression><![CDATA[$P{fecha_final}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION} ]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="20" uuid="0a73a519-ee31-4918-a01b-c499dec27127">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="20" height="30" uuid="75b215e7-482c-4d11-8d47-4e7f8319a1d8"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[N°]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<frame>
+								<reportElement x="0" y="0" width="20" height="30" uuid="aa192a91-f13c-4902-87d6-6c40ea0a0768"/>
+								<textField>
+									<reportElement x="0" y="0" width="20" height="30" uuid="b14b1de1-b730-4b43-85af-cf2faff77738"/>
+									<textElement textAlignment="Center" verticalAlignment="Middle">
+										<font size="6"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$V{Contador}]]></textFieldExpression>
+								</textField>
+							</frame>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="4d0af3ec-50b1-4208-ad85-3c33c47445ba">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="7788ebdc-1cc3-4c1b-b8c5-839d2cde9e73"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[FUNCIONARIO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="30" uuid="73cd43aa-7b94-419d-93a4-36236abd5b50"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{funcionario}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="103" uuid="1267be39-fa58-4be7-b76b-65bbb629158e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="103" height="30" uuid="0cab08e5-029c-4c21-9b16-88adf522c9c9"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[UNIDAD FUNCIONAL]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="103" height="30" uuid="639a6408-7b56-4b11-a0ad-1aad4b399cb9"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{unidad_funcionario}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="97" uuid="eb404c59-b6d6-4cca-8527-409407ffd1fc">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="97" height="30" uuid="a5deb619-a000-4bae-8067-fd41dc8ecc67"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[TIPO DE SERVICIO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="97" height="30" uuid="8f0423db-8d9a-4c2b-be56-44ed0e8433e0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nom_tipo_servicio}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="63" uuid="e229d8d2-482e-4461-ab6c-7be6715dc6a2">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="63" height="30" uuid="c0b45ffb-3bec-4a8a-8c83-d8a179d99ac7"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[TIPO DE EQUIPO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="63" height="30" uuid="17c231b7-e2ea-4d8b-81bf-bddc3a3866dd"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{tipo_equipo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="66" uuid="4665926d-a606-4eb3-9343-48b08f4c1f8a">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="66" height="30" uuid="f68a55fa-d972-4f8b-8766-319d43eba94d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[COD EQUIPO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="66" height="30" uuid="d26a1add-247d-4d58-bee7-e5d8f63126fb"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{cod_equipo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="61" uuid="1cb7c434-46ac-4fda-88d4-fd1910480894">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="61" height="30" uuid="568ffeb7-620e-4d52-86b1-9a6c6bba1a7b"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[FECHA RECEPCIÓN]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="61" height="30" uuid="89df79f6-0332-4220-96a2-8838cfd02c6e"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($F{fecha_recepcion})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="66" uuid="5c42ff18-8bd1-4c62-936d-b74068cf65ff">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="66" height="30" uuid="b62743cf-3ca3-4be5-bf23-64c02ee046bc"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[FECHA ENTREGA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="66" height="30" uuid="744c097c-5377-4f46-92a2-13a83b8b3c44"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($F{fecha_entrega})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="483" y="0" width="50" height="19" uuid="02696662-646e-4c1d-a605-478cddffaea9"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="533" y="0" width="40" height="19" uuid="5a3186ca-1521-45b8-b8df-b8b9e0d72765"/>
+				<textElement textAlignment="Left">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>
