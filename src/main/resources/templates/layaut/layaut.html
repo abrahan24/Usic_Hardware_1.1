@@ -319,7 +319,7 @@
                         </li>
                     </ul>
                 </li>               
-                <li th:if="${session.persona != null && (session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A')}" >
+                <li th:if="${session.persona != null && (session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A' || session.usuario.estado.toString() == 'B')}" >
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">content_copy</i>
                         <span>REPORTES</span>

@@ -257,7 +257,7 @@
                                                         data-toggle="tooltip" data-placement="top" title="Enviar Whatsapp">
                                                         <i class="material-icons">call</i>
                                                     </a>
-                                                    <a th:if="${ser.estado_servicio == 'A' && ser.detalleSolucions.size() <= 0}"
+                                                    <a th:if="${ser.estado_servicio == 'A' && ser.detalleSolucions.size() <= 0 && session.usuario.estado.toString() != 'B'}"
                                                         th:href="${'../../../../hardware-servicio/informe_tecnico/' + ser.id_servicio}"
                                                         type="button"
                                                         class="btn bg-blue btn-circle waves-effect waves-circle waves-float"
@@ -265,7 +265,7 @@
                                                         title="Realizar Informe Correctivo">
                                                         <i class="material-icons">description</i>
                                                     </a>
-                                                    <a th:if="${ser.estado_servicio == 'AS' && ser.detalleSolucions.size() <= 0}"
+                                                    <a th:if="${ser.estado_servicio == 'AS' && ser.detalleSolucions.size() <= 0 && session.usuario.estado.toString() != 'B'}"
                                                         th:href="${'../../../../hardware-servicio/informe_soporte_tec/' + ser.id_servicio}"
                                                         type="button"
                                                         class="btn bg-blue btn-circle waves-effect waves-circle waves-float"
@@ -273,7 +273,7 @@
                                                         title="Realizar Informe Soporte">
                                                         <i class="material-icons">description</i>
                                                     </a>
-                                                    <a th:if="${ser.estado_servicio == 'AP' && ser.detalleSolucions.size() <= 0}"
+                                                    <a th:if="${ser.estado_servicio == 'AP' && ser.detalleSolucions.size() <= 0 && session.usuario.estado.toString() != 'B'}"
                                                         th:href="${'../../../../hardware-servicio/informe_preventivo/' + ser.id_servicio}"
                                                         type="button"
                                                         class="btn bg-blue btn-circle waves-effect waves-circle waves-float"
@@ -297,7 +297,8 @@
                                                         <i class="material-icons">delete</i>
                                                     </a>
     
-                                                    <a th:href="${'../../../../hardware-servicio/editar-servicio/'+ ser.id_servicio}"
+                                                    <a th:if="${session.usuario.estado.toString() != 'B'}"
+                                                        th:href="${'../../../../hardware-servicio/editar-servicio/'+ ser.id_servicio}"
                                                         type="button"
                                                         class="btn bg-light-blue btn-circle waves-effect waves-circle waves-float"
                                                         data-toggle="tooltip" data-placement="top" title="Editar">
@@ -437,7 +438,7 @@
                                                         data-toggle="tooltip" data-placement="top" title="Enviar Whatsapp">
                                                         <i class="material-icons">call</i>
                                                     </a>
-                                                    <a th:if="${ser.estado_servicio == 'B' || ser.estado_servicio == 'T' || ser.estado_servicio == 'TT'}"
+                                                    <a th:if="${(ser.estado_servicio == 'B' || ser.estado_servicio == 'T' || ser.estado_servicio == 'TT') && session.usuario.estado.toString() != 'B'}"
                                                         th:href="${'../../../../hardware-servicio/editar-informe_tecnico/' + ser.id_servicio}"
                                                         type="button"
                                                         class="btn bg-orange btn-circle waves-effect waves-circle waves-float"
@@ -467,7 +468,8 @@
                                                         <i class="material-icons">delete</i>
                                                     </a>
     
-                                                    <a th:href="${'../../../../hardware-servicio/editar-servicio/'+ ser.id_servicio}"
+                                                    <a  th:if="${session.usuario.estado.toString() != 'B'}"
+                                                        th:href="${'../../../../hardware-servicio/editar-servicio/'+ ser.id_servicio}"
                                                         type="button"
                                                         class="btn bg-light-blue btn-circle waves-effect waves-circle waves-float"
                                                         data-toggle="tooltip" data-placement="top" title="Editar">
