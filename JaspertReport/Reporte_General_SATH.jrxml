@@ -300,7 +300,7 @@ WHERE u.id_usuario = $P{id_usuario} AND  (u.estado = 'A' OR u.estado = 'S')]]>
 			</rectangle>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="10" y="3" width="60" height="51" uuid="0d263b31-cdcd-4464-84ed-7e12d8c338ce"/>
-				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot//Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
+				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot/Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="664" y="-6" width="82" height="74" uuid="d94765a8-f0ae-4aa0-847d-a72bcc604e22"/>
@@ -647,14 +647,14 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 		<band height="234">
 			<barChart>
 				<chart evaluationTime="Report">
-					<reportElement x="14" y="10" width="724" height="200" uuid="55c5d16f-ebf2-4da7-856d-7fdedb6dcd30"/>
+					<reportElement x="14" y="10" width="724" height="200" uuid="0f5720ae-8b84-43b5-9a57-20b441a112df"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
-					<dataset incrementType="Report">
-						<datasetRun subDataset="dsTipoServicios" uuid="18d92a89-17b4-40b6-8ba2-359e5771c20f">
+					<dataset>
+						<datasetRun subDataset="dsTipoServicios" uuid="348f58ea-a5bd-4060-aeb7-e05d3125a62a">
 							<datasetParameter name="fecha_inicial">
 								<datasetParameterExpression><![CDATA[$P{fecha_inicial}]]></datasetParameterExpression>
 							</datasetParameter>
