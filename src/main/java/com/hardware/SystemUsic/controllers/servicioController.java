@@ -810,13 +810,13 @@ public class servicioController {
                     case 3:
                         servicio.setEstado_servicio("A");
                         break;
-                    default:
-                        // Handle invalid id_TipoServicio value if necessary
-                        break;
+                    
                 }
 
                 TipoServicio tipoServicio = tipoServicioService.findOne(id_TipoServicio);
                 servicio.setTiposervicio(tipoServicio);
+
+                System.out.println("Servicio de Tipo: " +tipoServicio.getNom_TipoServicio() +" Aceptado");
                 servicioService.save(servicio);
 
                 Colaborador colaborador = new Colaborador();
