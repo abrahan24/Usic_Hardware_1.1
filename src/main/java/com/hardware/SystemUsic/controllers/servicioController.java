@@ -892,7 +892,9 @@ public class servicioController {
            
             metodos.QR2(
                     "Autorizado por: "+sigla+usuario.getPersona().getNombre() + " " + usuario.getPersona().getAp_paterno() + " "+ usuario.getPersona().getAp_materno() + "\n" +
-                            "Cargo:"+cargo.getCargo() +"\n" + "Fecha: " + formattedDate,
+                    "Servicio N° : " +servicio.getId_servicio()+ "\n" +
+                    "Cargo:"+cargo.getCargo() +"\n" + 
+                    "Fecha: " + formattedDate ,
                     rutaDirectorio);
             servicio.setQr_servicio("QR_Servicio_"+servicio.getId_servicio());
             servicioService.save(servicio);
