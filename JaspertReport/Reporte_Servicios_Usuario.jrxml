@@ -195,7 +195,7 @@ WHERE u.id_usuario = $P{id_usuario} AND  (u.estado = 'A' OR u.estado = 'S')]]>
 				<reportElement x="80" y="5" width="400" height="58" uuid="5715f429-5671-4909-ab9a-ae994711f67c"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="157" y="13" width="247" height="42" uuid="69a1afc2-1be3-4c40-a61f-7594bdfd0589"/>
+				<reportElement x="141" y="9" width="279" height="51" uuid="69a1afc2-1be3-4c40-a61f-7594bdfd0589"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -225,8 +225,8 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="9" y="70" width="56" height="10" uuid="4eea5510-9435-4684-ad25-53ac6f489d69"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7" isBold="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+					<font size="7" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Fecha Reporte: ]]></text>
 			</staticText>
@@ -246,11 +246,11 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 			</textField>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="13" y="9" width="65" height="51" uuid="73d8c735-1df0-4fa3-b8e5-9de7f716e580"/>
-				<imageExpression><![CDATA["/home/usic02/Documentos/Spring/Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
+				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot/Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="483" y="5" width="79" height="58" uuid="f67e9045-06a1-4374-89dd-ca7b382f7c47"/>
-				<imageExpression><![CDATA["/home/usic02/Documentos/Spring/Usic_Hardware_1.1/src/main/resources/static/images/usic2.png"]]></imageExpression>
+				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot/Usic_Hardware_1.1/src/main/resources/static/images/usic2.png"]]></imageExpression>
 			</image>
 		</band>
 	</columnHeader>
@@ -291,7 +291,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 				</piePlot>
 			</pieChart>
 			<componentElement>
-				<reportElement x="3" y="260" width="566" height="60" uuid="80353cd1-f417-4f51-9c7b-4bac391b703f">
+				<reportElement x="3" y="260" width="556" height="60" uuid="80353cd1-f417-4f51-9c7b-4bac391b703f">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -308,7 +308,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 						<datasetParameter name="fecha_final">
 							<datasetParameterExpression><![CDATA[$P{fecha_final}]]></datasetParameterExpression>
 						</datasetParameter>
-						<connectionExpression><![CDATA[$P{REPORT_CONNECTION} ]]></connectionExpression>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="20" uuid="0a73a519-ee31-4918-a01b-c499dec27127">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
@@ -356,11 +356,11 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="103" uuid="1267be39-fa58-4be7-b76b-65bbb629158e">
+					<jr:column width="106" uuid="1267be39-fa58-4be7-b76b-65bbb629158e">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
 						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="103" height="30" uuid="0cab08e5-029c-4c21-9b16-88adf522c9c9"/>
+								<reportElement x="0" y="0" width="106" height="30" uuid="0cab08e5-029c-4c21-9b16-88adf522c9c9"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -369,7 +369,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="103" height="30" uuid="639a6408-7b56-4b11-a0ad-1aad4b399cb9"/>
+								<reportElement x="0" y="0" width="106" height="30" uuid="639a6408-7b56-4b11-a0ad-1aad4b399cb9"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="6"/>
 								</textElement>
@@ -461,11 +461,11 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="66" uuid="5c42ff18-8bd1-4c62-936d-b74068cf65ff">
+					<jr:column width="53" uuid="5c42ff18-8bd1-4c62-936d-b74068cf65ff">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
 						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="66" height="30" uuid="b62743cf-3ca3-4be5-bf23-64c02ee046bc"/>
+								<reportElement x="0" y="0" width="53" height="30" uuid="b62743cf-3ca3-4be5-bf23-64c02ee046bc"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -474,7 +474,7 @@ SISTEMA DE ATENCIÓN DE HARDWARE (SATH)]]></text>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="66" height="30" uuid="744c097c-5377-4f46-92a2-13a83b8b3c44"/>
+								<reportElement x="0" y="0" width="53" height="30" uuid="744c097c-5377-4f46-92a2-13a83b8b3c44"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="6"/>
 								</textElement>

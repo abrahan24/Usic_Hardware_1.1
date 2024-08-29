@@ -64,8 +64,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css" rel="stylesheet"/>
     
-    
-
 </head>
 <div th:if="${validado!=null}" th:fragment="alert" class="alert bg-green alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -340,7 +338,7 @@
                             </a>
                         </li>
                         <li th:if="${session.usuario.estado.toString() == 'S' || session.usuario.estado.toString() == 'A' || session.usuario.estado.toString() == 'B'}">
-                            <a th:href="${'../../../../hardware-servicio/reporte_personalizado'}">
+                            <a th:href="${'../../../../hardware-servicio/reporte_estadistico'}">
                                 <i class="material-icons" style="font-size: 15px">assignment</i>
                                 <span>REPORTE ESTADISTICO USUARIO</span>
                             </a>
