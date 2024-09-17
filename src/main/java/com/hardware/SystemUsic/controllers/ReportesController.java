@@ -2,6 +2,8 @@ package com.hardware.SystemUsic.controllers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -119,10 +121,21 @@ public class ReportesController {
        
         String nombreArchivo = "Reporte_General_SATH.jrxml";
 
+        Path projectPath = Paths.get("").toAbsolutePath();
+
+        Path logoUAPPath = Paths.get(projectPath.toString(), "src", "main", "resources", "static", "images", "LOGO _UAP.png");
+        String logoUAP = logoUAPPath.toString();
+
+        Path logoUSICPath = Paths.get(projectPath.toString(), "src", "main", "resources", "static", "images", "usic2.png");
+        String logoUSIC = logoUSICPath.toString();
+
+        
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("id_usuario", usuario.getId_usuario());
         parametros.put("fecha_inicial", fecha_inicio);
         parametros.put("fecha_final", fecha_final);
+        parametros.put("logoUAP", logoUAP);
+        parametros.put("logoUSIC", logoUSIC);
 
         ByteArrayOutputStream stream = utilidadesServices.compilarAndExportarReporte(nombreArchivo,parametros);
 

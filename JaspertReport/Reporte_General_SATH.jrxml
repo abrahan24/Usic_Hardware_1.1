@@ -11,7 +11,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB_SATH"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SATH LOCAL"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
@@ -262,6 +262,8 @@ ORDER BY
 	<parameter name="fecha_inicial" class="java.util.Date"/>
 	<parameter name="fecha_final" class="java.util.Date"/>
 	<parameter name="id_usuario" class="java.lang.Long"/>
+	<parameter name="logoUAP" class="java.lang.String"/>
+	<parameter name="logoUSIC" class="java.lang.String"/>
 	<queryString language="plsql">
 		<![CDATA[SELECT u.id_usuario , concat(ga.sigla_grado_academico,'',p.nombre,' ', p.ap_paterno,' ',p.ap_materno) AS nom_completo, c.cargo,u2.unidad FROM usuario u 
 LEFT JOIN persona p ON p.id_persona = u.id_persona 
@@ -300,11 +302,11 @@ WHERE u.id_usuario = $P{id_usuario} AND  (u.estado = 'A' OR u.estado = 'S')]]>
 			</rectangle>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="10" y="3" width="60" height="51" uuid="0d263b31-cdcd-4464-84ed-7e12d8c338ce"/>
-				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot/Usic_Hardware_1.1/src/main/resources/static/images/LOGO _UAP.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logoUAP}]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="664" y="-6" width="82" height="74" uuid="d94765a8-f0ae-4aa0-847d-a72bcc604e22"/>
-				<imageExpression><![CDATA["/home/ubuntu/Documentos/spring boot/Usic_Hardware_1.1/src/main/resources/static/images/usic2.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{logoUSIC}]]></imageExpression>
 			</image>
 			<rectangle>
 				<reportElement x="81" y="0" width="569" height="58" uuid="1be6cea1-5e20-4e65-9c68-d3b2efa0e589"/>
