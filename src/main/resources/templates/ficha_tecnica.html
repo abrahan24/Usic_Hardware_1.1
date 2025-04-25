@@ -243,69 +243,69 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row" >
-                        <table th:if="${servicio.estado_servicio == 'T' || servicio.estado_servicio == 'TT' }" class="table table-bordered border-dark table-sm" id="tabla4" >
+                    <div class="row">
+                        <table th:if="${servicio.estado_servicio == 'T' || servicio.estado_servicio == 'TT'}" class="table table-bordered border-dark table-sm" id="tabla4">
                             <tbody>
                                 <tr height="70">
                                     <th class="text-center" width="33%">
-                                        <th:block>RECIBI CONFORME</th:block>        
+                                        <th:block>RECIBI CONFORME</th:block>
                                     </th>
-                                    <th th:if="${servicio.qr_servicio != null}" class="text-center" width="33%">
-                                        <img  th:src="@{'/uploads_servicio/'+${servicio.qr_servicio}+'.png'}" width="70" height="70">
-                                    </th>
-                                    <th th:if="${servicio.qr_servicio}" class="text-center" width="33%">
-                                        <!-- AQUI va el QR -->
-                                    </th>
-                                    
                                     <th class="text-center" width="33%">
-                                        <th:block>ENTREGUE CONFORME</th:block> 
+                                        <div th:if="${servicio.qr_servicio != null}">
+                                            <img th:src="@{'/uploads_servicio/' + ${servicio.qr_servicio} + '.png'}" width="70" height="70">
+                                        </div>
+                                        <div th:if="${servicio.qr_servicio == null}">
+                                            <!-- Aquí va el QR si se genera más tarde o dejar vacío -->
+                                        </div>
+                                    </th>
+                                    <th class="text-center" width="33%">
+                                        <th:block>ENTREGUE CONFORME</th:block>
                                     </th>
                                 </tr>
                                 <tr>
                                     <th class="text-center" width="33%">
-                                        <th:block th:if="${servicio.persona.gradoAcademico == null}" th:text="${servicio.persona.nombre +' '+ servicio.persona.ap_paterno +' '+ servicio.persona.ap_materno}"></th:block>
-                                        <th:block th:if="${servicio.persona.gradoAcademico != null}" th:text="${servicio.persona.gradoAcademico.sigla_gradoAcademico+' '+servicio.persona.nombre +' '+ servicio.persona.ap_paterno +' '+ servicio.persona.ap_materno}"></th:block><br>
-                                        <th:block>SOLICITANTE</th:block>   
+                                        <th:block th:if="${servicio.persona.gradoAcademico == null}" th:text="${servicio.persona.nombre + ' ' + servicio.persona.ap_paterno + ' ' + servicio.persona.ap_materno}"></th:block>
+                                        <th:block th:if="${servicio.persona.gradoAcademico != null}" th:text="${servicio.persona.gradoAcademico.sigla_gradoAcademico + ' ' + servicio.persona.nombre + ' ' + servicio.persona.ap_paterno + ' ' + servicio.persona.ap_materno}"></th:block><br>
+                                        <th:block>SOLICITANTE</th:block>
                                     </th>
-                                    <th   class="text-center" width="33%">
-                                        <th:block th:text="${'ING. LUIS ENRIQUE VILLCA MAMANI'}"></th:block><br>
+                                    <th class="text-center" width="33%">
+                                        <th:block>ING. LUIS ENRIQUE VILLCA MAMANI</th:block><br>
                                         <th:block>JEFE DE LA USIC</th:block>
                                     </th>
-                                   
-                                    <th  class="text-center" width="33%">
+                                    <th class="text-center" width="33%">
                                         <th:block
-                                            th:text="${servicio.colaboradores.get(0).persona.gradoAcademico.sigla_gradoAcademico+' '+servicio.colaboradores.get(0).persona.nombre +' '+servicio.colaboradores.get(0).persona.ap_paterno +' '+servicio.colaboradores.get(0).persona.ap_materno}">
+                                            th:text="${servicio.colaboradores.get(0).persona.gradoAcademico.sigla_gradoAcademico + ' ' + servicio.colaboradores.get(0).persona.nombre + ' ' + servicio.colaboradores.get(0).persona.ap_paterno + ' ' + servicio.colaboradores.get(0).persona.ap_materno}">
                                         </th:block><br>
                                         <th:block>TECNICO COLABORADOR</th:block>
                                     </th>
                                 </tr>
                             </tbody>
-                        </table> 
+                        </table>
+                    
                         <table th:if="${servicio.estado_servicio == 'A' || servicio.estado_servicio == 'AP' || servicio.estado_servicio == 'AS' || servicio.estado_servicio == 'B'}" class="table table-bordered border-dark table-sm" id="tabla5">
                             <tbody>
                                 <tr height="70">
                                     <th class="text-center" width="50%">
-                                        <th:block>ENTREGUE CONFORME</th:block>      
+                                        <th:block>ENTREGUE CONFORME</th:block>
                                     </th>
-                                        
                                     <th class="text-center" width="50%">
-                                        <th:block>RECIBI CONFORME</th:block> 
+                                        <th:block>RECIBI CONFORME</th:block>
                                     </th>
                                 </tr>
                                 <tr>
                                     <th class="text-center" width="50%">
-                                        <td:block th:text="${servicio.persona.nombre +' '+ servicio.persona.ap_paterno +' '+ servicio.persona.ap_materno}"></td:block><br>
+                                        <td:block th:text="${servicio.persona.nombre + ' ' + servicio.persona.ap_paterno + ' ' + servicio.persona.ap_materno}"></td:block><br>
                                         <th:block>SOLICITANTE</th:block>
                                     </th>
-                                        
-                                    <th  class="text-center" width="50%">
-                                        <th:block th:text="${servicio.colaboradores.get(0).persona.nombre +' '+servicio.colaboradores.get(0).persona.ap_paterno +' '+servicio.colaboradores.get(0).persona.ap_materno}"></th:block><br>
+                                    <th class="text-center" width="50%">
+                                        <th:block th:text="${servicio.colaboradores.get(0).persona.nombre + ' ' + servicio.colaboradores.get(0).persona.ap_paterno + ' ' + servicio.colaboradores.get(0).persona.ap_materno}"></th:block><br>
                                         <th:block>TECNICO COLABORADOR</th:block>
                                     </th>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    
                     <span id="nota">Nota: Todos los aparatos son devueltos con su respectivo informe técnico, el cual deberá contar la firma de conformidad del solicitante y del encargado de Hardware.</span>
                    
 
