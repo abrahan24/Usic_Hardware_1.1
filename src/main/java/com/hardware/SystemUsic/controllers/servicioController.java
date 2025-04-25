@@ -653,6 +653,43 @@ public class servicioController {
     public String fichatecnica(Model model , @PathVariable Long id_servicio, RedirectAttributes flash, HttpServletRequest request ){
         
          if (request.getSession().getAttribute("persona") != null) {
+            Servicio servicio = servicioService.findOne(id_servicio);
+
+            if (servicio.getQr_servicio() == null) {
+                // Generar QR solo si no existe
+                try {
+                    // Fecha del servicio
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String formattedDate = formatter.format(servicio.getFecha_recepcion());
+    
+                    // Texto QR
+                    String contenidoQR = "Autorizado por: ING.LUIS ENRIQUE VILLCA MAMANI\n" +
+                                         "Cargo:JEFE a.i UNIDAD DE SISTEMAS DE INFORMACIÓN Y COMUNICACIÓN\n" +
+                                         "Fecha: " + formattedDate;
+    
+                    // Ruta donde se guarda el QR
+                    Path rootPath = Paths.get("uploads_servicio");
+                    Path rootAbsolutePath = rootPath.toAbsolutePath();
+                    if (!Files.exists(rootPath)) {
+                        Files.createDirectories(rootPath);
+                    }
+    
+                    String nombreArchivoQR = "QR_servicio_" + servicio.getId_servicio();
+                    String rutaQR = rootAbsolutePath + "//" + nombreArchivoQR + ".png";
+    
+                    // Generar QR (asumimos que tienes una clase utilitaria como Metodos con QR2)
+                    Metodos metodos = new Metodos();
+                    metodos.QR2(contenidoQR, rutaQR);
+    
+                    // Guardar nombre del QR en el servicio
+                    servicio.setQr_servicio(nombreArchivoQR);
+                    servicioService.save(servicio);
+                    
+                } catch (Exception e) {
+                    System.err.println("Error generando QR: " + e.getMessage());
+                }
+            }
+
 			model.addAttribute("servicio", servicioService.findOne(id_servicio));
             model.addAttribute("usuarios", usuarioService.findAll());
             return "ficha_tecnica";

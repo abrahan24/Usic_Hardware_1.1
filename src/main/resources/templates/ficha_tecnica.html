@@ -253,8 +253,8 @@
                                     <th th:if="${servicio.qr_servicio != null}" class="text-center" width="33%">
                                         <img  th:src="@{'/uploads_servicio/'+${servicio.qr_servicio}+'.png'}" width="70" height="70">
                                     </th>
-                                    <th th:if="${servicio.qr_servicio == null}" class="text-center" width="33%">
-                                        <td th:if="${baja.QR_baja != null}" colspan="3" class="text-center" width="100%" ><img th:src="@{'/uploads_bajas/'+${baja.QR_baja}+'.png'}" width="70px" height="70px"> </td>
+                                    <th th:if="${servicio.qr_servicio}" class="text-center" width="33%">
+                                        <!-- AQUI va el QR -->
                                     </th>
                                     
                                     <th class="text-center" width="33%">
