@@ -690,6 +690,30 @@ public class servicioController {
                 }
             }
 
+            if (servicio.getQr_verificacion() == null) {
+                try {
+                    String contenidoQR = "Verificado por el Ing. Henry Montero Paredes\n" +
+                                        "Responsable División de Hardware";
+
+                    Path rootPath = Paths.get("uploads_servicio");
+                    Path rootAbsolutePath = rootPath.toAbsolutePath();
+                    if (!Files.exists(rootPath)) {
+                        Files.createDirectories(rootPath);
+                    }
+
+                    String nombreArchivoQRVerificacion = "QR_verificacion_" + servicio.getId_servicio();
+                    String rutaQR = rootAbsolutePath + "//" + nombreArchivoQRVerificacion + ".png";
+
+                    Metodos metodos = new Metodos();
+                    metodos.QR2(contenidoQR, rutaQR);
+
+                    servicio.setQr_verificacion(nombreArchivoQRVerificacion);
+                    servicioService.save(servicio);
+                } catch (Exception e) {
+                    System.err.println("Error generando QR de verificación: " + e.getMessage());
+                }
+            }
+
 			model.addAttribute("servicio", servicioService.findOne(id_servicio));
             model.addAttribute("usuarios", usuarioService.findAll());
             return "ficha_tecnica";

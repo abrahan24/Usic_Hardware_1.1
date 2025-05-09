@@ -259,7 +259,12 @@
                                         </div>
                                     </th>
                                     <th class="text-center" width="33%">
-                                        <th:block>ENTREGUE CONFORME</th:block>
+                                        <div th:if="${servicio.qr_verificacion != null}">
+                                            <img th:src="@{'/uploads_servicio/' + ${servicio.qr_verificacion} + '.png'}" width="70" height="70">
+                                        </div>
+                                        <div th:if="${servicio.qr_verificacion == null}">
+                                            <th:block>ENTREGUE CONFORME</th:block>
+                                        </div>
                                     </th>
                                 </tr>
                                 <tr>
